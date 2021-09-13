@@ -5,3 +5,4 @@ Team members (N01)
 * Amine Halimi
 * Seyed Mohammad Lajevardi
 * Najim Ghafourzadeh
+* Cristian Tesa
