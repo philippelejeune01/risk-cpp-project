@@ -1,36 +1,114 @@
 #include "Map.h"
+#include<iostream>
 using namespace std;
 
+void PrintList(vector<int>* adjacency,int total) //represent the graph for test of adjacency, not a class member function
+{
+    bool flag = false;
+    for (int i = 1; i < total; ++i)
+    {
+        cout << "\nTerritory " << i << " connects to: ";
+        for (auto x : adjacency[i])
+        {
+            cout << " " << x;
+            flag=true;
+        }
+        if (!flag)
+            cout<<"This is not a valid map!";
+        flag=false;
+    }
+    cout<<endl;
+}
+//constructors and destructor:
 Map::Map(vector<int>* adjacency,vector<Territory> listOfTerritories,int nOfContinents,int nOfTerritories,int endOf[])
 {
-    adjacencyList = adjacency;
-    territories = listOfTerritories;
-    numOfContinents = nOfContinents;
-    numOfTerritories = nOfTerritories;
-
+    this->adjacencyList = adjacency;
+    this->territories = listOfTerritories;
+    this->numOfContinents = nOfContinents;
+    this->numOfTerritories = nOfTerritories;
 }
-
+Map::~Map()
+{
+    adjacencyList = NULL;
+}
 Map::Map(const Map& m)
 {
-    adjacencyList = m.adjacencyList;
-    territories = m.territories;
-    numOfContinents = m.numOfContinents;
-    numOfTerritories = m.numOfTerritories;
+    this->adjacencyList = m.adjacencyList;
+    this->territories = m.territories;
+    this->numOfContinents = m.numOfContinents;
+    this->numOfTerritories = m.numOfTerritories;
 }
-
 Map::Map()
 {
 
 }
-bool Map::validate()
+//assignment operator
+Map& Map::operator=(const Map& m)
 {
+    this->adjacencyList = m.adjacencyList;
+    this->territories = m.territories;
+    this->numOfContinents = m.numOfContinents;
+    this->numOfTerritories = m.numOfTerritories;
+    return *this;
+}
+//stream operator
+ostream& operator<<(ostream& strm, const Map& m)
+{
+
+    strm <<"Number of Territories in this map: "<< m.numOfTerritories <<endl;
+    strm <<"Number of Continents in this map: "<< m.numOfContinents<<endl;
+    return strm;
+}
+
+bool Map::validate() //checks if a given map is valid
+{
+    bool Continent=false,AllContinents[numOfContinents+1]={false},t;
+    int startOf = 1;
+    for (int i = 1; i<=numOfTerritories; i++) //checks that each country belongs to only one continent
+    {
+        for (int j = i+1; j<=numOfTerritories;j++)
+            if (territories[i].getName() == territories[j].getName()
+                && territories[i].getContinent()!=territories[j].getContinent())
+            {
+                cout<<"Territory "<<territories[i].getName()<<" is defined in more than one continent! Map is invalid.";
+                return false;
+            }
+    }
+    for (int i = 1; i<=numOfContinents; i++)
+    {
+        for (int j = startOf; j<=endofContinents[i];j++)
+        {
+            t = false;
+            for (auto x: adjacencyList[j])
+            {
+                if (x<=endofContinents[i] &&x>=startOf) //checks if this territory is connected to at least one other territory in this continent
+                    t= true;
+                if (territories[x].continentNumber!=territories[j].continentNumber)
+                {
+                    AllContinents[territories[x].continentNumber] = true; //this two continents connect
+                    AllContinents[territories[j].continentNumber] = true;
+                }
+            }
+            if (!t) //continent is not interconnected
+            {
+                cout<<"Territory "<<j<<" not connected"<<endl;
+                cout<< "not a valid map! Continent "<<i<<" is not interconnected."<<endl;
+                return false;
+            }
+        }
+        startOf= endofContinents[i]+1;
+    }
+    for (int i = 1; i<=numOfContinents;i++)
+        if (!AllContinents[i]) //this continent is not connected to any other continent
+        {
+            cout<<"not a valid map! Continent "<<i<<" is not connected to any other continent"<<endl;
+            return false;
+        }
+
+    cout<<"Map is valid!"<<endl; //Every condition was met
     return true;
 }
-void Map::Print()
-{
-    for (int i=1;i<=numOfContinents;i++)
-        cout<<"end of Continent: "<<i<<" "<<endofContinents[i]<<endl;
-}
+
 void Map::setAdjacency(vector<int>* adjacency)
 {
     adjacencyList = adjacency;
@@ -39,7 +117,7 @@ void Map::setTerritories(vector<Territory> t)
 {
     territories = t;
 }
-void Map::setNumberOfContinets(int n)
+void Map::setNumberOfContinents(int n)
 {
     numOfContinents = n;
 }
@@ -95,22 +173,7 @@ string Territory::getName()
 {
     return name;
 }
-void Print(vector<int> adjacency[],int total) //represent the graph for test
-{
-    bool flag = false;
-    for (int i = 1; i < total; ++i)
-    {
-        cout << "\nTerritory " << i << " connects to: ";
-        for (auto x : adjacency[i])
-        {
-            cout << " " << x;
-            flag=true;
-        }
-        if (!flag)
-            cout<<"This is not a valid map!";
-        flag=false;
-    }
-}
+
 MapLoader::MapLoader(string fpath)
 {
     filepath=fpath;
@@ -143,6 +206,7 @@ Map MapLoader::Load()
     vector<Territory> territories;
     Territory t;
     cnumber = 1;
+    territories.push_back(t); //add a null, so our territory number starts with 1 not 0
     while (s!="[borders]" )
     {
         inputstream>>s;
@@ -161,7 +225,7 @@ Map MapLoader::Load()
 
     numOfTerritories--; //exclude [borders]
 
-    vector<int> adjacency[numOfTerritories+1];
+    static vector<int> adjacency[200];
 
     while (!inputstream.eof())
     {
@@ -183,20 +247,18 @@ Map MapLoader::Load()
         inputstream>>s;
     }
     inputstream.close();
-    //Print(adjacency,numOfTerritories+1);
 
-    m.setNumberOfContinets(numOfContinents);
+    m.setNumberOfContinents(numOfContinents);
     m.setNumberOfTerritories(numOfTerritories);
-    m.setAdjacency(adjacency);
     m.setEndOfContinents(endOf);
     m.setTerritories(territories);
+    m.setAdjacency(adjacency);
+
+    //PrintList(m.adjacencyList,numOfTerritories); //test of adjacency list
 
     return m;
 }
-void Map::load(string filepath)
-{
-//    Maploader* m(filepath);
-}
+
 
 
 
