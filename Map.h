@@ -35,15 +35,16 @@ class Map
 
         void setAdjacency(vector<int>* adjacency);
         void setTerritories(vector<Territory> territories);
-        void setNumberOfContinets(int n);
+        void setNumberOfContinents(int n);
         void setNumberOfTerritories(int n);
         void setEndOfContinents(const int *arr);
-        void Print();
 
         bool validate();
-        void load(string filepath);
+        Map& operator =(const Map& m);
+        friend ostream& operator<<(ostream &strm, const Map &m);
+        ~Map();
 
-    //protected:
+    protected:
         int numOfTerritories, numOfContinents;
         vector<int>* adjacencyList;
         vector<Territory> territories;
