@@ -14,24 +14,36 @@ OrdersList::OrdersList()
 {
 }
 //Constructor with 1 arg: list<Order*>
-OrdersList::OrdersList(list<Order*> ls)
+OrdersList::OrdersList(list<Order*>* ls)
 {
-    ordList = ls;
+    //This copies all the pointers to Order stored in the passed list
+    for (list<Order*>::iterator it = ls->begin(); it != ls->end(); ++it)
+    {
+        ordList.push_back(*it);
+    }
 }
 //Copy Constructor
-OrdersList::OrdersList(const OrdersList& ls)
+OrdersList::OrdersList(const OrdersList& ordsL)
 {
-    //This copies all the values stored in the list
-    ordList = ls.ordList;
+    //This copies all the pointers stored in the list
+    for (list<Order*>::const_iterator it = ordsL.ordList.begin(); it != ordsL.ordList.end(); ++it)
+    {
+        ordList.push_back(*it);
+    }
 }
 //Destructor
 OrdersList::~OrdersList()
 {
+    //ordList.clear();
+
+    //This deletes all the Order objects stored in the list
     for(list<Order*>::iterator it = ordList.begin(); it != ordList.end(); ++it)
     {
         delete *it;
     }
+    //This erases all the pointers stored in the list
     ordList.clear();
+
 }
 //Assignment operator overload
 OrdersList& OrdersList :: operator = (const OrdersList& ls)
@@ -59,7 +71,8 @@ list<Order*> OrdersList:: getOrdList() const
 {
     return ordList;
 }
-//Moves an order in the list
+//Moves an order in the list at the given index.
+//If it's in the list already, then it inserts it at the given index
 void OrdersList::move(Order* order, int index)
 {
     //Error check
@@ -71,7 +84,7 @@ void OrdersList::move(Order* order, int index)
     list<Order*>::iterator oldPos = ordList.begin();
     list<Order*>::iterator newPos = ordList.begin();
 
-    //Determines the original position of the Order. If the order is not in the list, then the oldPos points to the endpoint
+    //Determines the original position of the Order. If the order is not in the list, then the oldPos points to the endpoint.
     for(;oldPos != ordList.end();++oldPos)
     {
         if(*oldPos == order)
@@ -97,7 +110,7 @@ void OrdersList::move(Order* order, int index)
     }
 
 }
-
+//This removes an order at a particular index
 void OrdersList::remove(int index)
 {
     //Error check
@@ -116,15 +129,6 @@ void OrdersList::remove(int index)
     delete *removeAt;
     //Removes the pointer from the list
     ordList.erase(removeAt);
-}
-//Private method that determines the location of an order in the list. Returns -1 if the order is not located in the list
-int OrdersList::findOrder(Order* ord)
-{
-    int index = -1;
-    //Iterates through the list to find the index of the Order
-
-
-    return index;
 }
 
 //Order Implementation
@@ -160,7 +164,12 @@ Order:: ~Order()
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Order &ord)
 {
-    return strm << "Targetted Territory: "<<*(ord.targetTerritory);
+    return strm << ord.doPrint();
+}
+//doPrint method for the stream insertion operator of Order
+string Order::doPrint() const
+{
+    return "Targetted Territory: " + targetTerritory->getTerritoryName() + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
 }
 //Getters and Setters
 Territory* Order::getTargetTerritory() const
@@ -237,7 +246,13 @@ Deploy:: ~Deploy()
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Deploy &depl)
 {
-    return strm << "Deploy " << depl.nAddedArmies << " armies on " << *(depl.targetTerritory);
+    return strm << depl.doPrint();
+}
+//doPrint method for the stream insertion operator of Deploy
+string Deploy::doPrint() const
+{
+    return "Deploy: " + std::to_string(nAddedArmies) + " armies on " + targetTerritory->getTerritoryName()
+    + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
 }
 //Setter and Getter
 void Deploy::setNAddedArmies(int nAA)
@@ -326,10 +341,15 @@ Advance::~Advance()
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Advance &adv)
 {
-    return strm << "Advance " << adv.nMovedArmies << " armies : From "
-    << *(adv.sourceTerritory) << " to " << *(adv.targetTerritory);
+    return strm << adv.doPrint();
 }
-
+//doPrint method for the stream insertion operator of Advance
+string Advance::doPrint() const
+{
+    return "Advance: " + std::to_string(nMovedArmies) + " armies: From "
+    + sourceTerritory->getTerritoryName() + "(" + std::to_string(sourceTerritory->getAmountOfArmies()) + " armies)"
+    + " to " + targetTerritory->getTerritoryName() + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
+}
 //setters and getters
 void Advance:: setNOfArmies(int nOA)
 {
@@ -434,7 +454,13 @@ Bomb::~Bomb()
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Bomb &bomb)
 {
-    return strm << "Bomb " << *(bomb.targetTerritory);
+    return strm << bomb.doPrint();
+}
+//doPrint method for the stream insertion operator of Bomb
+string Bomb::doPrint() const
+{
+    return "Bomb: " + targetTerritory->getTerritoryName()
+    + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
 }
 //Implementation of validate
 bool Bomb::validate()
@@ -508,7 +534,13 @@ Blockade::~Blockade()
 //Stream insertion operator
 ostream& operator <<(ostream &strm, const Blockade &block)
 {
-    return strm << "Blockade " << *(block.targetTerritory);
+    return strm << block.doPrint();
+}
+//doPrint method for the stream insertion operator of Blockade
+string Blockade::doPrint() const
+{
+    return "Blockade: " + targetTerritory->getTerritoryName()
+    + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
 }
 //Implementation of validate
 bool Blockade:: validate()
@@ -582,9 +614,15 @@ Airlift::~Airlift()
 //Stream insertion operator
 ostream& operator <<(ostream &strm, const Airlift &airL)
 {
-    return strm << "Airlift: From " << *(airL.sourceTerritory) << " To " << *(airL.targetTerritory);
+    return strm << airL.doPrint();
 }
-
+//doPrint method for the stream insertion operator of Airlift
+string Airlift::doPrint() const
+{
+    return "Airlift " + std::to_string(nMovedArmies) + " armies: From "
+    + sourceTerritory->getTerritoryName() + "(" + std::to_string(sourceTerritory->getAmountOfArmies()) + " armies)"
+    + " to " + targetTerritory->getTerritoryName() + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
+}
 //Getters and Setters
 void Airlift::setNOfArmies(int nOA)
 {
@@ -691,9 +729,13 @@ Negotiate::~Negotiate()
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Negotiate &negotiate)
 {
-    return strm << "Negotiate: From " << *(negotiate.callingPlayer) << " To " << *(negotiate.targetPlayer);
+    return strm << negotiate.doPrint();
 }
-
+//DoPrint method for the stream insertion operator of Negotiate
+string Negotiate::doPrint() const
+{
+    return "Negotiate: From " + callingPlayer->getName() + " to " + targetPlayer->getName();
+}
 //Setters and Getters
 void Negotiate::setCallingPlayer(Player* cPlayer)
 {
@@ -787,12 +829,15 @@ void Territory::addEdges(Territory* adjTerr)
     }
 
 }
-//Getter
-int Territory::getAmountOfArmies()
+//Getters
+int Territory::getAmountOfArmies() const
 {
     return amountOfArmies;
 }
-
+string Territory::getTerritoryName() const
+{
+    return terrName;
+}
 //Player Dummy Class implementation
 //Default Constructor
 Player::Player()

@@ -17,7 +17,8 @@ public:
     friend ostream& operator <<(ostream &strm, const Territory &terr);
     bool isAdjacent(Territory* adjTerr);
     void addEdges(Territory* adjTerr);
-    int getAmountOfArmies();
+    int getAmountOfArmies() const;
+    string getTerritoryName() const;
 private:
     string terrName;
     int amountOfArmies;
@@ -57,6 +58,8 @@ protected:
     Territory* targetTerritory;
     //ownedTerritories refers to the list of territories a player owns
     list<Territory*>* ownedTerritories;
+private:
+    virtual string doPrint() const;
 };
 
 //Declaration of OrdersList class
@@ -64,7 +67,7 @@ class OrdersList{
 public:
     //Constructors
     OrdersList();
-    OrdersList(std::list<Order*> ls);
+    OrdersList(list<Order*>* ls);
     OrdersList(const OrdersList& ordsL);
     //Overloaded assignment op
     OrdersList& operator = (const OrdersList& ls);
@@ -80,8 +83,6 @@ public:
 private:
     //Is temporarily an array
     list<Order*> ordList;
-    //Determines the index an Order is on the list
-    int findOrder(Order* ord);
 };
 
 
@@ -107,6 +108,7 @@ public:
 private:
     //nAddedArmies refers to the amount of armies to be deployed to the targetted territory
     int nAddedArmies;
+    string doPrint() const;
 };
 
 //Advance validates if the source territory is owned by the calling player
@@ -130,6 +132,7 @@ private:
     int nMovedArmies;
     //sourceTerritory refers to the territory where the armies are coming from
     Territory* sourceTerritory;
+    string doPrint() const;
 };
 
 //Bomb validates if the target territory is not owned by the calling player
@@ -143,6 +146,8 @@ public:
     bool validate();
     void execute();
     friend ostream& operator <<(ostream &strm, const Bomb &bomb);
+private:
+    string doPrint() const;
 };
 
 //Blockade validates if the target territory is owned by the calling player
@@ -156,6 +161,8 @@ public:
     bool validate();
     void execute();
     friend ostream& operator <<(ostream &strm, const Blockade &block);
+private:
+    string doPrint() const;
 };
 
 //Airlift validates if the source territory is owned by the calling player
@@ -179,6 +186,7 @@ private:
     int nMovedArmies;
     //sourceTerritory refersr to the territory where the armies move from
     Territory* sourceTerritory;
+    string doPrint() const;
 };
 
 //Negotiate validates if the target player is not already in a cease fire with the calling player
@@ -202,6 +210,7 @@ private:
     Player* callingPlayer;
     //targetPlayer refers to the targetted player
     Player* targetPlayer;
+    string doPrint() const;
 };
 
 
