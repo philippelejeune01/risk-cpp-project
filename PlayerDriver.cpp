@@ -1,68 +1,106 @@
 #include <iostream>
 #include <vector>
+#include <list>
 #include "Player.h"
+
 
 using namespace std;
 
 int main()
 {
-    vector<Territories*> allTerritories;
+    vector<Territory*> allTerritories;
     vector<Player*> allPlayers;
+    vector<Card*> cards;
 
-    //Create territories
-    Territories *terr1 = new Territories(1);
-    allTerritories.push_back(terr1);
-    Territories *terr2 = new Territories(2);
-    allTerritories.push_back(terr2);
-    Territories *terr3 = new Territories(3);
-    allTerritories.push_back(terr3);
-    Territories *terr4 = new Territories(4);
-    allTerritories.push_back(terr4);
-    Territories *terr5 = new Territories(5);
-    allTerritories.push_back(terr5);
-    Territories *terr6 = new Territories(6);
-    allTerritories.push_back(terr6);
-    Territories *terr7 = new Territories(7);
-    allTerritories.push_back(terr7);
-    Territories *terr8 = new Territories(8);
-    allTerritories.push_back(terr8);
-    Territories *terr9 = new Territories(9);
-    allTerritories.push_back(terr9);
-    Territories *terr10 = new Territories(10);
-    allTerritories.push_back(terr10);
-    Territories *terr11 = new Territories(11);
-    allTerritories.push_back(terr11);
-    Territories *terr12 = new Territories(12);
-    allTerritories.push_back(terr12);
-    Territories *terr13 = new Territories(13);
-    allTerritories.push_back(terr13);
+    //Creating test territories and test players
+    Territory terr1(2,"Joe");
+    allTerritories.push_back(&terr1);
+    Territory terr2(4,"Bojoe");
+    allTerritories.push_back(&terr2);
+    Territory terr3(3,"Lorem");
+    allTerritories.push_back(&terr3);
+    Territory terr4(5,"Ipsum");
+    allTerritories.push_back(&terr4);
+    Territory terr5(7,"fifth");
+    allTerritories.push_back(&terr5);
 
-    //Create Players
-    Player *player1 = new Player();
-    allPlayers.push_back(player1);
-    Player *player2 = new Player();
-    allPlayers.push_back(player2);
-    Player *player3 = new Player();
-    allPlayers.push_back(player3);
+    Player pl1("Elsam");
+    allPlayers.push_back(&pl1);
+    Player pl2("Doug");
+    allPlayers.push_back(&pl2);
 
-    cout << "Player count: " << Player::getPlayerCount() << endl;
+    //Creating adjacency lists
+    terr1.addEdges(&terr2);
+    terr1.addEdges(&terr3);
+    terr2.addEdges(&terr1);
+    terr2.addEdges(&terr4);
+    terr3.addEdges(&terr1);
+    terr3.addEdges(&terr4);
+    terr4.addEdges(&terr2);
+    terr4.addEdges(&terr3);
 
+    //Creating cards adding them to the player's hand
+    Card card1;
+    cards.push_back(&card1);
+    Card card2;
+    cards.push_back(&card2);
+    Card card3;
+    cards.push_back(&card3);
+    Card card4;
+    cards.push_back(&card4);
+
+    Hand playerHand(cards);
+    pl1.setHand(&playerHand);
+
+    //Splitting all territories between players into almost equal parts depending on the number of players
     setPlayersTerritories(allTerritories, allPlayers, Player::getPlayerCount());
 
-    cout << "Player Territories: " << endl;
-    cout << "Player 1 Territory size: " << player1->getTerritories().size() << endl;
-    cout << "Player 2 Territory size: " << player2->getTerritories().size() << endl;
-    cout << "Player 3 Territory size: " << player3->getTerritories().size() << endl;
+    vector<Territory*> pl1Territories = pl1.getTerritories();
 
-    cout << "Player 3 Territories to Defend: " << endl;
-    for (auto x: player3->toDefend()) {
-        std::cout << x->id << ' ';
-    }
+    //Creating some orders and adding them to the players list of orders
+    Order* depl = new Deploy(&terr1, &pl1Territories, 3);
+    Order* adv = new Advance(&terr2, &pl1Territories, 3, &terr1);
+    Order* block = new Blockade(&terr3, &pl1Territories);
+
+    OrdersList oLs;
+    oLs.move(depl,0);
+    oLs.move(adv,0);
+    oLs.move(block,2);
+
+    pl1.setOrderList(&oLs);
+
     cout << endl;
-    cout << "Player 1 Territories to Defend: " << endl;
-    for (auto x: player1->toDefend()) {
-        std::cout << x->id << ' ';
+    cout << pl1;
+
+    //Testing toDefend() method
+    cout << "Testing toDefend(): " << endl;
+    for(auto x:pl1.toDefend()){
+        cout << *x << endl;
     }
-    cout << endl;
+
+    //Testing toAttack() method
+    cout << "\nTesting toAttack(): " << endl;
+    for(auto x:pl1.toAttack()){
+        cout << *x << endl;
+    }
+
+    //Testing issueOrder() method
+    cout << "\nTesting issueOrder(): " << endl;
+    pl1.issueOrder("Deploy", &terr1, 1);
+    pl1.issueOrder("Advance", &terr2, 2, &terr1);
+    pl1.issueOrder("Airlift", &terr2, 2, &terr1);
+    pl1.issueOrder("Bomb", &terr3);
+    pl1.issueOrder("Blockade", &terr3);
+    pl1.issueOrder("Negotiate", &pl2);
+    cout << pl1 << endl;
+
+    delete depl;
+    delete adv;
+    delete block;
+    depl = NULL;
+    adv = NULL;
+    block = NULL;
+
+    return 0;
 
 }
