@@ -19,7 +19,9 @@ OrdersList::OrdersList(list<Order*>* ls)
     //This copies all the pointers to Order stored in the passed list
     for (list<Order*>::iterator it = ls->begin(); it != ls->end(); ++it)
     {
-        ordList.push_back(*it);
+        //Creates a new Order object from the object of the passed list
+        //Maintains the passed list order
+        ordList.push_back((*it)->duplicate());
     }
 }
 //Copy Constructor
@@ -28,7 +30,9 @@ OrdersList::OrdersList(const OrdersList& ordsL)
     //This copies all the pointers stored in the list
     for (list<Order*>::const_iterator it = ordsL.ordList.begin(); it != ordsL.ordList.end(); ++it)
     {
-        ordList.push_back(*it);
+        //Creates a new Order object from the object of the passed list
+        //Maintains the passed OrdersList
+        ordList.push_back((*it)->duplicate());
     }
 }
 //Destructor
@@ -50,7 +54,12 @@ OrdersList& OrdersList :: operator = (const OrdersList& ls)
 {
     //This copy all the pointers stored in the list
     this->ordList = ls.ordList;
-
+    for (list<Order*>::const_iterator it = ls.ordList.begin(); it != ls.ordList.end(); ++it)
+    {
+        //Creates a new Order object based on the passed pointer
+        //Maintains the order of the passed OrdersList
+        this->ordList.push_back((*it)->duplicate());
+    }
     return *this;
 }
 //Stream insertion operator
@@ -188,6 +197,13 @@ void Order:: setOwnedTerritories(list<Territory*>* ownedTerr)
 {
     ownedTerritories = ownedTerr;
 }
+//Duplicate function
+Order* Order::duplicate()
+{
+    //Creates a new object and returns its pointer
+    return new Order(targetTerritory,ownedTerritories);
+}
+
 //validate implementation
 bool Order:: validate()
 {
@@ -262,6 +278,12 @@ void Deploy::setNAddedArmies(int nAA)
 int Deploy::getNAddedArmies()
 {
     return nAddedArmies;
+}
+//Duplicate function
+Order* Deploy::duplicate()
+{
+    //Creates a new object and returns its pointer
+    return new Deploy(targetTerritory,ownedTerritories,nAddedArmies);
 }
 //Implementation of validate
 bool Deploy::validate()
@@ -367,6 +389,12 @@ Territory* Advance:: getSourceTerritory()
 {
     return sourceTerritory;
 }
+//Duplicate function
+Order* Advance::duplicate()
+{
+    //Creates a new object and returns its pointer
+    return new Advance(targetTerritory,ownedTerritories,nMovedArmies,sourceTerritory);
+}
 //Implementation of validate function
 bool Advance:: validate()
 {
@@ -462,6 +490,12 @@ string Bomb::doPrint() const
     return "Bomb: " + targetTerritory->getTerritoryName()
     + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
 }
+//Duplicate function
+Order* Bomb::duplicate()
+{
+    //Creates a new object and returns its pointer
+    return new Bomb(targetTerritory,ownedTerritories);
+}
 //Implementation of validate
 bool Bomb::validate()
 {
@@ -541,6 +575,12 @@ string Blockade::doPrint() const
 {
     return "Blockade: " + targetTerritory->getTerritoryName()
     + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
+}
+//Duplicate function
+Order* Blockade::duplicate()
+{
+    //Creates a new object and returns its pointer
+    return new Blockade(targetTerritory,ownedTerritories);
 }
 //Implementation of validate
 bool Blockade:: validate()
@@ -639,6 +679,12 @@ int Airlift::getNOfArmies()
 Territory* Airlift::getSourceTerritory()
 {
     return sourceTerritory;
+}
+//Duplicate function
+Order* Airlift::duplicate()
+{
+    //Creates a new object and returns its pointer
+    return new Airlift(targetTerritory,ownedTerritories,nMovedArmies,sourceTerritory);
 }
 //Implementation of validate
 bool Airlift::validate()
@@ -752,6 +798,12 @@ Player* Negotiate::getCallingPlayer()
 Player* Negotiate::getTargetPlayer()
 {
     return targetPlayer;
+}
+//Duplicate function
+Order* Negotiate::duplicate()
+{
+    //Creates a new object and returns its pointer
+    return new Negotiate(callingPlayer,targetPlayer);
 }
 //Implementation of validate
 bool Negotiate::validate()

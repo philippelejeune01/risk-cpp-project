@@ -50,6 +50,8 @@ public:
     list<Territory*>* getOwnedTerritories() const;
     void setTargetTerritory(Territory* newTarTerr);
     void setOwnedTerritories(list<Territory*>* ownedTerr);
+    //duplicate method
+    virtual Order* duplicate();
     //Functions every subclasses has to implement
     virtual bool validate();
     virtual void execute();
@@ -102,7 +104,9 @@ public:
     //Setter and Getter
     void setNAddedArmies(int nAA);
     int getNAddedArmies();
-    //Functions every subclasses has to implement
+    //duplicate method
+    Order* duplicate();
+    //Functions every subclasses has to override
     bool validate();
     void execute();
 private:
@@ -114,6 +118,7 @@ private:
 //Advance validates if the source territory is owned by the calling player
 class Advance: public Order{
 public:
+    //Constructors, Destructors, operator overload
     Advance();
     Advance(Territory* targetTerritory, list<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr);
     Advance(const Advance& adv);
@@ -125,6 +130,9 @@ public:
     void setSourceTerritory(Territory* sourceTerr);
     int getNOfArmies();
     Territory* getSourceTerritory();
+    //duplicate method
+    Order* duplicate();
+    //Functions every subclasses has to override
     bool validate();
     void execute();
 private:
@@ -143,6 +151,9 @@ public:
     Bomb(const Bomb& bomb);
     Bomb& operator = (const Bomb& bomb);
     ~Bomb();
+    //duplicate method
+    Order* duplicate();
+    //Functions every subclasses has to override
     bool validate();
     void execute();
     friend ostream& operator <<(ostream &strm, const Bomb &bomb);
@@ -158,6 +169,9 @@ public:
     Blockade(const Blockade& block);
     Blockade& operator = (const Blockade& block);
     ~Blockade();
+    //duplicate method
+    Order* duplicate();
+    //Functions every subclasses has to override
     bool validate();
     void execute();
     friend ostream& operator <<(ostream &strm, const Blockade &block);
@@ -179,6 +193,9 @@ public:
     void setSourceTerritory(Territory* sourceTerr);
     int getNOfArmies();
     Territory* getSourceTerritory();
+    //duplicate method
+    Order* duplicate();
+    //Functions every subclasses has to override
     bool validate();
     void execute();
 private:
@@ -203,6 +220,9 @@ public:
     void setTargetPlayer(Player* tPlayer);
     Player* getCallingPlayer();
     Player* getTargetPlayer();
+    //duplicate method
+    Order* duplicate();
+    //Functions every subclasses has to override
     bool validate();
     void execute();
 private:
