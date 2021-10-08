@@ -161,36 +161,3 @@ OrderList::OrderList(vector<Order*> &v){
 }
 
 
-//driver
-int main(){
-    srand((unsigned) time(0));
-    vector<Card*> v;
-    //creating Cards to put in deck
-    int i;
-    for(i=0;i<10;i++){
-        Card *c = new Card();
-        v.push_back(c);
-    }
-
-    Deck d(v);
-    cout << d << endl;
-    //fill hand with card from deck (hand size is inferred to be 5)
-    Hand h;
-    for(i=0;i<5;i++){
-        h.getCards()->push_back(d.draw());
-    }
-    
-    cout << "-After having drawn 5 cards-" << endl;
-    cout << d << endl;
-    cout << h << endl;
-
-    vector<Order*> ol;
-    for(i=0;i<h.getCards()->size();i++){
-        ol.push_back(h.getCards()->at(i)->play(d, h));
-    }
-    
-    cout << "-After Having played 5 cards-" << endl;
-    cout << d << endl;
-    cout << h << endl;
-    
-}
