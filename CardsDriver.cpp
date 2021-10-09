@@ -30,9 +30,13 @@ int main(){
     cout << h << endl;
 
     vector<Order*> ol;
-    for(i=0;i<h.getCards()->size();i++){
-        ol.push_back(h.getCards()->at(i)->play(d, h));
-    }
+    
+    ol.push_back(h.getCards()->at(0)->play(d, h));
+    ol.push_back(h.getCards()->at(0)->play(d, h));
+    ol.push_back(h.getCards()->at(0)->play(d, h));
+    ol.push_back(h.getCards()->at(0)->play(d, h));
+    ol.push_back(h.getCards()->at(0)->play(d, h));
+    
     
     cout << "-After Having played 5 cards-" << endl;
     cout << d << endl;

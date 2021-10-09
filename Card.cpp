@@ -31,13 +31,6 @@ Card::Card(Card &c){
 Order* Card::play(Deck &d, Hand &h){
     Order* o = new Order(*this);
     d.getCards()->push_back(this);
-    int i, to_Delete;
-    for(i=0;i<h.getCards()->size();i++){
-        if(h.getCards()->at(i) == this){
-            to_Delete = i;
-        }
-    }
-    cout << to_Delete;
     h.getCards()->erase(h.getCards()->begin());
     return o;
 }
@@ -159,5 +152,3 @@ Order::Order(Card &c){
 OrderList::OrderList(vector<Order*> &v){
     orderList = v;
 }
-
-
