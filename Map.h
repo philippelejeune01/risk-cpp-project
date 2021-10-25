@@ -1,14 +1,11 @@
 #ifndef MAP_H
 #define MAP_H
-
 #include <iostream>
 #include <string>
 #include <bits/stdc++.h>
-#include "Player.h"
-
 using namespace std;
 
-
+class Player;
 class Territory
 {
     public:
@@ -17,6 +14,8 @@ class Territory
         int xCoordinate,yCoordinate,continentNumber;
         Territory(int x,int y,int c ,Player* ownedP, string n);
         Territory();
+        ~Territory();
+        friend ostream& operator ==(ostream &strm, const Territory &terr);
         string getName();
         void setName(string n);
         int getContinent();
@@ -24,6 +23,11 @@ class Territory
         void setCoordinates(int x,int y);
         void setPlayer(Player* p);
         Player* getPlayer();
+        void setAmountOfArmies(int nOfArmies);
+        int getAmountOfArmies();
+
+    private:
+        int amountOfArmies;
 };
 
 class Map

@@ -142,7 +142,10 @@ Territory::Territory()
 {
 
 }
-
+Territory::~Territory()
+{
+    ownedplayer = NULL;
+}
 void Territory::setContinent(int c)
 {
     continentNumber=c;
@@ -173,7 +176,18 @@ string Territory::getName()
 {
     return name;
 }
-
+int Territory::getAmountOfArmies()
+{
+    return amountOfArmies;
+}
+void Territory::setAmountOfArmies(int nOfArmies)
+{
+    amountOfArmies = nOfArmies;
+}
+ostream& operator ==(ostream &strm, const Territory &terr)
+{
+    return strm << terr.name << ": Continent: " << terr.continentNumber << ": nOfArmies: " << terr.amountOfArmies;
+}
 MapLoader::MapLoader(string fpath)
 {
     filepath=fpath;

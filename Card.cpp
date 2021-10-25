@@ -23,17 +23,44 @@ Card::Card(string s){
 Card::Card(Card &c){
     type = c.type;
 }
+//Destructor of Card
+Card::~Card()
+{
+
+}
+//Assignment operator overload of Card
+Card& Card:: operator = (const Card& c)
+{
+    this->type = c.type;
+    return *this;
+}
 /*
     Returns a pointer to an order with the card as a member,
     as well as deleting the card from the passed hand and placing
     it in the passed deck.
 */
 Order* Card::play(Deck &d, Hand &h){
-    Order* o = new Order(*this);
+
+    Order* o;
+    if (type.compare("bomb") == 0)
+        o = new Bomb();
+    else if (type.compare("reinforcement") == 0)
+        o = new Deploy();
+    else if (type.compare("blockade") == 0)
+        o = new Blockade();
+    else if (type.compare("airlift") == 0)
+        o = new Airlift();
+    else if (type.compare("diplomacy") == 0)
+        o = new Negotiate();
+    else
+    {
+        o = NULL;
+    }
     d.getCards()->push_back(this);
     h.getCards()->erase(h.getCards()->begin());
     return o;
 }
+
 //getters and setters
 void Card::setType(string s){
     type = s;
@@ -76,6 +103,16 @@ Deck::~Deck(){
     for(int i=0; i < cards.size(); i++){
         cards.at(i) = NULL;
     }
+}
+//Assignment operator overload
+Deck& operator = (const Deck &d)
+{
+    int i;
+    for (i=0;i<d.cards.size();i++)
+    {
+        this->cards.push_back(d.cards.at(i));
+    }
+    return *this;
 }
 /*
     Returns a card pointer of a random cards in the deck
@@ -130,6 +167,16 @@ Hand::~Hand(){
         cards.at(i) = NULL;
     }
 }
+//Assignment operator overload
+Hand::Hand& operator = (const Hand& h)
+{
+    int i;
+    for(i=0;i<h.cards.size();i++)
+    {
+        this->cards.push_back(h.cards.at(i));
+    }
+    return *this;
+}
 //getters and setters
 vector<Card*>* Hand::getCards(){
     return &cards;
@@ -143,12 +190,6 @@ ostream & operator << (ostream &out, const Hand &h){
     for(int i=0; i < v.size(); i++){
         out << *v.at(i) << endl;
     }
-    
+
     return out;
-}
-Order::Order(Card &c){
-    type=c.getType();
-}
-OrderList::OrderList(vector<Order*> &v){
-    orderList = v;
 }
