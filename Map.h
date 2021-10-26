@@ -20,7 +20,7 @@ class Territory
         Territory(int tnum,int x,int y,int c,int num,Player* ownedP, string n);
         Territory();
         ~Territory();
-        friend ostream& operator ==(ostream &strm, const Territory &terr);
+        friend ostream& operator <<(ostream &strm, const Territory &terr);
         string getName();
         void setName(string n);
         int getContinent();

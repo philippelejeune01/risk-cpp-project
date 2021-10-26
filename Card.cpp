@@ -105,7 +105,7 @@ Deck::~Deck(){
     }
 }
 //Assignment operator overload
-Deck& operator = (const Deck &d)
+Deck& Deck::operator = (const Deck &d)
 {
     int i;
     for (i=0;i<d.cards.size();i++)
@@ -168,7 +168,7 @@ Hand::~Hand(){
     }
 }
 //Assignment operator overload
-Hand::Hand& operator = (const Hand& h)
+Hand& Hand::operator = (const Hand& h)
 {
     int i;
     for(i=0;i<h.cards.size();i++)

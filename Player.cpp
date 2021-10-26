@@ -108,7 +108,7 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
         strm << "\nOrders: No Orders";
     }
 
-    if(aPlayer.getHand()->getCards().size() < 10000){
+    if(aPlayer.getHand()->getCards()->size() < 10000){
         strm << aPlayer.getHand();
     }else{
         strm << "Hand: No nHand";
@@ -169,10 +169,10 @@ vector <Territory*> Player::toAttack()
     bool attackTerr;
 
     for(int i = 0; i < territories.size(); i++){
-        if(!territories[i]->getAdjacentList().empty()){
-            for(int j = 0; j < territories[i]->getAdjacentList().size(); j++){
+        if(!territories[i]->adjacentTerritories.empty()){
+            for(int j = 0; j < territories[i]->adjacentTerritories.size(); j++){
                 attackTerr = true;
-                adjTerritoryName = territories[i]->getAdjacentList()[j]->getName();
+                adjTerritoryName = territories[i]->adjacentTerritories[j]->getName();
 
                 for(int k = 0; k < territories.size(); k++){
                     if(adjTerritoryName == territories[k]->getName()){
@@ -182,7 +182,7 @@ vector <Territory*> Player::toAttack()
                 }
 
                 if(attackTerr){
-                    uniqueTerritoriesToAttack.insert(territories[i]->getAdjacentList()[j]);
+                    uniqueTerritoriesToAttack.insert(territories[i]->adjacentTerritories[j]);
                 }
             }
         }

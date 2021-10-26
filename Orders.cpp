@@ -415,8 +415,8 @@ bool Advance:: validate()
     //of armies is not equal or below 0.
     //If the target territory is not adjacent to the source territory, then it is not valid
     //If the sourceTerritory does not have enough armies, then it is not valid
-    if (sourceTerritory == NULL || targetTerritory == NULL || nMovedArmies <= 0 || ownedTerritories == NULL
-         || sourceTerritory->getAmountOfArmies() < nMovedArmies)
+    if (sourceTerritory == NULL || targetTerritory == NULL || nMovedArmies <= 0 || ownedTerritories == NULL ||
+        sourceTerritory->isAdjacentTo(*targetTerritory) || sourceTerritory->getAmountOfArmies() < nMovedArmies)
     {
         return false;
     }
@@ -440,7 +440,7 @@ void Advance:: execute()
     if(validate())
     {
 
-        if (sourceTerritory.getPlayer() != targetTerritory.getPlayer())
+        if (sourceTerritory->getPlayer() != targetTerritory->getPlayer())
         {
             /*
             int nDefArmies = targetTerritory->getAmountOfArmies();
@@ -530,7 +530,7 @@ bool Bomb::validate()
     //Checking if the targetted territory is adjacent to any of the player owned territories
     for (vector<Territory*>::iterator it = ownedTerritories->begin(); it != ownedTerritories->end();++it)
     {
-        if (targetTerritory->isAdjacent(*it))
+        if (targetTerritory->isAdjacentTo(**(it)))
         {
             return true;
         }

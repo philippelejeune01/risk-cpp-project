@@ -53,7 +53,7 @@ Map& Map::operator=(const Map& m)
 }
 
 
-//stream operator
+
 bool Map::isAdjacentto(Territory t1, Territory t2)
 {
     int index1=0,index2;
@@ -70,6 +70,7 @@ bool Map::isAdjacentto(Territory t1, Territory t2)
     return false;
 
 }
+//stream operator
 ostream& operator<<(ostream& strm, Map& m)
 {
     /*for (int i = 1; i < m.territories.size();i++)
@@ -231,7 +232,7 @@ bool Territory::isAdjacentTo(Territory &t2)
             return true;
     return false;
 }
-ostream& operator ==(ostream &strm, const Territory &terr)
+ostream& operator <<(ostream &strm, const Territory &terr)
 {
     return strm << terr.name << ": Continent: " << terr.continentNumber << ": nOfArmies: " << terr.amountOfArmies;
 }
@@ -320,7 +321,6 @@ Map MapLoader::Load()
 
     return m;
 }
-
 
 
 
