@@ -52,9 +52,24 @@ Map& Map::operator=(const Map& m)
     return *this;
 }
 //stream operator
-ostream& operator<<(ostream& strm, const Map& m)
+bool Map::isAdjacentto(Territory t1, Territory t2)
 {
+    int index1=0,index2;
+    for (int i = 1; i<= numOfTerritories;i++)
+        if (territories[i].getName() == t1.getName())
+                index1= i;
+    for (int i = 1; i<= numOfTerritories;i++)
+        if (territories[i].getName() == t2.getName())
+                index2= i;
+    cout<<index1<<" "<<index2<<endl;
+    for (auto x: adjacencyList[index1])
+        if (x == index2)
+            return true;
+    return false;
 
+}
+ostream& operator<<(ostream& strm, Map& m)
+{
     strm <<"Number of Territories in this map: "<< m.numOfTerritories <<endl;
     strm <<"Number of Continents in this map: "<< m.numOfContinents<<endl;
     return strm;
@@ -130,11 +145,12 @@ void Map::setNumberOfTerritories(int n)
 {
     numOfTerritories = n;
 }
-Territory::Territory(int x,int y,int c, Player* ownedP, string n)
+Territory::Territory(int x,int y,int c,int num,Player* ownedP, string n)
 {
     xCoordinate = x;
     yCoordinate = y;
     continentNumber = c;
+    amountOfArmies = num;
     ownedplayer = ownedP;
     name = n;
 }

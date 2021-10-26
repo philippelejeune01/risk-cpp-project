@@ -12,7 +12,7 @@ class Territory
         Player* ownedplayer;
         string name;
         int xCoordinate,yCoordinate,continentNumber;
-        Territory(int x,int y,int c ,Player* ownedP, string n);
+        Territory(int x,int y,int c,int num,Player* ownedP, string n);
         Territory();
         ~Territory();
         friend ostream& operator ==(ostream &strm, const Territory &terr);
@@ -42,10 +42,10 @@ class Map
         void setNumberOfContinents(int n);
         void setNumberOfTerritories(int n);
         void setEndOfContinents(const int *arr);
-
+        bool isAdjacentto(Territory t1, Territory t2);
         bool validate();
         Map& operator =(const Map& m);
-        friend ostream& operator<<(ostream &strm, const Map &m);
+        friend ostream& operator<<(ostream &strm, Map &m);
         ~Map();
 
     protected:
