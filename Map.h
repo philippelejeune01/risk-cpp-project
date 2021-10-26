@@ -12,7 +12,12 @@ class Territory
         Player* ownedplayer;
         string name;
         int xCoordinate,yCoordinate,continentNumber;
-        Territory(int x,int y,int c,int num,Player* ownedP, string n);
+        int TerritoryNumber;
+        vector<Territory*> adjacentTerritories;
+        void setTerritoryNum(int t);
+        int getTerritoryNum();
+        bool isAdjacentTo(Territory &t2);
+        Territory(int tnum,int x,int y,int c,int num,Player* ownedP, string n);
         Territory();
         ~Territory();
         friend ostream& operator ==(ostream &strm, const Territory &terr);

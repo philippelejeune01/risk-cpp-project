@@ -51,6 +51,8 @@ Map& Map::operator=(const Map& m)
     this->numOfTerritories = m.numOfTerritories;
     return *this;
 }
+
+
 //stream operator
 bool Map::isAdjacentto(Territory t1, Territory t2)
 {
@@ -70,6 +72,19 @@ bool Map::isAdjacentto(Territory t1, Territory t2)
 }
 ostream& operator<<(ostream& strm, Map& m)
 {
+    /*for (int i = 1; i < m.territories.size();i++)
+    {
+        strm<<m.territories.at(i).getTerritoryNum()<<" ";
+        for (int j = 0; j < m.territories.at(i).adjacentTerritories.size();j++)
+            strm<<m.territories.at(i).adjacentTerritories.at(j)->getTerritoryNum()<<" ";
+        strm<<endl;
+    }*/
+
+    /*if (m.territories[1].isAdjacentTo(m.territories[18]))  //checking to see if vectors are correctly stored in each territory object
+        strm<<"connected"<<endl;
+    else
+        strm<<"not connected"<<endl;*/
+
     strm <<"Number of Territories in this map: "<< m.numOfTerritories <<endl;
     strm <<"Number of Continents in this map: "<< m.numOfContinents<<endl;
     return strm;
@@ -145,8 +160,9 @@ void Map::setNumberOfTerritories(int n)
 {
     numOfTerritories = n;
 }
-Territory::Territory(int x,int y,int c,int num,Player* ownedP, string n)
+Territory::Territory(int tnum,int x,int y,int c,int num,Player* ownedP, string n)
 {
+    TerritoryNumber = tnum;
     xCoordinate = x;
     yCoordinate = y;
     continentNumber = c;
@@ -176,6 +192,14 @@ void Territory::setCoordinates(int x, int y)
     xCoordinate = x;
     yCoordinate = y;
 }
+void Territory::setTerritoryNum(int t)
+{
+    TerritoryNumber = t;
+}
+int Territory::getTerritoryNum()
+{
+    return TerritoryNumber;
+}
 void Territory::setPlayer(Player* p)
 {
     ownedplayer = p;
@@ -199,6 +223,13 @@ int Territory::getAmountOfArmies()
 void Territory::setAmountOfArmies(int nOfArmies)
 {
     amountOfArmies = nOfArmies;
+}
+bool Territory::isAdjacentTo(Territory &t2)
+{
+    for (auto x: adjacentTerritories)
+        if (x->getTerritoryNum() == t2.getTerritoryNum())
+            return true;
+    return false;
 }
 ostream& operator ==(ostream &strm, const Territory &terr)
 {
@@ -248,7 +279,7 @@ Map MapLoader::Load()
                         cnumber=stoi(s); t.setContinent(cnumber);
                       }
         if (round==3) x=stoi(s);
-        if (round==4) { y=stoi(s); t.setCoordinates(x,y);  territories.push_back(t);}
+        if (round==4) { y=stoi(s); t.setCoordinates(x,y); t.setTerritoryNum(numOfTerritories); territories.push_back(t);}
         round = (round+1)%5;
     }
     endOf[numOfContinents] = numOfTerritories-1;
@@ -271,6 +302,7 @@ Map MapLoader::Load()
                 v=stoi(s);//if we're reading a number,this is where the head is connecting to.
             if (u!=0)
                 adjacency[u].push_back(v);
+            territories[u].adjacentTerritories.push_back(&territories[v]);
         }
         if (inputstream.peek()=='\n')
             flag=true;
