@@ -12,13 +12,13 @@ int main()
 
     cout<<endl;
 
-    MapLoader m2("europe.map");
+    /*MapLoader m2("europe.map");
     Map* test2 = new Map(m2.Load());
     cout<<*test2;
-    test2->validate();
+    test2->validate();*/
 
     delete(test);
-    delete(test2);
+    //delete(test2);
 
     return 0;
 }

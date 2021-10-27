@@ -2,64 +2,43 @@
 #define ORDERS_H_INCLUDED
 #include <iostream>
 #include <list>
+#include <vector>
+#include "Map.h"
 using std::string;
 //For storing elements
 using std::list;
 using std::cin;
 using std::cout;
 using std::ostream;
-//Declaration of the dummy classes Territory and Player. This is only for testing purposes.
-class Territory{
-public:
-    Territory();
-    Territory(int nOfArmies,string name);
-    ~Territory();
-    friend ostream& operator <<(ostream &strm, const Territory &terr);
-    bool isAdjacent(Territory* adjTerr);
-    void addEdges(Territory* adjTerr);
-    int getAmountOfArmies() const;
-    string getTerritoryName() const;
-private:
-    string terrName;
-    int amountOfArmies;
-    list<Territory*> adjacentList;
-};
-class Player{
-public:
-    Player();
-    Player(string newName);
-    ~Player();
-    friend ostream& operator <<(ostream &strm, const Player &pl);
-    string getName();
-    void setName(string newName);
-private:
-    string name;
-};
+
+class Player;
+
+//Declarations of Order class and its subclasses
 //Declarations of Order class and its subclasses
 class Order {
 public:
     //Constructors
     Order();
     Order(const Order& ord);
-    Order(Territory* targetTerr, list<Territory*>* ownedTerr);
+    Order(Territory* targetTerr, vector<Territory*>* ownedTerr);
     Order& operator = (const Order& ord);
     virtual ~Order();
     friend ostream& operator <<(ostream &strm, const Order &ord);
     //Setters and Getters
     Territory* getTargetTerritory() const;
-    list<Territory*>* getOwnedTerritories() const;
+    vector<Territory*>* getOwnedTerritories() const;
     void setTargetTerritory(Territory* newTarTerr);
-    void setOwnedTerritories(list<Territory*>* ownedTerr);
+    void setOwnedTerritories(vector<Territory*>* ownedTerr);
     //duplicate method
-    virtual Order* duplicate();
+    virtual Order* duplicate()=0;
     //Functions every subclasses has to implement
-    virtual bool validate();
+    virtual bool validate()=0;
     virtual void execute();
 protected:
     //targetTerritory refers to the territory affected by the order
     Territory* targetTerritory;
     //ownedTerritories refers to the list of territories a player owns
-    list<Territory*>* ownedTerritories;
+    vector<Territory*>* ownedTerritories;
 private:
     virtual string doPrint() const;
 };
@@ -81,6 +60,7 @@ public:
     //2 required methods
     void move(Order* order, int index);
     void remove(int index);
+    void addOrder(Order* order);
 
 private:
     //Is temporarily an array
@@ -95,7 +75,7 @@ class Deploy: public Order {
 public:
     //Constructors
     Deploy();
-    Deploy(Territory* targetTerritory, list<Territory*>* ownedTerr, int nOfArmies);
+    Deploy(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies);
     Deploy(const Deploy& depl);
     Deploy& operator = (const Deploy& depl);
     //Destructor
@@ -120,7 +100,7 @@ class Advance: public Order{
 public:
     //Constructors, Destructors, operator overload
     Advance();
-    Advance(Territory* targetTerritory, list<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr);
+    Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr);
     Advance(const Advance& adv);
     Advance& operator = (const Advance& adv);
     ~Advance();
@@ -147,7 +127,7 @@ private:
 class Bomb: public Order{
 public:
     Bomb();
-    Bomb(Territory* targetTerritory, list<Territory*>* ownedTerr);
+    Bomb(Territory* targetTerritory, vector<Territory*>* ownedTerr);
     Bomb(const Bomb& bomb);
     Bomb& operator = (const Bomb& bomb);
     ~Bomb();
@@ -165,7 +145,7 @@ private:
 class Blockade: public Order{
 public:
     Blockade();
-    Blockade(Territory* targetTerritory, list<Territory*>* ownedTerr);
+    Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr);
     Blockade(const Blockade& block);
     Blockade& operator = (const Blockade& block);
     ~Blockade();
@@ -183,7 +163,7 @@ private:
 class Airlift: public Order{
 public:
     Airlift();
-    Airlift(Territory* targetTerritory, list<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr);
+    Airlift(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr);
     Airlift(const Airlift& airLi);
     Airlift& operator = (const Airlift& airLi);
     ~Airlift();
@@ -232,6 +212,5 @@ private:
     Player* targetPlayer;
     string doPrint() const;
 };
-
 
 #endif // ORDERS_H_INCLUDED

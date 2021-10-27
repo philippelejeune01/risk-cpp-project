@@ -1,22 +1,26 @@
 #ifndef MAP_H
 #define MAP_H
-
 #include <iostream>
 #include <string>
 #include <bits/stdc++.h>
-#include "Player.h"
-
 using namespace std;
 
-
+class Player;
 class Territory
 {
     public:
         Player* ownedplayer;
         string name;
         int xCoordinate,yCoordinate,continentNumber;
-        Territory(int x,int y,int c ,Player* ownedP, string n);
+        int TerritoryNumber;
+        vector<Territory*> adjacentTerritories;
+        void setTerritoryNum(int t);
+        int getTerritoryNum();
+        bool isAdjacentTo(Territory &t2);
+        Territory(int tnum,int x,int y,int c,int num,Player* ownedP, string n);
         Territory();
+        ~Territory();
+        friend ostream& operator <<(ostream &strm, const Territory &terr);
         string getName();
         void setName(string n);
         int getContinent();
@@ -24,6 +28,11 @@ class Territory
         void setCoordinates(int x,int y);
         void setPlayer(Player* p);
         Player* getPlayer();
+        void setAmountOfArmies(int nOfArmies);
+        int getAmountOfArmies();
+
+    private:
+        int amountOfArmies;
 };
 
 class Map
@@ -38,10 +47,10 @@ class Map
         void setNumberOfContinents(int n);
         void setNumberOfTerritories(int n);
         void setEndOfContinents(const int *arr);
-
+        bool isAdjacentto(Territory t1, Territory t2);
         bool validate();
         Map& operator =(const Map& m);
-        friend ostream& operator<<(ostream &strm, const Map &m);
+        friend ostream& operator<<(ostream &strm, Map &m);
         ~Map();
 
     protected:

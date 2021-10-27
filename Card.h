@@ -2,6 +2,7 @@
 #define Card_H
 #include <stdlib.h>
 #include <string>
+#include "Orders.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -10,18 +11,6 @@ using namespace std;
 class Deck;
 class Card;
 class Hand;
-//dummy Order, OrderList
-class Order{
-    private:
-        string type;
-    public:
-        Order(Card &c);
-};
-class OrderList{
-    public:
-        vector<Order*> orderList;
-        OrderList(vector<Order*> &v);
-};
 
 class Card
 {
@@ -31,11 +20,12 @@ class Card
         Card();
         Card(string s);
         Card(Card &c);
+        ~Card();
         Order* play(Deck &d, Hand &h);
         void setType(string s);
-
+        Card& operator = (const Card& c);
         string getType();
-        
+
         friend ostream & operator << (ostream &out, const Card &c);
         friend istream & operator >> (istream &in, Card &c);
 };
@@ -48,11 +38,11 @@ class Hand
         Hand(vector<Card*> &cards);
         Hand(Hand &h);
         ~Hand();
-
+        Hand& operator = (const Hand& h);
         vector<Card*>* getCards();
         void setCards(vector<Card*> &cards);
         friend ostream & operator << (ostream &out, const Hand &h);
-        
+
 };
 class Deck
 {
@@ -63,17 +53,12 @@ class Deck
         Deck(vector<Card*> &cards);
         Deck(Deck &d);
         ~Deck();
-        
+        Deck& operator = (const Deck &d);
         Card* draw();
         vector<Card*>* getCards();
         void setCards(vector<Card*> &cards);
-        
+
         friend ostream & operator << (ostream &out, const Deck &d);
-        
+
 };
-
-
-
-
-
 #endif
