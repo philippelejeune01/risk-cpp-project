@@ -3,11 +3,9 @@ It contains all the function definitions for the function declarations in the Ga
 
 #include <string>
 #include <iostream>
-using std::string;
-using std::cin;
-using std::cout;
-using std::endl;
+using namespace std;
 #include "GameEngine.h"
+#include "Map.h"
 
 //Default compiler-generated destructor is enough since no GameEngine variables are pointers.
 
@@ -76,91 +74,183 @@ void GameEngine::transition(string newState)
 *the passed command is invalid.
 *@param command is a string that corresponds to the command passed.
 */
-void GameEngine::passedCommand(string command)
+void GameEngine::startupPhase()
 {
-    if((getState() == "start") && (command == "loadmap"))
+    string command;
+    do
+    {
+        cout << "Please enter a valid command:" << endl;
+        //user inputs a string using the keyboard that is stored in the string command.
+        std::getline(cin,command);
+        if (passedCommand(command))
+        {
+            if((getState() == "start"||getState()=="map loaded") && (command.find("loadmap") !=string::npos))
+            {
+                string filename=command.substr(command.find("loadmap")+9);
+                filename = filename.substr(0,filename.size()-1);
+                maploader = new MapLoader(filename);
+                _map = new Map(maploader->Load());
+                cout<<*_map<<endl;
+            }
+            if (command == "validatemap")
+                if (!_map->validate())
+                {
+                    cout<<"Map is invalid, returning to start state"<<endl;
+                    transition("start");
+                }
+            if (command.find("addplayer") !=string::npos)
+            {
+                if (players.size()+1>MAXPLAYERS)
+                {
+                    cout<<"Maxiumum amount of players reached, failed to add this player"<<endl;
+                    continue;
+                }
+                string playername=command.substr(command.find("addplayer")+11);
+                playername = playername.substr(0,playername.size()-1);
+                Player p(playername);
+                players.push_back(p);
+            }
+            if (command =="gamestart")
+            {
+                if (players.size()<MINPLAYERS)
+                {
+                    cout<<"Not enough players! please enter at least one more player"<<endl;
+                    transition("players added");
+                    continue;
+                }
+
+            }
+        }
+    }
+    while (!((command == "end") && (getState() == "win")));
+}
+bool GameEngine::passedCommand(string command)
+{
+    if (command=="reset")
+    {
+        cout<<"restarting the game"<<endl;
+        transition("start");
+        return true;
+    }
+    if((getState() == "start") && (command.find("loadmap") !=string::npos))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("map loaded");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n" << endl;
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "map loaded") && (command == "loadmap"))
+    if((getState() == "map loaded") && (command.find("loadmap") !=string::npos))
     {
         cout << "The entered command " << command << " is valid for state " << getState()
-            << ", the game remains in the state " << getState() << ".\n" << endl;
+            << ", the game remains in the state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "map loaded") && (command == "validatemap"))
+    if((getState() == "map loaded") && (command == "validatemap"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("map validated");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n" << endl;
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "map validated") && (command == "addplayer"))
+    if((getState() == "map validated") && (command.find("addplayer") !=string::npos))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("players added");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n" << endl;
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "players added") && (command == "addplayer"))
+    if((getState() == "players added") && (command.find("addplayer") !=string::npos))
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
-            << getState() << ".\n" << endl;
+            << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "players added") && (command == "assigncountries"))
+    if((getState() == "players added") && (command == "assigncountries"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("assign reinforcement");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n" << endl;
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "assign reinforcement") && (command == "issueorder"))
+    if((getState() == "players added") && (command == "gamestart"))
+    {
+        cout << "The entered command " << command << " is valid for state " << getState();
+        transition("assign reinforcement");
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+    if((getState() == "assign reinforcement") && (command == "issueorder"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("issue orders");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n" << endl;
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "issue orders") && (command == "issueorder"))
+    if((getState() == "issue orders") && (command == "issueorder"))
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
-            << getState() << ".\n" << endl;
+            << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "issue orders") && (command == "endissueorders"))
+    if((getState() == "issue orders") && (command == "endissueorders"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("execute orders");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n" << endl;
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "execute orders") && (command == "execorder"))
+    if((getState() == "execute orders") && (command == "execorder"))
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
-            << getState() << ".\n" << endl;
+            << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "execute orders") && (command == "endexecorders"))
+    if((getState() == "execute orders") && (command == "endexecorders"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("assign reinforcement");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n" << endl;
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "execute orders") && (command == "win"))
+    if((getState() == "execute orders") && (command == "win"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("win");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n" << endl;
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
     }
 
-    else if((getState() == "win") && (command == "play"))
+    if((getState() == "win") && (command == "play"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("start");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << "." << endl;
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".";
         cout << "The game starts again!\n" << endl;
+        cout<<"--------------------------"<<endl;
+        return true;
     }
-    else if((getState() == "win") && (command == "end"))
+    if((getState() == "win") && (command == "end"))
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", therefore the game is "
-            << "successfully terminated.\n" << endl;
+            << "successfully terminated.\n";
+        cout<<"--------------------------"<<endl;
+        transition("end");
     }
-    else
-        cout << "The entered command " << command << " is invalid, please try again and enter a valid command:\n"<< endl;
+    cout << "The entered command " << command << " is invalid, please try again and enter a valid command:\n"<< endl;
+    return false;
 }
 /**
 *Overloaded stream insertion operator that outputs the current state of the GameEngine object.
