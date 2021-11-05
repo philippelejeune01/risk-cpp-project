@@ -13,46 +13,56 @@ Player::Player()
 {
     name = "Player Default";
     playerCount++;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
+//    OrdersList alist = OrdersList();
+//    ordersList = &alist;
 }
 //1 arg Constructor
 Player::Player(string newName)
 {
     name = newName;
     playerCount++;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
 }
-//2 arg Constructor
+//2 arg Constructors
+Player::Player(string newName, OrdersList* ordList)
+{
+    name = newName;
+    playerCount++;
+    ordersList = ordList;
+}
 Player::Player(string newName, Hand* aHand)
 {
     name = newName;
     playerCount++;
     hand = aHand;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
 }
-
-//2 arg Constructor
 Player::Player(string newName, vector <Territory*> &terr)
 {
     name = newName;
     playerCount++;
     territories = terr;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
 }
 
-//3 arg Constructor
+//3 arg Constructors
+Player::Player(string newName, Hand* aHand, OrdersList* ordList)
+{
+    name = newName;
+    playerCount++;
+    hand = aHand;
+    ordersList = ordList;
+}
+Player::Player(string newName, vector <Territory*> &terr, OrdersList* ordList)
+{
+    name = newName;
+    playerCount++;
+    territories = terr;
+    ordersList = ordList;
+}
 Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
 {
     name = newName;
     playerCount++;
     territories = terr;
     hand = aHand;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
 }
 
 //Copy Constructor
@@ -68,8 +78,14 @@ Player::Player(const Player& pl)
 //Destructor
 Player::~Player()
 {
-    playerCount--;
+    //This deletes all the Territory objects stored in the vector
+    for(vector<Territory*>::iterator it = territories.begin(); it != territories.end(); ++it)
+    {
+        delete *it;
+    }
+    //This erases all the pointers stored in the vector
     territories.clear();
+    playerCount--;
     delete hand;
     hand = NULL;
     delete ordersList;

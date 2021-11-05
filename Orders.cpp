@@ -76,8 +76,22 @@ ostream& operator <<(ostream &strm, const OrdersList &ordLs)
 
     return strm << ")";
 }
+//Stream insertion operator
+ostream& operator <<(ostream &strm, const OrdersList* ordLs)
+{
+    strm << "\n";
+    int index = 1;
+    for (list<Order*>::const_iterator it = ordLs->ordList.begin(); it != ordLs->ordList.end();++it)
+    {
+
+        strm << index++ << ": " << *(*it) << "\n";
+    }
+
+    return strm << endl;
+}
+
 //Getter
-list<Order*> OrdersList:: getOrdList() const
+list<Order*> const &OrdersList:: getOrdList() const
 {
     return ordList;
 }
@@ -149,24 +163,28 @@ void OrdersList:: addOrder(Order* order)
 //Default Constructor
 Order::Order()
 {
+    orderType = "Generic order";
 }
 //Two arg constructor
 Order::Order(Territory* targetTerr, vector<Territory*>* ownedTerr)
 {
     targetTerritory = targetTerr;
     ownedTerritories = ownedTerr;
+    orderType = "Generic order";
 }
 //Copy Constructor
 Order::Order(const Order& ord)
 {
     targetTerritory = ord.getTargetTerritory();
     ownedTerritories = ord.getOwnedTerritories();
+    orderType = ord.getOrderType();
 }
 //Assignment operator overload.
 Order& Order::operator = (const Order& ord)
 {
     this->targetTerritory = ord.targetTerritory;
     this->ownedTerritories = ord.ownedTerritories;
+    this->orderType = ord.orderType;
     return *this;
 }
 //Destructor
@@ -174,6 +192,7 @@ Order:: ~Order()
 {
     targetTerritory = NULL;
     ownedTerritories = NULL;
+    orderType = "";
 }
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Order &ord)
@@ -201,6 +220,11 @@ void Order:: setTargetTerritory(Territory* newTarTerr)
 void Order:: setOwnedTerritories(vector<Territory*>* ownedTerr)
 {
     ownedTerritories = ownedTerr;
+}
+//Get Order Type
+string Order::getOrderType() const
+{
+    return orderType;
 }
 /*
 //Duplicate function
@@ -241,23 +265,27 @@ void Order:: execute()
 Deploy::Deploy():Order()
 {
     nAddedArmies = 0;
+    orderType = "Deploy";
 }
 //3-arg constructor
 Deploy::Deploy(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies)
 : Order(targetTerritory,ownedTerr)
 {
     nAddedArmies = nOfArmies;
+    orderType = "Deploy";
 }
 //Copy Constructor
 Deploy::Deploy(const Deploy& depl): Order(depl.targetTerritory, depl.ownedTerritories)
 {
     nAddedArmies = depl.nAddedArmies;
+    orderType = depl.orderType;
 }
 //Assignment operator overload
 Deploy& Deploy:: operator = (const Deploy& depl)
 {
     Order::operator=(depl);
     this->nAddedArmies = depl.nAddedArmies;
+    this->orderType = depl.orderType;
     return *this;
 }
 //Destructor
@@ -266,6 +294,7 @@ Deploy:: ~Deploy()
     targetTerritory = NULL;
     ownedTerritories = NULL;
     nAddedArmies = 0;
+    orderType = "";
 }
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Deploy &depl)
@@ -279,6 +308,10 @@ string Deploy::doPrint() const
     + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
 }
 //Setter and Getter
+string Deploy::getOrderType() const
+{
+    return orderType;
+}
 void Deploy::setNAddedArmies(int nAA)
 {
     nAddedArmies = nAA;
@@ -343,6 +376,7 @@ Advance::Advance():Order()
 {
     nMovedArmies = 0;
     sourceTerritory = NULL;
+    orderType = "Advance";
 }
 //4 args constructor
 Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr,
@@ -350,12 +384,14 @@ Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr,
 {
     nMovedArmies = nOfArmies;
     sourceTerritory = sourceTerr;
+    orderType = "Advance";
 }
 //Copy Constructor
 Advance::Advance(const Advance& adv):Order(adv.targetTerritory, adv.ownedTerritories)
 {
     nMovedArmies = adv.nMovedArmies;
     sourceTerritory = adv.sourceTerritory;
+    orderType = adv.orderType;
 }
 //Assignment operator overload
 Advance& Advance :: operator = (const Advance& adv)
@@ -363,6 +399,7 @@ Advance& Advance :: operator = (const Advance& adv)
     Order::operator=(adv);
     this->nMovedArmies = adv.nMovedArmies;
     this->sourceTerritory = adv.sourceTerritory;
+    this->orderType = adv.orderType;
     return *this;
 }
 //Destructor
@@ -372,6 +409,7 @@ Advance::~Advance()
     ownedTerritories = NULL;
     nMovedArmies = 0;
     sourceTerritory = NULL;
+    orderType = "";
 }
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Advance &adv)
@@ -386,6 +424,10 @@ string Advance::doPrint() const
     + " to " + targetTerritory->getName() + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
 }
 //setters and getters
+string Advance::getOrderType() const
+{
+    return orderType;
+}
 void Advance:: setNOfArmies(int nOA)
 {
     nMovedArmies = nOA;
@@ -472,19 +514,23 @@ void Advance:: execute()
 //Default constructor
 Bomb::Bomb():Order()
 {
+    orderType = "Bomb";
 }
 //1 arg constructor
 Bomb::Bomb(Territory* targetTerritory, vector<Territory*>* ownedTerr): Order(targetTerritory,ownedTerr)
 {
+    orderType = "Bomb";
 }
 //Copy constructor
 Bomb::Bomb(const Bomb& bomb): Order(bomb.targetTerritory, bomb.ownedTerritories)
 {
+    orderType = bomb.orderType;
 }
 //Overload assignment operator
 Bomb& Bomb :: operator = (const Bomb& bomb)
 {
     Order::operator=(bomb);
+    this->orderType = bomb.orderType;
     return *this;
 }
 //Destructor
@@ -492,6 +538,11 @@ Bomb::~Bomb()
 {
     targetTerritory = NULL;
     ownedTerritories = NULL;
+    orderType = "";
+}
+string Bomb::getOrderType() const
+{
+    return orderType;
 }
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Bomb &bomb)
@@ -558,20 +609,24 @@ void Bomb::execute()
 //Default Constructor
 Blockade::Blockade():Order()
 {
+    orderType = "Blockade";
 }
 //2 arg Constructor
 Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr):Order(targetTerritory, ownedTerr)
 {
+    orderType = "Blockade";
 }
 //Copy Constructor
 Blockade::Blockade(const Blockade& block):Order(block.targetTerritory,block.ownedTerritories)
 {
-
+    orderType = block.orderType;
 }
 //Overload the assignment operator
 Blockade& Blockade::operator = (const Blockade& block)
 {
     Order::operator=(block);
+    this->orderType = block.orderType;
+    this->orderType = block.orderType;
     return *this;
 }
 //Destructor
@@ -579,6 +634,11 @@ Blockade::~Blockade()
 {
     targetTerritory = NULL;
     ownedTerritories = NULL;
+    orderType = "";
+}
+string Blockade::getOrderType() const
+{
+    return orderType;
 }
 //Stream insertion operator
 ostream& operator <<(ostream &strm, const Blockade &block)
@@ -641,6 +701,7 @@ void Blockade:: execute()
 //Default Constructor
 Airlift::Airlift():Order()
 {
+    orderType = "Airlift";
 }
 //4 args constructor
 Airlift::Airlift(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr):
@@ -648,12 +709,14 @@ Airlift::Airlift(Territory* targetTerritory, vector<Territory*>* ownedTerr, int 
 {
     nMovedArmies = nOfArmies;
     sourceTerritory = sourceTerr;
+    orderType = "Airlift";
 }
 //Copy Constructor
 Airlift::Airlift(const Airlift& airLi):Order(airLi.targetTerritory, airLi.ownedTerritories)
 {
     nMovedArmies = airLi.nMovedArmies;
     sourceTerritory = airLi.sourceTerritory;
+    orderType = airLi.orderType;
 }
 //Overload assignment Operator
 Airlift& Airlift::operator = (const Airlift& airLi)
@@ -661,6 +724,7 @@ Airlift& Airlift::operator = (const Airlift& airLi)
     Order::operator=(airLi);
     this->nMovedArmies = airLi.nMovedArmies;
     this->sourceTerritory = airLi.sourceTerritory;
+    this->orderType = airLi.orderType;
     return *this;
 }
 //Destructor
@@ -670,6 +734,7 @@ Airlift::~Airlift()
     ownedTerritories = NULL;
     nMovedArmies = 0;
     sourceTerritory = NULL;
+    orderType = "";
 }
 //Stream insertion operator
 ostream& operator <<(ostream &strm, const Airlift &airL)
@@ -684,6 +749,10 @@ string Airlift::doPrint() const
     + " to " + targetTerritory->getName() + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
 }
 //Getters and Setters
+string Airlift::getOrderType() const
+{
+    return orderType;
+}
 void Airlift::setNOfArmies(int nOA)
 {
     nMovedArmies = nOA;
@@ -757,18 +826,21 @@ void Airlift::execute()
 //Default Constructor
 Negotiate::Negotiate():Order()
 {
+    orderType = "Negotiate";
 }
 //2 args constructor
 Negotiate::Negotiate(Player* cPlayer, Player* tPlayer):Order()
 {
     callingPlayer = cPlayer;
     targetPlayer = tPlayer;
+    orderType = "Negotiate";
 }
 //Copy Constructor
 Negotiate::Negotiate(const Negotiate& negotiate): Order()
 {
     callingPlayer = negotiate.callingPlayer;
     targetPlayer = negotiate.targetPlayer;
+    orderType = negotiate.orderType;
 }
 //Assignment Operator overload
 Negotiate& Negotiate::operator = (const Negotiate& negotiate)
@@ -776,6 +848,7 @@ Negotiate& Negotiate::operator = (const Negotiate& negotiate)
     Order::operator=(negotiate);
     this->callingPlayer = negotiate.callingPlayer;
     this->targetPlayer = negotiate.targetPlayer;
+    this->orderType = negotiate.orderType;
     return *this;
 }
 //Destructor
@@ -783,6 +856,7 @@ Negotiate::~Negotiate()
 {
     callingPlayer = NULL;
     targetPlayer = NULL;
+    orderType = "";
 }
 
 //Stream Insertion Operator
@@ -796,6 +870,10 @@ string Negotiate::doPrint() const
     return "Negotiate: ";
 }
 //Setters and Getters
+string Negotiate::getOrderType() const
+{
+    return orderType;
+}
 void Negotiate::setCallingPlayer(Player* cPlayer)
 {
     callingPlayer = cPlayer;

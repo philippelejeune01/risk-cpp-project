@@ -16,9 +16,14 @@ class Player
     public:
         Player();
         Player(string newName);
+        Player(string newName, OrdersList* ordList);
         Player(string newName, Hand* aHand);
         Player(string newName, vector <Territory*> &terr);
+
+        Player(string newName, Hand* aHand, OrdersList* ordList);
+        Player(string newName, vector <Territory*> &terr, OrdersList* ordList);
         Player(string newName, vector <Territory*> &terr, Hand* aHand);
+
         Player(const Player& pl);
         Player& operator = (const Player& pl);
         ~Player();

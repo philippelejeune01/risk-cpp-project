@@ -32,6 +32,7 @@ public:
     //duplicate method
     virtual Order* duplicate()=0;
     //Functions every subclasses has to implement
+    virtual string getOrderType() const;
     virtual bool validate()=0;
     virtual void execute();
 protected:
@@ -39,6 +40,7 @@ protected:
     Territory* targetTerritory;
     //ownedTerritories refers to the list of territories a player owns
     vector<Territory*>* ownedTerritories;
+    string orderType;
 private:
     virtual string doPrint() const;
 };
@@ -55,8 +57,9 @@ public:
     //Destructor
     ~OrdersList();
     friend ostream& operator <<(ostream &strm, const OrdersList &ordLs);
+    friend ostream& operator <<(ostream &strm, const OrdersList* ordLs);
 
-    list<Order*> getOrdList() const;
+    list<Order*> const & getOrdList() const;
     //2 required methods
     void move(Order* order, int index);
     void remove(int index);
@@ -82,6 +85,7 @@ public:
     ~Deploy();
     friend ostream& operator <<(ostream &strm, const Deploy &depl);
     //Setter and Getter
+    string getOrderType() const;
     void setNAddedArmies(int nAA);
     int getNAddedArmies();
     //duplicate method
@@ -92,6 +96,7 @@ public:
 private:
     //nAddedArmies refers to the amount of armies to be deployed to the targetted territory
     int nAddedArmies;
+    string orderType;
     string doPrint() const;
 };
 
@@ -106,6 +111,7 @@ public:
     ~Advance();
     friend ostream& operator <<(ostream &strm, const Advance &adv);
     //Setters and Getters
+    string getOrderType() const;
     void setNOfArmies(int nOA);
     void setSourceTerritory(Territory* sourceTerr);
     int getNOfArmies();
@@ -121,6 +127,7 @@ private:
     //sourceTerritory refers to the territory where the armies are coming from
     Territory* sourceTerritory;
     string doPrint() const;
+    string orderType;
 };
 
 //Bomb validates if the target territory is not owned by the calling player
@@ -131,6 +138,7 @@ public:
     Bomb(const Bomb& bomb);
     Bomb& operator = (const Bomb& bomb);
     ~Bomb();
+    string getOrderType() const;
     //duplicate method
     Order* duplicate();
     //Functions every subclasses has to override
@@ -139,6 +147,7 @@ public:
     friend ostream& operator <<(ostream &strm, const Bomb &bomb);
 private:
     string doPrint() const;
+    string orderType;
 };
 
 //Blockade validates if the target territory is owned by the calling player
@@ -149,6 +158,7 @@ public:
     Blockade(const Blockade& block);
     Blockade& operator = (const Blockade& block);
     ~Blockade();
+    string getOrderType() const;
     //duplicate method
     Order* duplicate();
     //Functions every subclasses has to override
@@ -157,6 +167,7 @@ public:
     friend ostream& operator <<(ostream &strm, const Blockade &block);
 private:
     string doPrint() const;
+    string orderType;
 };
 
 //Airlift validates if the source territory is owned by the calling player
@@ -169,6 +180,7 @@ public:
     ~Airlift();
     friend ostream& operator <<(ostream &strm, const Airlift &airL);
     //Setters and Getters
+    string getOrderType() const;
     void setNOfArmies(int nOA);
     void setSourceTerritory(Territory* sourceTerr);
     int getNOfArmies();
@@ -184,6 +196,7 @@ private:
     //sourceTerritory refersr to the territory where the armies move from
     Territory* sourceTerritory;
     string doPrint() const;
+    string orderType;
 };
 
 //Negotiate validates if the target player is not already in a cease fire with the calling player
@@ -196,6 +209,7 @@ public:
     ~Negotiate();
     friend ostream& operator <<(ostream &strm, const Negotiate &negotiate);
     //Setter and Getter
+    string getOrderType() const;
     void setCallingPlayer(Player* cPlayer);
     void setTargetPlayer(Player* tPlayer);
     Player* getCallingPlayer();
@@ -211,6 +225,7 @@ private:
     //targetPlayer refers to the targetted player
     Player* targetPlayer;
     string doPrint() const;
+    string orderType;
 };
 
 #endif // ORDERS_H_INCLUDED
