@@ -108,7 +108,7 @@ void GameEngine::startupPhase()
                 string playername=command.substr(command.find("addplayer")+11);
                 playername = playername.substr(0,playername.size()-1);
                 Player p(playername);
-                players.push_back(p);
+                players.push_back(&p);
             }
             if (command =="gamestart")
             {
@@ -118,7 +118,9 @@ void GameEngine::startupPhase()
                     transition("players added");
                     continue;
                 }
-
+                // Distribute all terrotories to players
+//                setPlayersTerritories(_map->territories, players, players.size());
+//                cout << players.at(0) << endl;
             }
         }
     }
