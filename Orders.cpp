@@ -46,9 +46,9 @@ OrdersList::~OrdersList()
     {
         delete *it;
     }
+
     //This erases all the pointers stored in the list
     ordList.clear();
-
 }
 //Assignment operator overload
 OrdersList& OrdersList :: operator = (const OrdersList& ls)

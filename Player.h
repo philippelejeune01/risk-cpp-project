@@ -44,12 +44,9 @@ class Player
         void setHand(Hand* h);
         OrdersList* getOrderList() const;
         void setOrderList(OrdersList* aOrdersList);
-        static int getPlayerCount();
-
 
     private:
         string name;
-        static int playerCount;
         //The player's territories
         vector <Territory*> territories;
         Hand* hand;

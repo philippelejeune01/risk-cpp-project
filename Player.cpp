@@ -12,64 +12,63 @@ using namespace std;
 Player::Player()
 {
     name = "Player Default";
-    playerCount++;
-//    OrdersList alist = OrdersList();
-//    ordersList = &alist;
+    hand = new Hand();
+    ordersList = new OrdersList();
 }
 //1 arg Constructor
 Player::Player(string newName)
 {
     name = newName;
-    playerCount++;
+    hand = new Hand();
+    ordersList = new OrdersList();
 }
 //2 arg Constructors
 Player::Player(string newName, OrdersList* ordList)
 {
     name = newName;
-    playerCount++;
+    hand = new Hand();
     ordersList = ordList;
 }
 Player::Player(string newName, Hand* aHand)
 {
     name = newName;
-    playerCount++;
     hand = aHand;
+    ordersList = new OrdersList();
 }
 Player::Player(string newName, vector <Territory*> &terr)
 {
     name = newName;
-    playerCount++;
     territories = terr;
+    hand = new Hand();
+    ordersList = new OrdersList();
 }
 
 //3 arg Constructors
 Player::Player(string newName, Hand* aHand, OrdersList* ordList)
 {
     name = newName;
-    playerCount++;
     hand = aHand;
     ordersList = ordList;
 }
 Player::Player(string newName, vector <Territory*> &terr, OrdersList* ordList)
 {
     name = newName;
-    playerCount++;
     territories = terr;
+    hand = new Hand();
     ordersList = ordList;
 }
 Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
 {
     name = newName;
-    playerCount++;
     territories = terr;
     hand = aHand;
+    ordersList = new OrdersList();
 }
 
 //Copy Constructor
 Player::Player(const Player& pl)
 {
     name = pl.name;
-    playerCount++;
     territories = pl.territories;
     hand = pl.hand;
     ordersList = pl.ordersList;
@@ -85,7 +84,7 @@ Player::~Player()
     }
     //This erases all the pointers stored in the vector
     territories.clear();
-    playerCount--;
+
     delete hand;
     hand = NULL;
     delete ordersList;
@@ -133,9 +132,6 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
     return strm << endl;
 }
 
-//Initializing the playerCount to 0
-int Player::playerCount = 0;
-
 //Accessors
 
 vector <Territory*> Player::getTerritories() const
@@ -151,11 +147,6 @@ Hand* Player::getHand() const
 OrdersList* Player::getOrderList() const
 {
     return ordersList;
-}
-
-int Player::getPlayerCount()
-{
-    return playerCount;
 }
 
 //Mutators
