@@ -70,9 +70,10 @@ string Card::getType(){
 }
 //stream operators
 ostream & operator << (ostream &out, const Card &c){
-    out << "Card object with type " << c.type;
+    out << "- Card with type " << c.type << endl;
     return out;
 }
+
 istream & operator >> (istream &in, Card &c){
     cout << "Enter the card type: ";
     in >> c.type;
@@ -100,9 +101,13 @@ Deck::Deck(Deck &d){
 }
 //destructor
 Deck::~Deck(){
-    for(int i=0; i < cards.size(); i++){
-        cards.at(i) = NULL;
+    //This deletes all the Card objects stored in the vector
+    for(vector<Card*>::iterator it = cards.begin(); it != cards.end(); ++it)
+    {
+        delete *it;
     }
+    //This erases all the pointers stored in the vector
+    cards.clear();
 }
 //Assignment operator overload
 Deck& Deck::operator = (const Deck &d)
@@ -163,9 +168,13 @@ Hand::Hand(Hand &h){
 }
 //destructor
 Hand::~Hand(){
-    for(int i=0; i < cards.size(); i++){
-        cards.at(i) = NULL;
+    //This deletes all the Card objects stored in the vector
+    for(vector<Card*>::iterator it = cards.begin(); it != cards.end(); ++it)
+    {
+        delete *it;
     }
+    //This erases all the pointers stored in the vector
+    cards.clear();
 }
 //Assignment operator overload
 Hand& Hand::operator = (const Hand& h)
@@ -184,12 +193,15 @@ vector<Card*>* Hand::getCards(){
 void Hand::setCards(vector<Card*> &c){
     cards = c;
 }
+void Hand::addCard(Card* card)
+{
+    cards.push_back(card);
+}
 ostream & operator << (ostream &out, const Hand &h){
-    vector<Card*> v = h.cards;
-    out << "This is a hand with cards: " << endl;
-    for(int i=0; i < v.size(); i++){
-        out << *v.at(i) << endl;
+    out << "Hand: \n";
+    for(vector<Card*>::const_iterator it = h.cards.begin(); it != h.cards.end();++it){
+        out << *(*it);
     }
-
+    out << endl;
     return out;
 }

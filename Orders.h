@@ -57,8 +57,6 @@ public:
     //Destructor
     ~OrdersList();
     friend ostream& operator <<(ostream &strm, const OrdersList &ordLs);
-    friend ostream& operator <<(ostream &strm, const OrdersList* ordLs);
-
     list<Order*> const & getOrdList() const;
     //2 required methods
     void move(Order* order, int index);

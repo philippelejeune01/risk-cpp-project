@@ -41,6 +41,7 @@ class Hand
         Hand& operator = (const Hand& h);
         vector<Card*>* getCards();
         void setCards(vector<Card*> &cards);
+        void addCard(Card* card);
         friend ostream & operator << (ostream &out, const Hand &h);
 
 };

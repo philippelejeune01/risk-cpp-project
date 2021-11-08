@@ -114,22 +114,22 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
             strm << x->getName() << " ";
         }
     }else{
-        strm << "\nTerritories: No Territories";
+        strm << "\nTerritories: No Territories\n";
     }
 
-    if(aPlayer.getOrderList()->getOrdList().size() < 10000){
-        strm << "\nOrders: " << aPlayer.getOrderList();
+    if(!aPlayer.getOrderList()->getOrdList().empty()){
+        strm << "\nOrders: " << *aPlayer.getOrderList();
     }else{
-        strm << "\nOrders: No Orders";
+        strm << "\nOrders: No Orders\n";
     }
 
-    if(aPlayer.getHand()->getCards()->size() < 10000){
-        strm << aPlayer.getHand();
+    if(!aPlayer.getHand()->getCards()->empty()){
+        strm << *aPlayer.getHand();
     }else{
-        strm << "Hand: No nHand";
+        strm << "Hand: No Hand\n";
     }
 
-    return strm << endl;
+    return strm;
 }
 
 //Accessors
@@ -261,19 +261,20 @@ void Player::issueOrder(string ordType, Player* targetPlayer)
 }
 
 //Splits the list of all territories into almost equal or equal parts depending on the number of players.
-void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers, int playerCount)
+void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers)
 {
 
     int territoryCount = allTerritories.size();
+    int playerCount = allPlayers.size();
 
     int subLength = territoryCount / playerCount;
     int remainder = territoryCount % playerCount;
     int limit = min(playerCount, territoryCount);
 
-    int startIndex = 0;
+    int startIndex = 1; //Start index is one because the first element in allTerritories is always null
     int endIndex = 0;
 
-    for(int i = 0; i < limit; i++) {
+    for(int i = 0; i < limit; ++i) {
         endIndex += (remainder > 0) ? (subLength + !!(remainder--)) : subLength;
 
         vector <Territory*> subTerritories(allTerritories.begin() + startIndex, allTerritories.begin() + endIndex);

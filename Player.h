@@ -54,7 +54,7 @@ class Player
 
 };
 //Global function to assign territories to player's
-void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers, int playerCount);
+void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers);
 
 
 #endif // PLAYER_H

@@ -3,6 +3,8 @@ It contains all the function definitions for the function declarations in the Ga
 
 #include <string>
 #include <iostream>
+#include <algorithm>
+#include <random>
 using namespace std;
 #include "GameEngine.h"
 #include "Map.h"
@@ -44,6 +46,27 @@ GameEngine& GameEngine::operator = (const GameEngine& ge)
     return *this;
 }
 /**
+*Destructor that takes care of deallocating pointers properly.
+*/
+GameEngine::~GameEngine()
+{
+    //This deletes all the Player objects stored in the vector
+    for(vector<Player*>::iterator it = players.begin(); it != players.end(); ++it)
+    {
+        delete *it;
+    }
+    //This erases all the pointers stored in the vector
+    players.clear();
+
+    delete _deck;
+    _deck = NULL;
+    delete maploader;
+    maploader = NULL;
+    delete _map;
+    _map = NULL;
+
+}
+/**
 *Getter method that returns the current state of a GameEngine object.
 *@return a string that corresponds to the current state of a GameEngine object.
 */
@@ -68,6 +91,29 @@ void GameEngine::transition(string newState)
     setState(newState);
 }
 /**
+*Creates a vector of random card pointers to pass to be used when initializing the deck object
+*/
+void GameEngine::initializeDeck()
+{
+    srand((unsigned) time(0));
+    vector<Card*> v;
+    //creating Cards to put in deck
+    for(int i = 0; i < GameEngine::DECK_SIZE; i++){
+        Card *c = new Card();
+        v.push_back(c);
+    }
+
+    _deck = new Deck(v);
+}
+/**
+*Randomize the order of play of the players by shuffling the players vector
+*/
+void GameEngine::randomizePlayOrder()
+{
+    auto randEngine = default_random_engine {};
+    shuffle(begin(players), end(players), randEngine);
+}
+/**
 *PassedCommand method that checks if the passed command is a valid one for the current state,
 *effectuates the transition if the command is valid and outputs the necessary information about the
 *command, current state, new state if tansition is successfully done or displays an error message if
@@ -77,6 +123,7 @@ void GameEngine::transition(string newState)
 void GameEngine::startupPhase()
 {
     string command;
+    Player* tempPlayer; // Temporary player pointer
     do
     {
         cout << "Please enter a valid command:" << endl;
@@ -84,6 +131,7 @@ void GameEngine::startupPhase()
         std::getline(cin,command);
         if (passedCommand(command))
         {
+            Player* tempPlayer; //Temporary player pointer
             if((getState() == "start"||getState()=="map loaded") && (command.find("loadmap") !=string::npos))
             {
                 string filename=command.substr(command.find("loadmap")+9);
@@ -107,8 +155,8 @@ void GameEngine::startupPhase()
                 }
                 string playername=command.substr(command.find("addplayer")+11);
                 playername = playername.substr(0,playername.size()-1);
-                Player p(playername);
-                players.push_back(&p);
+                tempPlayer = new Player(playername);
+                players.push_back(tempPlayer);
             }
             if (command =="gamestart")
             {
@@ -118,13 +166,30 @@ void GameEngine::startupPhase()
                     transition("players added");
                     continue;
                 }
-                // Distribute all terrotories to players
-//                setPlayersTerritories(_map->territories, players, players.size());
-//                cout << players.at(0) << endl;
+                // Distribute all territories to players in almost equald parts depending on the number of players
+                setPlayersTerritories(_map->getTerritories(), players);
+
+                //Randomize the order of play
+                randomizePlayOrder();
+
+                initializeDeck(); //Creating the Deck
+                for(int i = 0; i < players.size(); i++)
+                {
+                    //Give 50 initial armies to each player's respective reinforcement pool
+
+                    //Each player draws 2 initial cards from the deck
+                    players.at(i)->getHand()->addCard(_deck->draw());
+                    players.at(i)->getHand()->addCard(_deck->draw());
+
+                    cout << *players.at(i) << endl;
+                }
             }
         }
     }
     while (!((command == "end") && (getState() == "win")));
+
+    delete tempPlayer;
+    tempPlayer = NULL;
 }
 bool GameEngine::passedCommand(string command)
 {

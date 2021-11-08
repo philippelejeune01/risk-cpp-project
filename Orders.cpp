@@ -67,29 +67,15 @@ OrdersList& OrdersList :: operator = (const OrdersList& ls)
 ostream& operator <<(ostream &strm, const OrdersList &ordLs)
 {
 
-    strm << "OrdersList(\n";
+    strm << "\n";
     int index = 1;
     for (list<Order*>::const_iterator it = ordLs.ordList.begin(); it != ordLs.ordList.end();++it)
     {
         strm << index++ << ": " << *(*it) << "\n";
     }
 
-    return strm << ")";
-}
-//Stream insertion operator
-ostream& operator <<(ostream &strm, const OrdersList* ordLs)
-{
-    strm << "\n";
-    int index = 1;
-    for (list<Order*>::const_iterator it = ordLs->ordList.begin(); it != ordLs->ordList.end();++it)
-    {
-
-        strm << index++ << ": " << *(*it) << "\n";
-    }
-
     return strm << endl;
 }
-
 //Getter
 list<Order*> const &OrdersList:: getOrdList() const
 {

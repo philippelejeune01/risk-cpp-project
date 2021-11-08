@@ -89,6 +89,7 @@ ostream& operator<<(ostream& strm, Map& m)
 
     strm <<"Number of Territories in this map: "<< m.numOfTerritories <<endl;
     strm <<"Number of Continents in this map: "<< m.numOfContinents<<endl;
+
     return strm;
 }
 
@@ -148,6 +149,10 @@ void Map::setAdjacency(vector<int>* adjacency)
 void Map::setTerritories(vector<Territory*> t)
 {
     territories = t;
+}
+vector <Territory*> Map::getTerritories() const
+{
+    return territories;
 }
 void Map::setNumberOfContinents(int n)
 {

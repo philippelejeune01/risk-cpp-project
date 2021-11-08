@@ -27,6 +27,8 @@ public:
     GameEngine(const GameEngine& ge);
     //Overloaded assignment operator declaration:
     GameEngine& operator = (const GameEngine& ge);
+    //Destructor
+    ~GameEngine();
     //Getters declaration:
     string getState();
     //Setters declaration:
@@ -35,9 +37,13 @@ public:
     //Other methods declarations:
     void transition(string newState);
     bool passedCommand(string command);
+    void initializeDeck();
+    void randomizePlayOrder();
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)
     friend std::ostream & operator << (std::ostream &out, const GameEngine &ge);
     friend std::istream & operator >> (std::istream &in,  GameEngine &ge);
+    const int DECK_SIZE = 20;
+    Deck* _deck;
     vector<Player*> players;
     MapLoader* maploader;
     Map* _map;
