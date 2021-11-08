@@ -110,7 +110,7 @@ void GameEngine::initializeDeck()
 */
 void GameEngine::randomizePlayOrder()
 {
-    auto randEngine = default_random_engine {};
+    default_random_engine randEngine{random_device{}()};
     shuffle(begin(players), end(players), randEngine);
 }
 /**
@@ -176,7 +176,7 @@ void GameEngine::startupPhase()
                 for(int i = 0; i < players.size(); i++)
                 {
                     //Give 50 initial armies to each player's respective reinforcement pool
-
+                    players.at(i)->setPool(50);
                     //Each player draws 2 initial cards from the deck
                     players.at(i)->getHand()->addCard(_deck->draw());
                     players.at(i)->getHand()->addCard(_deck->draw());

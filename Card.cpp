@@ -202,6 +202,5 @@ ostream & operator << (ostream &out, const Hand &h){
     for(vector<Card*>::const_iterator it = h.cards.begin(); it != h.cards.end();++it){
         out << *(*it);
     }
-    out << endl;
     return out;
 }

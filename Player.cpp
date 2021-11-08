@@ -104,7 +104,7 @@ Player& Player :: operator = (const Player& pl)
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Player &aPlayer)
 {
-    strm << "Player named \"" << aPlayer.name << "\" has the following:";
+    strm << "Player named \"" << aPlayer.name << "\"";
 
     if(!aPlayer.getTerritories().empty()){
         strm << "\nTerritories: ";
@@ -129,6 +129,8 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
         strm << "Hand: No Hand\n";
     }
 
+    strm << "Player has " << aPlayer.getPool() << " armies in his reinforcement pool" <<endl;
+
     return strm;
 }
 
@@ -149,6 +151,16 @@ OrdersList* Player::getOrderList() const
     return ordersList;
 }
 
+int Player::getPool() const
+{
+    return rPool;
+}
+
+void Player::setPool(int numberOfArmies)
+{
+    rPool = numberOfArmies;
+}
+
 //Mutators
 
 void Player::setTerritories(vector <Territory*> &terr)
@@ -164,6 +176,24 @@ void Player::setOrderList(OrdersList* aOrdersList)
 void Player::setHand(Hand* h)
 {
     this->hand = h;
+}
+
+void Player::addToPool(int numberOfArmies)
+{
+    rPool += numberOfArmies;
+}
+
+bool Player::removeFromPool(int numberOfArmies)
+{
+    if((rPool - numberOfArmies) >= 0)
+    {
+        rPool -= numberOfArmies;
+        return true; //Operation successful
+    }
+    else
+    {
+        return false; //Operation not successful
+    }
 }
 
 //Required Methods

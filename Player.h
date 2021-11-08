@@ -44,9 +44,15 @@ class Player
         void setHand(Hand* h);
         OrdersList* getOrderList() const;
         void setOrderList(OrdersList* aOrdersList);
+        int getPool() const;
+        void setPool(int numberOfArmies);
+        void addToPool(int numberOfArmies);
+        bool removeFromPool(int numberOfArmies);
 
     private:
         string name;
+        //The player's reinforcement pool
+        int rPool;
         //The player's territories
         vector <Territory*> territories;
         Hand* hand;
