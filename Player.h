@@ -1,4 +1,3 @@
-
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Orders.h"
@@ -8,7 +7,6 @@
 #include <vector>
 #include <string>
 #include <list>
-#include <set>
 
 using namespace std;
 
@@ -17,15 +15,20 @@ class Player
     public:
         Player();
         Player(string newName);
+        Player(string newName, OrdersList* ordList);
         Player(string newName, Hand* aHand);
         Player(string newName, vector <Territory*> &terr);
+
+        Player(string newName, Hand* aHand, OrdersList* ordList);
+        Player(string newName, vector <Territory*> &terr, OrdersList* ordList);
         Player(string newName, vector <Territory*> &terr, Hand* aHand);
+
         Player(const Player& pl);
         Player& operator = (const Player& pl);
         ~Player();
         friend ostream& operator <<(ostream &strm, const Player &aPlayer);
         //Required Methods
-        vector <Territory*>* toDefend();
+        vector <Territory*> toDefend();
         vector <Territory*> toAttack();
         void issueOrder(string ordType, Territory* targetTerritory, int nOfArmies);
         void issueOrder(string ordType, Territory* targetTerritory, int nOfArmies, Territory* sourceTerr);
@@ -34,30 +37,33 @@ class Player
         //Accesors and Mutators
         string getName();
         void setName(string newName);
-        vector <Territory*>* getTerritories();
+        vector <Territory*> getTerritories() const;
         void setTerritories(vector <Territory*> &terr);
         Hand* getHand() const;
         void setHand(Hand* h);
         OrdersList* getOrderList() const;
         void setOrderList(OrdersList* aOrdersList);
-        static int getPlayerCount();
-        bool getFlagConqTerr();
-
+        bool getFlagConqTerr() const;
+        void setFlagConqTerr(bool flag);
+        //This method is for testing purposes.
+        vector<Territory*>* getPointerToTerritories();
+        int getPool() const;
+        void setPool(int numberOfArmies);
+        void addToPool(int numberOfArmies);
+        bool removeFromPool(int numberOfArmies);
 
     private:
         string name;
-        static int playerCount;
-        //flagConqTerr is
-        bool* flagConqTerr;
-
+        //The player's reinforcement pool
+        int rPool;
         //The player's territories
         vector <Territory*> territories;
         Hand* hand;
         OrdersList* ordersList;
-
+        //bool pointer that determines if the player instance has conquered at least one territory
+        bool* flagConqTerr;
 };
 //Global function to assign territories to player's
-void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers, int playerCount);
-
+void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers);
 
 #endif // PLAYER_H

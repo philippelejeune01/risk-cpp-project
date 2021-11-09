@@ -35,11 +35,12 @@ public:
     //Functions every subclasses has to implement
     virtual bool validate()=0;
     virtual void execute()=0;
-
+    string getOrderType() const;
     static void setUpPlayerCannotAttackList();
     static void clearPlayerCannotAttackList();
 
 protected:
+    Order(Territory* targetTerr, vector<Territory*>* ownedTerr, string oType);
     //targetTerritory refers to the territory affected by the order
     Territory* targetTerritory;
     //ownedTerritories refers to the list of territories a player owns
@@ -52,6 +53,7 @@ protected:
     static Player*** playersCannotAttackList;
     static int sizeOfPlCantAttList;
     static int indexOfEnd;
+    string orderType;
 private:
     virtual string doPrint() const;
 };
@@ -121,6 +123,8 @@ public:
     //Setters and Getters
     void setNOfArmies(int nOA);
     void setSourceTerritory(Territory* sourceTerr);
+    void setFlagConqTerr(bool* flag);
+    void setEnemyTerritories(vector<Territory*>* enmyTerrs);
     int getNOfArmies();
     Territory* getSourceTerritory();
     //duplicate method

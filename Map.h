@@ -38,12 +38,13 @@ class Territory
 class Map
 {
     public:
-        Map(vector<int>* adjacency,vector<Territory> listOfTerritories,int nOfContinents,int nOfTerritories,int endOf[]);
+        Map(vector<int>* adjacency,vector<Territory*> listOfTerritories,int nOfContinents,int nOfTerritories,int endOf[]);
         Map(const Map& m);
         Map();
 
         void setAdjacency(vector<int>* adjacency);
-        void setTerritories(vector<Territory> territories);
+        void setTerritories(vector<Territory*> territories);
+        vector <Territory*> getTerritories() const;
         void setNumberOfContinents(int n);
         void setNumberOfTerritories(int n);
         void setEndOfContinents(const int *arr);
@@ -56,7 +57,7 @@ class Map
     protected:
         int numOfTerritories, numOfContinents;
         vector<int>* adjacencyList;
-        vector<Territory> territories;
+        vector<Territory*> territories;
         int endofContinents[100];
 
 };
@@ -70,4 +71,4 @@ class MapLoader
 
 };
 
-#endif // MAP_H
+#endif // MAP_H_INCLUDED

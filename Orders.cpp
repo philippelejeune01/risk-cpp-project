@@ -146,7 +146,15 @@ void OrdersList::remove(int index)
 //addOrder method for adding an order in the OrdersList
 void OrdersList:: addOrder(Order* order)
 {
-    ordList.push_back(order);
+    if (order.getOrderType() == "Deploy")
+    {
+        ordList.push_front(order);
+    }
+    else
+    {
+        ordList.push_back(order);
+    }
+
 }
 void OrdersList:: executeFirstOrder()
 {
@@ -189,6 +197,12 @@ Order:: ~Order()
 ostream& operator <<(ostream &strm, const Order &ord)
 {
     return strm << ord.doPrint();
+}
+Order::Order(Territory* targetTerr, vector<Territory*>* ownedTerr, string oType)
+{
+    targetTerritory = targetTerr;
+    ownedTerritories = ownedTerr;
+    orderType = oType;
 }
 //doPrint method for the stream insertion operator of Order
 string Order::doPrint() const
@@ -271,18 +285,18 @@ void Order:: execute()
 */
 //Deploy implementation
 //Default constructor
-Deploy::Deploy():Order()
+Deploy::Deploy():Order(NULL, NULL, "Deploy")
 {
     nAddedArmies = 0;
 }
 //3-arg constructor
 Deploy::Deploy(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies)
-: Order(targetTerritory,ownedTerr)
+: Order(targetTerritory,ownedTerr, "Deploy")
 {
     nAddedArmies = nOfArmies;
 }
 //Copy Constructor
-Deploy::Deploy(const Deploy& depl): Order(depl.targetTerritory, depl.ownedTerritories)
+Deploy::Deploy(const Deploy& depl): Order(depl.targetTerritory, depl.ownedTerritories, "Deploy")
 {
     nAddedArmies = depl.nAddedArmies;
 }
@@ -291,6 +305,7 @@ Deploy& Deploy:: operator = (const Deploy& depl)
 {
     Order::operator=(depl);
     this->nAddedArmies = depl.nAddedArmies;
+    this->orderType = "Deploy";
     return *this;
 }
 //Destructor
@@ -378,21 +393,21 @@ void Deploy::execute()
 
 //Advance Implementation
 //Default Constructor
-Advance::Advance():Order()
+Advance::Advance():Order(NULL, NULL, "Advance")
 {
     nMovedArmies = 0;
     sourceTerritory = NULL;
 }
 //4 args constructor
 Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr,
-                  int nOfArmies, Territory* sourceTerr): Order(targetTerritory,ownedTerr)
+                  int nOfArmies, Territory* sourceTerr): Order(targetTerritory,ownedTerr, "Advance")
 {
     nMovedArmies = nOfArmies;
     sourceTerritory = sourceTerr;
 }
 Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies,
          Territory* sourceTerr, vector<Territory*>* enemyTerrs, bool* flag):
-             Order(targetTerritory, ownedTerr)
+             Order(targetTerritory, ownedTerr, "Advance")
 {
     nMovedArmies = nOfArmies;
     sourceTerritory = sourceTerr;
@@ -400,7 +415,7 @@ Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int 
     flagConq = flag;
 }
 //Copy Constructor
-Advance::Advance(const Advance& adv):Order(adv.targetTerritory, adv.ownedTerritories)
+Advance::Advance(const Advance& adv):Order(adv.targetTerritory, adv.ownedTerritories, "Advance")
 {
     nMovedArmies = adv.nMovedArmies;
     sourceTerritory = adv.sourceTerritory;
@@ -411,6 +426,7 @@ Advance& Advance :: operator = (const Advance& adv)
     Order::operator=(adv);
     this->nMovedArmies = adv.nMovedArmies;
     this->sourceTerritory = adv.sourceTerritory;
+    this->orderType = "Advance";
     return *this;
 }
 //Destructor
@@ -420,6 +436,8 @@ Advance::~Advance()
     ownedTerritories = NULL;
     nMovedArmies = 0;
     sourceTerritory = NULL;
+    flagConq = NULL;
+    enemyTerritories = NULL;
 }
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Advance &adv)
@@ -441,6 +459,14 @@ void Advance:: setNOfArmies(int nOA)
 void Advance::setSourceTerritory(Territory* sourceTerr)
 {
     sourceTerritory = sourceTerr;
+}
+void Advance::setFlagConqTerr(bool* flag)
+{
+    flagConq = flag;
+}
+void Advance::setEnemyTerritories(vector<Territory*>* enmyTerrs)
+{
+    enemyTerritories = enmyTerrs;
 }
 int Advance:: getNOfArmies()
 {
@@ -609,21 +635,22 @@ void Advance:: execute()
 }
 //Implementation of the subclass Bomb
 //Default constructor
-Bomb::Bomb():Order()
+Bomb::Bomb():Order(NULL, NULL, "Bomb")
 {
 }
 //2 arg constructor
-Bomb::Bomb(Territory* targetTerritory, vector<Territory*>* ownedTerr): Order(targetTerritory,ownedTerr)
+Bomb::Bomb(Territory* targetTerritory, vector<Territory*>* ownedTerr): Order(targetTerritory,ownedTerr, "Bomb")
 {
 }
 //Copy constructor
-Bomb::Bomb(const Bomb& bomb): Order(bomb.targetTerritory, bomb.ownedTerritories)
+Bomb::Bomb(const Bomb& bomb): Order(bomb.targetTerritory, bomb.ownedTerritories, "Bomb")
 {
 }
 //Overload assignment operator
 Bomb& Bomb :: operator = (const Bomb& bomb)
 {
     Order::operator=(bomb);
+    this->orderType = "Bomb";
     return *this;
 }
 //Destructor
@@ -701,22 +728,22 @@ void Bomb::execute()
 
 //Implementation of Blockade
 //Default Constructor
-Blockade::Blockade():Order()
+Blockade::Blockade():Order(NULL, NULL, "Blockade")
 {
     neutralPlayer = NULL;
 }
 //2 arg Constructor
-Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr):Order(targetTerritory, ownedTerr)
+Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr):Order(targetTerritory, ownedTerr, "Blockade")
 {
     neutralPlayer = NULL;
 }
 //3 arg Constructor
-Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr, Player* neutralPl):Order(targetTerritory, ownedTerr)
+Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr, Player* neutralPl):Order(targetTerritory, ownedTerr, "Blockade")
 {
     neutralPlayer = neutralPl;
 }
 //Copy Constructor
-Blockade::Blockade(const Blockade& block):Order(block.targetTerritory,block.ownedTerritories)
+Blockade::Blockade(const Blockade& block):Order(block.targetTerritory,block.ownedTerritories, "Blockade")
 {
     neutralPlayer = block.neutralPlayer;
 }
@@ -725,6 +752,7 @@ Blockade& Blockade::operator = (const Blockade& block)
 {
     Order::operator=(block);
     this->neutralPlayer = block.neutralPlayer;
+    this->orderType = "Blockade";
     return *this;
 }
 //Destructor
@@ -812,18 +840,18 @@ void Blockade:: execute()
 
 //Implementation of Airlift
 //Default Constructor
-Airlift::Airlift():Order()
+Airlift::Airlift():Order(NULL, NULL, "Airlift")
 {
 }
 //4 args constructor
 Airlift::Airlift(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr):
-    Order(targetTerritory, ownedTerr)
+    Order(targetTerritory, ownedTerr, "Airlift")
 {
     nMovedArmies = nOfArmies;
     sourceTerritory = sourceTerr;
 }
 //Copy Constructor
-Airlift::Airlift(const Airlift& airLi):Order(airLi.targetTerritory, airLi.ownedTerritories)
+Airlift::Airlift(const Airlift& airLi):Order(airLi.targetTerritory, airLi.ownedTerritories, "Airlift")
 {
     nMovedArmies = airLi.nMovedArmies;
     sourceTerritory = airLi.sourceTerritory;
@@ -834,6 +862,7 @@ Airlift& Airlift::operator = (const Airlift& airLi)
     Order::operator=(airLi);
     this->nMovedArmies = airLi.nMovedArmies;
     this->sourceTerritory = airLi.sourceTerritory;
+    this->orderType = "Airlift";
     return *this;
 }
 //Destructor
@@ -935,18 +964,18 @@ void Airlift::execute()
 
 //Negotiate Implementation
 //Default Constructor
-Negotiate::Negotiate():Order()
+Negotiate::Negotiate():Order(NULL, NULL, "Negotiate")
 {
 }
 //2 args constructor
-Negotiate::Negotiate(Player* cPlayer, Player* tPlayer):Order()
+Negotiate::Negotiate(Player* cPlayer, Player* tPlayer):Order(NULL, NULL, "Negotiate")
 {
     callingPlayer = cPlayer;
     targetPlayer = tPlayer;
 }
 
 //Copy Constructor
-Negotiate::Negotiate(const Negotiate& negotiate): Order()
+Negotiate::Negotiate(const Negotiate& negotiate): Order(NULL, NULL, "Negotiate")
 {
     callingPlayer = negotiate.callingPlayer;
     targetPlayer = negotiate.targetPlayer;
@@ -958,6 +987,7 @@ Negotiate& Negotiate::operator = (const Negotiate& negotiate)
     Order::operator=(negotiate);
     this->callingPlayer = negotiate.callingPlayer;
     this->targetPlayer = negotiate.targetPlayer;
+    this->orderType = "Negotiate";
     return *this;
 }
 //Destructor

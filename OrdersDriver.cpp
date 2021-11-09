@@ -1,183 +1,161 @@
 #include "Orders.h"
+#include "Map.h"
+#include "Player.h"
 #include <iostream>
 #include <list>
 using namespace std;
-int main(){
-    //Creating test territories and test players
-    Territory terr1(2,"Joe");
-    Territory terr2(4,"Bojoe");
-    Territory terr3(3,"Lorem");
-    Territory terr4(5,"Ipsum");
-    Player pl1("Elsam");
-    Player pl2("Doug");
-    //Creating adjacency lists
-    terr1.addEdges(&terr2);
-    terr1.addEdges(&terr3);
-    terr2.addEdges(&terr1);
-    terr2.addEdges(&terr4);
-    terr3.addEdges(&terr1);
-    terr3.addEdges(&terr4);
-    terr4.addEdges(&terr2);
-    terr4.addEdges(&terr3);
-    //Creating a list of pointers to territories
-    list<Territory*> p1;
-    p1.push_front(&terr1);
 
-    //Creating Deploy objects and testing the execute method
-    //Valid deploy
-    Deploy* depl1 = new Deploy(&terr1,&p1,3);
-    cout << *depl1 << endl;
+int main()
+{
+    Order::setUpPlayerCannotAttackList();
+    Player* pl1 = new Player("Doug");
+    Player* pl2 = new Player("Elsam");
+    Player* pl3 = new Player("DougDoug");
+    Territory* terr1 = new Territory(1,2,4,1,4, pl1, "Quebec");
+    Territory* terr2 = new Territory(2,1,3,1,3, pl1, "Vancouver");
+    Territory* terr3 = new Territory(3,3,4,1,2, pl2, "Ottawa");
+    Territory* terr4 = new Territory(4,6,7,1,4, pl2, "Montreal");
+    Territory* terr5 = new Territory(5,5,5,1,2, pl2, "Winnipeg");
+    Territory* terr6 = new Territory(6,2,3,1,1, pl3, "Gatineau");
+
+    terr1->adjacentTerritories.push_back(terr2);
+    terr1->adjacentTerritories.push_back(terr3);
+    terr1->adjacentTerritories.push_back(terr6);
+
+    terr2->adjacentTerritories.push_back(terr1);
+    terr2->adjacentTerritories.push_back(terr3);
+
+    terr3->adjacentTerritories.push_back(terr1);
+    terr3->adjacentTerritories.push_back(terr2);
+    terr3->adjacentTerritories.push_back(terr4);
+
+    terr4->adjacentTerritories.push_back(terr3);
+    terr4->adjacentTerritories.push_back(terr5);
+
+    terr5->adjacentTerritories.push_back(terr4);
+    terr6->adjacentTerritories.push_back(terr1);
+
+    vector<Territory*> pl1Territories;
+    vector<Territory*> pl2Territories;
+    vector<Territory*> pl3Territories;
+
+    pl1Territories.push_back(terr1);
+    pl1Territories.push_back(terr2);
+    pl2Territories.push_back(terr4);
+    pl2Territories.push_back(terr5);
+    pl2Territories.push_back(terr3);
+    pl3Territories.push_back(terr6);
+
+    pl1->setTerritories(pl1Territories);
+    pl2->setTerritories(pl2Territories);
+    pl3->setTerritories(pl3Territories);
+
+    //Deploy Order test
+    cout << "Player 1 does the deploy order" << endl;
+    cout << *terr1 << endl;
+    Deploy* depl1 = new Deploy(terr1, &pl1Territories, 4);
     depl1->execute();
-    //Invalid deploy
-    Deploy* depl2 = new Deploy(&terr2,&p1,3);
-    cout << *depl2 << endl;
-    depl2->execute();
-    //Valid deploy created from copy constructor
-    Deploy* depl3 = new Deploy(*depl1);
-    cout << *depl3 << endl;
-    depl3->execute();
-    cout << "\n";
-    delete depl1;
-    delete depl2;
-    delete depl3;
-    depl1 = NULL;
-    depl2 = NULL;
-    depl3 = NULL;
-    //Creating Advance objects and testing execute method
-    //Valid advance
-    Advance* adv1 = new Advance(&terr2, &p1,1, &terr1);
-    cout << *adv1 << endl;
+    cout << *terr1 << endl;
+
+    //Advance order test 1
+    cout << "Player 1 does the Advance order on an allied territory" << endl;
+    cout << *terr2 << endl;
+    Advance* adv1 = new Advance(terr1, &pl1Territories, 1, terr2,
+                                 terr2->getPlayer()->getPointerToTerritories(), new bool(false));
     adv1->execute();
-    //Invalid advance. the source terr
-    Advance* adv2 = new Advance(&terr1, &p1,1, &terr2);
-    cout << *adv2 << endl;
+    cout << *terr2 << endl;
+    cout << *terr1 << endl;
+
+    //Advance order test 2
+    cout << "Player 1 does the Advance order on an enemy territory" << endl;
+    cout << "Player 1's territories:" << endl;
+    for (vector<Territory*>::iterator it = pl1->getPointerToTerritories()->begin(); it != pl1->getPointerToTerritories()->end(); ++it)
+    {
+        cout << **it << ",";
+    }
+    cout << endl;
+    cout << "Player 3's territories:" << endl;
+    for (vector<Territory*>::iterator it = pl3->getPointerToTerritories()->begin(); it != pl3->getPointerToTerritories()->end(); ++it)
+    {
+        cout << **it << ",";
+    }
+    cout << endl;
+    Advance* adv2 = new Advance(terr6, pl1->getPointerToTerritories(), 8,
+                                terr1, terr6->getPlayer()->getPointerToTerritories(), new bool(false));
     adv2->execute();
-    //Copy Constructor Sowcase
-    Advance* adv3 = new Advance(*adv1);
-    cout << *adv3 << endl;
+    cout << *terr6 << endl;
+    cout << *terr1 << endl;
+
+        for (vector<Territory*>::iterator it = pl1->getPointerToTerritories()->begin(); it != pl1->getPointerToTerritories()->end(); ++it)
+    {
+        cout << **it << ",";
+    }
+    cout << endl;
+    cout << "Player 3's territories:" << endl;
+    for (vector<Territory*>::iterator it = pl3->getPointerToTerritories()->begin(); it != pl3->getPointerToTerritories()->end(); ++it)
+    {
+        cout << **it << ",";
+    }
+    cout << endl;
+    //Bomb order test
+    cout << *terr3 << endl;
+    Bomb* bomb1 = new Bomb(terr3, pl1->getPointerToTerritories());
+    bomb1->execute();
+    cout << *terr3 << endl;
+
+    //Blockade order test
+    cout << "Player 2's territories: " << endl;
+    for (vector<Territory*>:: iterator it = pl2->getPointerToTerritories()->begin(); it != pl2->getPointerToTerritories()->end(); ++it)
+    {
+        cout << **it << ", ";
+    }
+    cout << endl;
+
+    Blockade* block1 = new Blockade(terr5, pl2->getPointerToTerritories(), new Player("NEUTRAL"));
+    block1->execute();
+    cout << *terr5 << endl;
+    cout << "Player 2's territories: " << endl;
+    for (vector<Territory*>:: iterator it = pl2->getPointerToTerritories()->begin(); it != pl2->getPointerToTerritories()->end(); ++it)
+    {
+        cout << **it << ", ";
+    }
+    cout << endl;
+
+    //Testing AirLift order
+    cout << *terr2 << endl;
+    cout << *terr6 << endl;
+    Airlift* airL1 = new Airlift(terr2, pl1->getPointerToTerritories(), 6, terr6);
+    airL1->execute();
+    cout << *terr2 << endl;
+    cout << *terr6 << endl;
+
+    //Testing Negotiate order
+    Negotiate* negotiate1 = new Negotiate(pl1,pl2);
+    negotiate1->execute();
+    //Advance order test3
+    Advance* adv3 = new Advance(terr3, pl1->getPointerToTerritories(), 1, terr2, terr3->getPlayer()->getPointerToTerritories(), new bool(false));
     adv3->execute();
-    cout << "\n";
+
+    Order::clearPlayerCannotAttackList();
+    adv3->execute();
+
+    negotiate1->execute();
+    adv3->execute();
+
+    delete depl1;
     delete adv1;
     delete adv2;
     delete adv3;
-    adv1 = NULL;
-    adv2 = NULL;
-    adv3 = NULL;
-    //Creating Bomb objects and testing execute method
-    //Valid Bomb
-    Bomb* bomb1 = new Bomb(&terr2, &p1);
-    cout << *bomb1 << endl;
-    bomb1->execute();
-    //Unvalid Bomb: Cannot bomb your own territory
-    Bomb* bomb2 = new Bomb(&terr1, &p1);
-    cout << *bomb2 << endl;
-    bomb2->execute();
-    //Copy Constructor Showcase
-    Bomb* bomb3 = new Bomb(*bomb1);
-    cout << *bomb3 << endl;
-    bomb3->execute();
-    cout << "\n";
     delete bomb1;
-    delete bomb2;
-    delete bomb3;
-    bomb1 = NULL;
-    bomb2 = NULL;
-    bomb3 = NULL;
-
-    //Creating Blockade objects and testing the execute method
-    //Valid Blockade
-    Blockade* block1 = new Blockade(&terr1, &p1);
-    cout << *block1 << endl;
-    block1->execute();
-    //Invald Blockade
-    Blockade* block2 = new Blockade(&terr2, &p1);
-    cout << *block2 << endl;
-    block2->execute();
-    //Copy Constructor showcase
-    Blockade* block3 = new Blockade(*block1);
-    cout << *block1 << endl;
-    block1->execute();
-    cout << "\n";
     delete block1;
-    delete block2;
-    delete block3;
-    block1 = NULL;
-    block2 = NULL;
-    block3 = NULL;
-    //Creating Airlift objects and testing the execute method
-    //Valid Airlift
-    Airlift* airLi1 = new Airlift(&terr2, &p1,1, &terr1);
-    cout << *airLi1 << endl;
-    airLi1->execute();
-    //Invalid Airlift
-    Airlift* airLi2 = new Airlift(&terr1, &p1,1, &terr2);
-    cout << *airLi2 << endl;
-    airLi2->execute();
-    //Copy Constructor
-    Airlift* airLi3 = new Airlift(*airLi1);
-    cout << *airLi3 << endl;
-    airLi3->execute();
-    cout << "\n";
-    delete airLi1;
-    delete airLi2;
-    delete airLi3;
-    airLi1 = NULL;
-    airLi2 = NULL;
-    airLi3 = NULL;
-
-    //Creating Negotiate objects and testing the execute method
-    //Valid Negotiate
-    Negotiate* negotiate1 = new Negotiate(&pl1,&pl2);
-    cout << *negotiate1 << endl;
-    negotiate1->execute();
-    //Invalid Negotiate
-    Negotiate* negotiate2 = new Negotiate(&pl1,&pl1);
-    cout << *negotiate2 << endl;
-    negotiate2->execute();
-    //Copy Constructor Showcase
-    Negotiate* negotiate3 = new Negotiate(*negotiate1);
-    cout << *negotiate3 << endl;
-    negotiate3->execute();
-    cout << "\n";
+    delete airL1;
     delete negotiate1;
-    delete negotiate2;
-    delete negotiate3;
-    negotiate1 = NULL;
-    negotiate2 = NULL;
-    negotiate3 = NULL;
-
-    //Creating test objects for OrdersList
-    Deploy* depl = new Deploy(&terr1, &p1, 3);
-    Advance* adv = new Advance(&terr2, &p1, 3, &terr1);
-    Bomb* bomb = new Bomb(&terr2, &p1);
-    Blockade* block = new Blockade(&terr3, &p1);
-    Airlift* airLi = new Airlift(&terr4, &p1, 3, &terr3);
-    Negotiate* negotiate = new Negotiate(&pl1,&pl2);
-
-    //Testing OrdersList
-    OrdersList oLs;
-    //Valid move
-    oLs.move(depl,0);
-    oLs.move(adv,0);
-    oLs.move(block,2);
-    cout << oLs << endl;
-
-    //Valid remove
-    oLs.remove(1);
-    cout << oLs << endl;
-
-    //Valid move
-    oLs.move(bomb,1);
-    oLs.move(airLi,2);
-    oLs.move(negotiate,1);
-
-    //Invalid move and remove
-    oLs.move(depl,9);
-    oLs.remove(8);
-    cout << oLs << endl;
-    //Copy constructor showcase
-    OrdersList oLs2(oLs);
-    cout << "This is the copy constructor: " << oLs2 << endl;
-
-    return 0;
+    delete pl1;
+    delete pl2;
+    delete terr1;
+    delete terr2;
+    delete terr3;
+    delete terr4;
+    delete terr5;
+    delete terr6;
 }
