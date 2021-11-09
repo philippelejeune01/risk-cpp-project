@@ -146,7 +146,7 @@ void OrdersList::remove(int index)
 //addOrder method for adding an order in the OrdersList
 void OrdersList:: addOrder(Order* order)
 {
-    if (order.getOrderType() == "Deploy")
+    if (order->getOrderType() == "Deploy")
     {
         ordList.push_front(order);
     }
@@ -217,6 +217,10 @@ Territory* Order::getTargetTerritory() const
 vector<Territory*>* Order::getOwnedTerritories() const
 {
     return ownedTerritories;
+}
+string Order::getOrderType() const
+{
+    return orderType;
 }
 void Order:: setTargetTerritory(Territory* newTarTerr)
 {
@@ -952,7 +956,7 @@ void Airlift::execute()
     if (validate())
     {
 
-        cout << "Airlift deployment! From " << *(sourceTerritory) << " To " << *(targetTerritory) << endl;
+        cout << "Airlift deployment of " << nMovedArmies << " armies! From " << *(sourceTerritory) << " To " << *(targetTerritory) << endl;
         targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()+nMovedArmies);
         sourceTerritory->setAmountOfArmies(sourceTerritory->getAmountOfArmies()-nMovedArmies);
     }
