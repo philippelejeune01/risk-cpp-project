@@ -163,6 +163,13 @@ void Map::setEndOfContinents(const int* arr)
     for (int i = 1; i <= numOfContinents; i++)
         endofContinents[i]=arr[i];
 }
+bool Map::doesPlayerOwnAllTerritories(int cnum,Player* player)
+{
+    for (int i = endofContinents[cnum-1]+1 ; i<= endofContinents[cnum];i++)
+        if (territories.at(i)->ownedplayer != player)
+            return false;
+    return true;
+}
 void Map::setNumberOfTerritories(int n)
 {
     numOfTerritories = n;

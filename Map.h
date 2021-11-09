@@ -44,6 +44,7 @@ class Map
 
         void setAdjacency(vector<int>* adjacency);
         void setTerritories(vector<Territory*> territories);
+        bool doesPlayerOwnAllTerritories(int cnum,Player* player);
         vector <Territory*> getTerritories() const;
         void setNumberOfContinents(int n);
         void setNumberOfTerritories(int n);
