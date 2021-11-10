@@ -1,4 +1,7 @@
 #include "Player.h"
+#include "Card.h"
+#include "Orders.h"
+#include "Map.h"
 #include <time.h>
 #include <iostream>
 #include <set>
@@ -14,6 +17,7 @@ Player::Player()
     name = "Player Default";
     hand = new Hand();
     ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
 //1 arg Constructor
 Player::Player(string newName)
@@ -21,6 +25,7 @@ Player::Player(string newName)
     name = newName;
     hand = new Hand();
     ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
 //2 arg Constructors
 Player::Player(string newName, OrdersList* ordList)
@@ -28,12 +33,14 @@ Player::Player(string newName, OrdersList* ordList)
     name = newName;
     hand = new Hand();
     ordersList = ordList;
+    flagConqTerr = new bool(false);
 }
 Player::Player(string newName, Hand* aHand)
 {
     name = newName;
     hand = aHand;
     ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
 Player::Player(string newName, vector <Territory*> &terr)
 {
@@ -41,6 +48,7 @@ Player::Player(string newName, vector <Territory*> &terr)
     territories = terr;
     hand = new Hand();
     ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
 
 //3 arg Constructors
@@ -49,6 +57,7 @@ Player::Player(string newName, Hand* aHand, OrdersList* ordList)
     name = newName;
     hand = aHand;
     ordersList = ordList;
+    flagConqTerr = new bool(false);
 }
 Player::Player(string newName, vector <Territory*> &terr, OrdersList* ordList)
 {
@@ -56,6 +65,7 @@ Player::Player(string newName, vector <Territory*> &terr, OrdersList* ordList)
     territories = terr;
     hand = new Hand();
     ordersList = ordList;
+    flagConqTerr = new bool(false);
 }
 Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
 {
@@ -63,6 +73,7 @@ Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
     territories = terr;
     hand = aHand;
     ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
 
 //Copy Constructor
@@ -72,6 +83,7 @@ Player::Player(const Player& pl)
     territories = pl.territories;
     hand = pl.hand;
     ordersList = pl.ordersList;
+    flagConqTerr = pl.flagConqTerr;
 }
 
 //Destructor
@@ -89,6 +101,8 @@ Player::~Player()
     hand = NULL;
     delete ordersList;
     ordersList = NULL;
+    delete flagConqTerr;
+    flagConqTerr = NULL;
 }
 
 //Assignment operator overload
@@ -98,6 +112,7 @@ Player& Player :: operator = (const Player& pl)
     this->territories = pl.territories;
     this->hand = pl.hand;
     this->ordersList = pl.ordersList;
+    this->flagConqTerr = pl.flagConqTerr;
     return *this;
 }
 
@@ -156,6 +171,16 @@ int Player::getPool() const
     return rPool;
 }
 
+bool Player::getFlagConqTerr() const
+{
+    return *flagConqTerr;
+}
+//This is a method for testing purposes.
+vector<Territory*>* Player::getPointerToTerritories()
+{
+     return &territories;
+}
+
 void Player::setPool(int numberOfArmies)
 {
     rPool = numberOfArmies;
@@ -178,6 +203,11 @@ void Player::setHand(Hand* h)
     this->hand = h;
 }
 
+void Player::setFlagConqTerr(bool flag)
+{
+    *flagConqTerr = flag;
+}
+
 void Player::addToPool(int numberOfArmies)
 {
     rPool += numberOfArmies;
@@ -195,6 +225,7 @@ bool Player::removeFromPool(int numberOfArmies)
         return false; //Operation not successful
     }
 }
+
 
 //Required Methods
 
@@ -314,4 +345,3 @@ void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> 
     }
 
 }
-
