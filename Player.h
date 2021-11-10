@@ -8,7 +8,6 @@
 #include <vector>
 #include <string>
 #include <list>
-#include <set>
 
 using namespace std;
 
@@ -25,7 +24,7 @@ class Player
         ~Player();
         friend ostream& operator <<(ostream &strm, const Player &aPlayer);
         //Required Methods
-        vector <Territory*>* toDefend();
+        vector <Territory*> toDefend();
         vector <Territory*> toAttack();
         void issueOrder(string ordType, Territory* targetTerritory, int nOfArmies);
         void issueOrder(string ordType, Territory* targetTerritory, int nOfArmies, Territory* sourceTerr);
@@ -34,22 +33,18 @@ class Player
         //Accesors and Mutators
         string getName();
         void setName(string newName);
-        vector <Territory*>* getTerritories();
+        vector <Territory*> getTerritories() const;
         void setTerritories(vector <Territory*> &terr);
         Hand* getHand() const;
         void setHand(Hand* h);
         OrdersList* getOrderList() const;
         void setOrderList(OrdersList* aOrdersList);
         static int getPlayerCount();
-        bool getFlagConqTerr();
 
 
     private:
         string name;
         static int playerCount;
-        //flagConqTerr is
-        bool* flagConqTerr;
-
         //The player's territories
         vector <Territory*> territories;
         Hand* hand;

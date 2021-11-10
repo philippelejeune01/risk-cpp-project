@@ -1,7 +1,4 @@
 #include "Player.h"
-#include "Card.h"
-#include "Orders.h"
-#include "Map.h"
 #include <time.h>
 #include <iostream>
 #include <set>
@@ -18,7 +15,6 @@ Player::Player()
     playerCount++;
     OrdersList alist = OrdersList();
     ordersList = &alist;
-    flagConqTerr = new bool(false);
 }
 //1 arg Constructor
 Player::Player(string newName)
@@ -27,7 +23,6 @@ Player::Player(string newName)
     playerCount++;
     OrdersList alist = OrdersList();
     ordersList = &alist;
-    flagConqTerr = new bool(false);
 }
 //2 arg Constructor
 Player::Player(string newName, Hand* aHand)
@@ -37,7 +32,6 @@ Player::Player(string newName, Hand* aHand)
     hand = aHand;
     OrdersList alist = OrdersList();
     ordersList = &alist;
-    flagConqTerr = new bool(false);
 }
 
 //2 arg Constructor
@@ -48,7 +42,6 @@ Player::Player(string newName, vector <Territory*> &terr)
     territories = terr;
     OrdersList alist = OrdersList();
     ordersList = &alist;
-    flagConqTerr = new bool(false);
 }
 
 //3 arg Constructor
@@ -60,7 +53,6 @@ Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
     hand = aHand;
     OrdersList alist = OrdersList();
     ordersList = &alist;
-    flagConqTerr = new bool(false);
 }
 
 //Copy Constructor
@@ -71,7 +63,6 @@ Player::Player(const Player& pl)
     territories = pl.territories;
     hand = pl.hand;
     ordersList = pl.ordersList;
-    flagConqTerr = new bool(false);
 }
 
 //Destructor
@@ -83,8 +74,6 @@ Player::~Player()
     hand = NULL;
     delete ordersList;
     ordersList = NULL;
-    delete flagConqTerr;
-    flagConqTerr = NULL;
 }
 
 //Assignment operator overload
@@ -102,10 +91,10 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
 {
     strm << "Player named \"" << aPlayer.name << "\" has the following:";
 
-    if(!aPlayer.territories.empty()){
+    if(!aPlayer.getTerritories().empty()){
         strm << "\nTerritories: ";
 
-        for(auto x: aPlayer.territories)
+        for(auto x: aPlayer.getTerritories())
         {
             strm << x->getName() << " ";
         }
@@ -133,9 +122,9 @@ int Player::playerCount = 0;
 
 //Accessors
 
-vector <Territory*>* Player::getTerritories()
+vector <Territory*> Player::getTerritories() const
 {
-    return &territories;
+    return territories;
 }
 
 Hand* Player::getHand() const
@@ -169,10 +158,7 @@ void Player::setHand(Hand* h)
 {
     this->hand = h;
 }
-bool Player::getFlagConqTerr()
-{
-    return *flagConqTerr;
-}
+
 //Required Methods
 
 //Returns Territories which are adjacent and not the current player's territory
@@ -206,7 +192,7 @@ vector <Territory*> Player::toAttack()
 }
 
 //Returns the territories owned by the player.
-vector <Territory*>* Player::toDefend()
+vector <Territory*> Player::toDefend()
 {
     return this->getTerritories();
 }
@@ -270,6 +256,7 @@ void Player::issueOrder(string ordType, Player* targetPlayer)
 //Splits the list of all territories into almost equal or equal parts depending on the number of players.
 void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers, int playerCount)
 {
+
     int territoryCount = allTerritories.size();
 
     int subLength = territoryCount / playerCount;
