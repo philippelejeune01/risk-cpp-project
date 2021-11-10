@@ -1,15 +1,14 @@
 /*This is the source file: GameEngine.cpp.
 It contains all the function definitions for the function declarations in the GameEngine.h file.*/
-
+#include "GameEngine.h"
+#include "Map.h"
 #include <string>
 #include <iostream>
+#include <list>
+#include <fstream>
 #include <algorithm>
 #include <random>
 using namespace std;
-#include "GameEngine.h"
-#include "Map.h"
-
-//Default compiler-generated destructor is enough since no GameEngine variables are pointers.
 
 /**
 *Default constructor that creates a GameEngine object, which state is initialized to "start" (the starting position of the game).
@@ -19,37 +18,24 @@ GameEngine::GameEngine()
     state = "start";
 }
 /**
-*Parameterized constructor that creates a GameEngine object, which state is initialized to the passed state as a parameter.
+*Parameterized constructor that creates a GameEngine object, which state is initialized to the passed state as a parameter
+*and CommandProcessor object is initialized to the passed command processor object as a parameter.
 *@param state is a string that corresponds to the desired state of the GameEngine object.
+*@param cp is a CommandProcessor object that corresponds to the desired CommandProcessor object of the GameEngine object.
 */
-GameEngine::GameEngine(string state)
+GameEngine::GameEngine(string state, CommandProcessor* cp)
 {
-    state = state;
-}
-//Since there are no variables that are pointers, a shallow copy can be used.
-/**
-*Copy constructor that creates a GameEngine object, which is a copy of the passed object.
-*@param ge is a constant reference to its own class type (GameEngine class in this case).
-*/
-GameEngine::GameEngine(const GameEngine& ge)
-{
-    this->state = ge.state;
+    this->state = state;
+    this->cp = new CommandProcessor(*cp);
+
 }
 /**
-*Overloaded assignment operator that replaces the contents of an exiting GameEngine object with the passed GameEngine object.
-*@param ge is a constant reference to its own class type (GameEngine class in this case).
-*@return the current object by reference.
-*/
-GameEngine& GameEngine::operator = (const GameEngine& ge)
-{
-    this->state = ge.state;
-    return *this;
-}
-/**
-*Destructor that takes care of deallocating pointers properly.
+*Destructor that deletes the CommandProcessor object of the GameEngine object and then initializes it to NULL.
 */
 GameEngine::~GameEngine()
 {
+    delete cp;
+    cp = NULL;
     //This deletes all the Player objects stored in the vector
     for(vector<Player*>::iterator it = players.begin(); it != players.end(); ++it)
     {
@@ -64,7 +50,26 @@ GameEngine::~GameEngine()
     maploader = NULL;
     delete _map;
     _map = NULL;
-
+}
+/**
+*Copy constructor that creates a GameEngine object, which is a copy of the passed object.
+*@param ge is a constant reference to its own class type (GameEngine class in this case).
+*/
+GameEngine::GameEngine(const GameEngine& ge)
+{
+    this->state = ge.state;
+    this->cp = new CommandProcessor(*(ge.cp));
+}
+/**
+*Overloaded assignment operator that replaces the contents of an exiting GameEngine object with the passed GameEngine object.
+*@param ge is a constant reference to its own class type (GameEngine class in this case).
+*@return the current object by reference.
+*/
+GameEngine& GameEngine::operator = (const GameEngine& ge)
+{
+    this->state = ge.state;
+    this->cp = new CommandProcessor(*(ge.cp));
+    return *this;
 }
 /**
 *Getter method that returns the current state of a GameEngine object.
@@ -75,12 +80,28 @@ std::string GameEngine::getState()
     return state;
 }
 /**
+*Getter method that returns the current CommandProcessor object of a GameEngine object.
+*@return a CommandProcessor object that corresponds to the current CommandProcessor object of a GameEngine object.
+*/
+CommandProcessor* GameEngine::getCommandProcessor()
+{
+    return cp;
+}
+/**
 *Setter method that sets the state of a GameEngine object.
 *@param newState is a string that corresponds to the new state of a GameEngine object.
 */
 void GameEngine::setState(string newState)
 {
     state = newState;
+}
+/**
+*Setter method that sets the CommandProcessor object of a GameEngine object.
+*@param newCp is a CommandProcessor object that corresponds to the new CommandProcessor object of a GameEngine object.
+*/
+void GameEngine::setCommandProcessor(CommandProcessor* newCp)
+{
+    cp = newCp;
 }
 /**
 *Transition method that transitions from the current state of a GameEngine object to the next one.
@@ -114,84 +135,14 @@ void GameEngine::randomizePlayOrder()
     shuffle(begin(players), end(players), randEngine);
 }
 /**
-*PassedCommand method that checks if the passed command is a valid one for the current state,
+*validate method that checks if the passed command is a valid one for the current state,
 *effectuates the transition if the command is valid and outputs the necessary information about the
 *command, current state, new state if tansition is successfully done or displays an error message if
 *the passed command is invalid.
 *@param command is a string that corresponds to the command passed.
+*@return a boolean depending whether the command is valid or not in the current game state.
 */
-void GameEngine::startupPhase()
-{
-    string command;
-    Player* tempPlayer; // Temporary player pointer
-    do
-    {
-        cout << "Please enter a valid command:" << endl;
-        //user inputs a string using the keyboard that is stored in the string command.
-        std::getline(cin,command);
-        if (passedCommand(command))
-        {
-            Player* tempPlayer; //Temporary player pointer
-            if((getState() == "start"||getState()=="map loaded") && (command.find("loadmap") !=string::npos))
-            {
-                string filename=command.substr(command.find("loadmap")+9);
-                filename = filename.substr(0,filename.size()-1);
-                maploader = new MapLoader(filename);
-                _map = new Map(maploader->Load());
-                cout<<*_map<<endl;
-            }
-            if (command == "validatemap")
-                if (!_map->validate())
-                {
-                    cout<<"Map is invalid, returning to start state"<<endl;
-                    transition("start");
-                }
-            if (command.find("addplayer") !=string::npos)
-            {
-                if (players.size()+1>MAXPLAYERS)
-                {
-                    cout<<"Maxiumum amount of players reached, failed to add this player"<<endl;
-                    continue;
-                }
-                string playername=command.substr(command.find("addplayer")+11);
-                playername = playername.substr(0,playername.size()-1);
-                tempPlayer = new Player(playername);
-                players.push_back(tempPlayer);
-            }
-            if (command =="gamestart")
-            {
-                if (players.size()<MINPLAYERS)
-                {
-                    cout<<"Not enough players! please enter at least one more player"<<endl;
-                    transition("players added");
-                    continue;
-                }
-                // Distribute all territories to players in almost equald parts depending on the number of players
-                setPlayersTerritories(_map->getTerritories(), players);
-
-                //Randomize the order of play
-                randomizePlayOrder();
-
-                initializeDeck(); //Creating the Deck
-                for(int i = 0; i < players.size(); i++)
-                {
-                    //Give 50 initial armies to each player's respective reinforcement pool
-                    players.at(i)->setPool(50);
-                    //Each player draws 2 initial cards from the deck
-                    players.at(i)->getHand()->addCard(_deck->draw());
-                    players.at(i)->getHand()->addCard(_deck->draw());
-
-                    cout << *players.at(i) << endl;
-                }
-            }
-        }
-    }
-    while (!((command == "end") && (getState() == "win")));
-
-    delete tempPlayer;
-    tempPlayer = NULL;
-}
-bool GameEngine::passedCommand(string command)
+bool GameEngine::validate(string command)
 {
     if (command=="reset")
     {
@@ -201,97 +152,175 @@ bool GameEngine::passedCommand(string command)
     }
     if((getState() == "start") && (command.find("loadmap") !=string::npos))
     {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("map loaded");
+        cout << "\nThe entered command " << command << " is valid for state " << getState();
+        transition("maploaded");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "map loaded") && (command.find("loadmap") !=string::npos))
+    if((getState() == "maploaded") && (command.find("loadmap") !=string::npos))
+    {
+        cout << "\nThe entered command " << command << " is valid for state " << getState()
+            << ", the game remains in the state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+    if((getState() == "maploaded") && (command == "validatemap"))
+    {
+        cout << "\nThe entered command " << command << " is valid for state " << getState();
+        transition("mapvalidated");
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+    if((getState() == "mapvalidated") && (command.find("addplayer") !=string::npos))
+    {
+        cout << "\nThe entered command " << command << " is valid for state " << getState();
+        transition("playersadded");
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+    if((getState() == "playersadded") && (command.find("addplayer") !=string::npos))
+    {
+        cout << "\nThe entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
+            << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+    if((getState() == "playersadded") && (command == "gamestart"))
+    {
+        cout << "\nThe entered command " << command << " is valid for state " << getState();
+        transition("win");
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+    if((getState() == "win") && (command == "replay"))
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("the game will restart");
+        cout << "The entered command " << command << " is valid for state " << getState();
+        transition("start");
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".";
+        cout << "The game starts again!\n" << endl;
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+    if((getState() == "win") && (command == "quit"))
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("the game ends");
+        cout << "The entered command " << command << " is valid for state " << getState() << ", therefore the game is "
+            << "successfully terminated.\n";
+        cout<<"--------------------------"<<endl;
+    }
+    else
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("no effect since this command is not valid in current state");
+        cout << "\nThe entered command " << command << " is invalid, please try again and enter a valid command:\n"<< endl;
+        return false;
+    }
+}
+/**
+*PassedCommand method that checks if the passed command is a valid one for the current state,
+*effectuates the transition if the command is valid and outputs the necessary information about the
+*command, current state, new state if tansition is successfully done or displays an error message if
+*the passed command is invalid.
+*@param command is a string that corresponds to the command passed.
+*/
+bool GameEngine::passedCommand()
+{
+    string command = getCommandProcessor()->getCommand();
+    if (command=="reset")
+    {
+        cout<<"restarting the game"<<endl;
+        transition("start");
+        return true;
+    }
+    if((getState() == "start") && (command.find("loadmap") !=string::npos))
+    {
+        cout << "The entered command " << command << " is valid for state " << getState();
+        transition("maploaded");
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+    if((getState() == "maploaded") && (command.find("loadmap") !=string::npos))
     {
         cout << "The entered command " << command << " is valid for state " << getState()
             << ", the game remains in the state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "map loaded") && (command == "validatemap"))
+    if((getState() == "maploaded") && (command == "validatemap"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
-        transition("map validated");
+        transition("mapvalidated");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "map validated") && (command.find("addplayer") !=string::npos))
+    if((getState() == "mapvalidated") && (command.find("addplayer") !=string::npos))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
-        transition("players added");
+        transition("playersadded");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "players added") && (command.find("addplayer") !=string::npos))
+    if((getState() == "playersadded") && (command.find("addplayer") !=string::npos))
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "players added") && (command == "assigncountries"))
+    if((getState() == "playersadded") && (command == "gamestart"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
-        transition("assign reinforcement");
+        transition("assignreinforcement");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "players added") && (command == "gamestart"))
+    if((getState() == "assignreinforcement") && (command == "issueorder"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
-        transition("assign reinforcement");
+        transition("issueorders");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "assign reinforcement") && (command == "issueorder"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("issue orders");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "issue orders") && (command == "issueorder"))
+    if((getState() == "issueorders") && (command == "issueorder"))
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "issue orders") && (command == "endissueorders"))
+    if((getState() == "issueorders") && (command == "issueordersend"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
-        transition("execute orders");
+        transition("executeorders");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "execute orders") && (command == "execorder"))
+    if((getState() == "executeorders") && (command == "execorder"))
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "execute orders") && (command == "endexecorders"))
+    if((getState() == "executeorders") && (command == "endexecorders"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
-        transition("assign reinforcement");
+        transition("assignreinforcement");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "execute orders") && (command == "win"))
+    if((getState() == "executeorders") && (command == "win"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("win");
@@ -300,7 +329,7 @@ bool GameEngine::passedCommand(string command)
         return true;
     }
 
-    if((getState() == "win") && (command == "play"))
+    if((getState() == "win") && (command == "replay"))
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("start");
@@ -309,25 +338,105 @@ bool GameEngine::passedCommand(string command)
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "win") && (command == "end"))
+    if((getState() == "win") && (command == "quit"))
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", therefore the game is "
             << "successfully terminated.\n";
         cout<<"--------------------------"<<endl;
-        transition("end");
     }
     cout << "The entered command " << command << " is invalid, please try again and enter a valid command:\n"<< endl;
     return false;
 }
+void GameEngine::startupPhase()
+{
+    Player* tempPlayer; // Temporary player pointer
+    string command;
+    do
+    {
+        command = getCommandProcessor()->getCommand();
+        if (validate(command))
+        {
+            if((getState() == "start"||getState()=="maploaded") && (command.find("loadmap") !=string::npos))
+            {
+                string filename=command.substr(command.find("loadmap")+9);
+                filename = filename.substr(0,filename.size()-1);
+                maploader = new MapLoader(filename);
+                _map = new Map(maploader->Load());
+                cout<<*_map<<endl;
+                getCommandProcessor()->getCommandList().back()->saveEffect("map " + filename + " successfully loaded");
+            }
+            if (command == "validatemap")
+            {
+                if (!_map->validate())
+                {
+                    cout<<"Map is invalid, returning to start state"<<endl;
+                    transition("start");
+                    getCommandProcessor()->getCommandList().back()->saveEffect("map is invalid, returning to the start state");
+                }
+                else
+                    getCommandProcessor()->getCommandList().back()->saveEffect("map is successfully validated");
+            }
+            if (command.find("addplayer") !=string::npos)
+            {
+                if (players.size()+1>MAXPLAYERS)
+                {
+                    cout<<"Maxiumum number of players reached, failed to add this player"<<endl;
+                    getCommandProcessor()->getCommandList().back()->saveEffect("max number of players reached, failed to add this player");
+                    continue;
+                }
+                string playername=command.substr(command.find("addplayer")+11);
+                playername = playername.substr(0,playername.size()-1);
+                tempPlayer = new Player(playername);
+                players.push_back(tempPlayer);
+                getCommandProcessor()->getCommandList().back()->saveEffect("player " + playername + " successfully added");
+            }
+            if (command =="gamestart")
+            {
+                if (players.size()<MINPLAYERS)
+                {
+                    cout<<"Not enough players! please enter at least one more player"<<endl;
+                    getCommandProcessor()->getCommandList().back()->saveEffect("Not enough players! At least one more player is needed");
+                    transition("playersadded");
+                    continue;
+                }
+                else
+                {
+                    // Distribute all territories to players in almost equald parts depending on the number of players
+                    setPlayersTerritories(_map->getTerritories(), players);
+
+                    //Randomize the order of play
+                    randomizePlayOrder();
+
+                    initializeDeck(); //Creating the Deck
+                    for(int i = 0; i < players.size(); i++)
+                    {
+                        //Give 50 initial armies to each player's respective reinforcement pool
+                        players.at(i)->setPool(50);
+                        //Each player draws 2 initial cards from the deck
+                        players.at(i)->getHand()->addCard(_deck->draw());
+                        players.at(i)->getHand()->addCard(_deck->draw());
+
+                        cout << *players.at(i) << endl;
+                    }
+                    getCommandProcessor()->getCommandList().back()->saveEffect("main loop of the game is successfully entered");
+                }
+            }
+        }
+    }
+    while (!((command == "quit") && (getState() == "win")));
+    delete tempPlayer;
+    tempPlayer = NULL;
+}
+
 /**
 *Overloaded stream insertion operator that outputs the current state of the GameEngine object.
 *@param out is a reference to the ostream class type.
 *@param ge is a reference to the GameEngine class type.
 */
-std::ostream & operator << (std::ostream &out, const GameEngine &ge)
+std::ostream &operator << (std::ostream &out, const GameEngine &ge)
 {
-    out << "The state of the game is: ";
-    out << ge.state << endl;
+    out << "The state of the game is: "
+    << ge.state << endl;
     return out;
 }
 /**
@@ -335,7 +444,7 @@ std::ostream & operator << (std::ostream &out, const GameEngine &ge)
 *@param in is a reference to the ostream class type.
 *@param ge is a reference to the GameEngine class type.
 */
-std::istream & operator >> (std::istream &in,  GameEngine &ge)
+std::istream &operator >> (std::istream &in,  GameEngine &ge)
 {
     cout << "Enter the state of the game: ";
     in >> ge.state;
