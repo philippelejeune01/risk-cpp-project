@@ -1,4 +1,3 @@
-
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Orders.h"
@@ -44,6 +43,10 @@ class Player
         void setHand(Hand* h);
         OrdersList* getOrderList() const;
         void setOrderList(OrdersList* aOrdersList);
+        bool getFlagConqTerr() const;
+        void setFlagConqTerr(bool flag);
+        //This method is for testing purposes.
+        vector<Territory*>* getPointerToTerritories();
         int getPool() const;
         void setPool(int numberOfArmies);
         void addToPool(int numberOfArmies);
@@ -57,10 +60,10 @@ class Player
         vector <Territory*> territories;
         Hand* hand;
         OrdersList* ordersList;
-
+        //bool pointer that determines if the player instance has conquered at least one territory
+        bool* flagConqTerr;
 };
 //Global function to assign territories to player's
 void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers);
-
 
 #endif // PLAYER_H

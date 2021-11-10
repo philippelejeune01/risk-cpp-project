@@ -3,6 +3,7 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <set>
 #include "Map.h"
 using std::string;
 //For storing elements
@@ -32,14 +33,26 @@ public:
     //duplicate method
     virtual Order* duplicate()=0;
     //Functions every subclasses has to implement
-    virtual string getOrderType() const;
     virtual bool validate()=0;
-    virtual void execute();
+    virtual void execute()=0;
+    string getOrderType() const;
+    static void setUpPlayerCannotAttackList();
+    static void clearPlayerCannotAttackList();
+
 protected:
+    Order(Territory* targetTerr, vector<Territory*>* ownedTerr, string oType);
     //targetTerritory refers to the territory affected by the order
     Territory* targetTerritory;
     //ownedTerritories refers to the list of territories a player owns
     vector<Territory*>* ownedTerritories;
+
+    /*playersCannotAttackList is a dynamically allocated multidimensional array that
+    stores pair of Player pointers. This indicates which players cannot attack each other
+    for the round.
+    */
+    static Player*** playersCannotAttackList;
+    static int sizeOfPlCantAttList;
+    static int indexOfEnd;
     string orderType;
 private:
     virtual string doPrint() const;
@@ -57,18 +70,17 @@ public:
     //Destructor
     ~OrdersList();
     friend ostream& operator <<(ostream &strm, const OrdersList &ordLs);
-    list<Order*> const & getOrdList() const;
+
+    list<Order*> getOrdList() const;
     //2 required methods
     void move(Order* order, int index);
     void remove(int index);
     void addOrder(Order* order);
-
+    void executeFirstOrder();
 private:
     //Is temporarily an array
     list<Order*> ordList;
 };
-
-
 
 //Order's subclasses.
 //Deploy validates only if the target territory is owned by the calling player
@@ -83,7 +95,6 @@ public:
     ~Deploy();
     friend ostream& operator <<(ostream &strm, const Deploy &depl);
     //Setter and Getter
-    string getOrderType() const;
     void setNAddedArmies(int nAA);
     int getNAddedArmies();
     //duplicate method
@@ -94,7 +105,6 @@ public:
 private:
     //nAddedArmies refers to the amount of armies to be deployed to the targetted territory
     int nAddedArmies;
-    string orderType;
     string doPrint() const;
 };
 
@@ -104,14 +114,17 @@ public:
     //Constructors, Destructors, operator overload
     Advance();
     Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr);
+    Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies,
+             Territory* sourceTerr,vector<Territory*>* enemyTerrs, bool* flagConq);
     Advance(const Advance& adv);
     Advance& operator = (const Advance& adv);
     ~Advance();
     friend ostream& operator <<(ostream &strm, const Advance &adv);
     //Setters and Getters
-    string getOrderType() const;
     void setNOfArmies(int nOA);
     void setSourceTerritory(Territory* sourceTerr);
+    void setFlagConqTerr(bool* flag);
+    void setEnemyTerritories(vector<Territory*>* enmyTerrs);
     int getNOfArmies();
     Territory* getSourceTerritory();
     //duplicate method
@@ -124,8 +137,11 @@ private:
     int nMovedArmies;
     //sourceTerritory refers to the territory where the armies are coming from
     Territory* sourceTerritory;
+    //enemyTerritories refers to the vector of territories of which the targetTerritory belongs to
+    //enemyTerritories can point to the same memory location of ownedTerritories
+    vector<Territory*>* enemyTerritories;
+    bool* flagConq;
     string doPrint() const;
-    string orderType;
 };
 
 //Bomb validates if the target territory is not owned by the calling player
@@ -136,7 +152,6 @@ public:
     Bomb(const Bomb& bomb);
     Bomb& operator = (const Bomb& bomb);
     ~Bomb();
-    string getOrderType() const;
     //duplicate method
     Order* duplicate();
     //Functions every subclasses has to override
@@ -145,7 +160,6 @@ public:
     friend ostream& operator <<(ostream &strm, const Bomb &bomb);
 private:
     string doPrint() const;
-    string orderType;
 };
 
 //Blockade validates if the target territory is owned by the calling player
@@ -153,19 +167,21 @@ class Blockade: public Order{
 public:
     Blockade();
     Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr);
+    Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr, Player* neutralPl);
     Blockade(const Blockade& block);
     Blockade& operator = (const Blockade& block);
     ~Blockade();
-    string getOrderType() const;
     //duplicate method
     Order* duplicate();
     //Functions every subclasses has to override
     bool validate();
     void execute();
     friend ostream& operator <<(ostream &strm, const Blockade &block);
+    Player* getNeutralPlayer();
+    void setNeutralPlayer(Player* nPl);
 private:
     string doPrint() const;
-    string orderType;
+    Player* neutralPlayer;
 };
 
 //Airlift validates if the source territory is owned by the calling player
@@ -178,7 +194,6 @@ public:
     ~Airlift();
     friend ostream& operator <<(ostream &strm, const Airlift &airL);
     //Setters and Getters
-    string getOrderType() const;
     void setNOfArmies(int nOA);
     void setSourceTerritory(Territory* sourceTerr);
     int getNOfArmies();
@@ -194,7 +209,6 @@ private:
     //sourceTerritory refersr to the territory where the armies move from
     Territory* sourceTerritory;
     string doPrint() const;
-    string orderType;
 };
 
 //Negotiate validates if the target player is not already in a cease fire with the calling player
@@ -207,7 +221,6 @@ public:
     ~Negotiate();
     friend ostream& operator <<(ostream &strm, const Negotiate &negotiate);
     //Setter and Getter
-    string getOrderType() const;
     void setCallingPlayer(Player* cPlayer);
     void setTargetPlayer(Player* tPlayer);
     Player* getCallingPlayer();
@@ -223,7 +236,7 @@ private:
     //targetPlayer refers to the targetted player
     Player* targetPlayer;
     string doPrint() const;
-    string orderType;
 };
+
 
 #endif // ORDERS_H_INCLUDED
