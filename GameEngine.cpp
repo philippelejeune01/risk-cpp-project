@@ -341,3 +341,22 @@ std::istream & operator >> (std::istream &in,  GameEngine &ge)
     in >> ge.state;
     return in;
 }
+
+void GameEngine::reinforcementPhase(){
+    for (auto x : players){
+        int numberOfArmies = (x->getTerritories().size())/3;
+        int i;
+        int *continent_ptr = _map->getEndOfContinents();
+        for(i = 1;i<_map->getNumberOfContinents();i++){
+            if(_map->doesPlayerOwnAllTerritories(i, x)) {
+                numberOfArmies += *continent_ptr;
+            }
+            continent_ptr++;
+        }
+        if(numberOfArmies<3){
+            numberOfArmies = 3;
+        }
+        x->setPool(numberOfArmies);
+        cout << numberOfArmies << endl;
+    }
+}

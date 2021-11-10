@@ -41,7 +41,8 @@ Map::Map(const Map& m)
 }
 Map::Map()
 {
-
+    numOfContinents = 0;
+    numOfTerritories = 0;
 }
 //assignment operator
 Map& Map::operator=(const Map& m)
@@ -344,6 +345,10 @@ Map MapLoader::Load()
 
     return m;
 }
-
-
+int Map::getNumberOfContinents() {
+    return numOfContinents;
+}
+int* Map::getEndOfContinents() {
+    return endofContinents;
+}
 
