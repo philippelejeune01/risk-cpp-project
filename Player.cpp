@@ -1,4 +1,7 @@
 #include "Player.h"
+#include "Card.h"
+#include "Orders.h"
+#include "Map.h"
 #include <time.h>
 #include <iostream>
 #include <set>
@@ -12,68 +15,94 @@ using namespace std;
 Player::Player()
 {
     name = "Player Default";
-    playerCount++;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
+    hand = new Hand();
+    ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
 //1 arg Constructor
 Player::Player(string newName)
 {
     name = newName;
-    playerCount++;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
+    hand = new Hand();
+    ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
-//2 arg Constructor
+//2 arg Constructors
+Player::Player(string newName, OrdersList* ordList)
+{
+    name = newName;
+    hand = new Hand();
+    ordersList = ordList;
+    flagConqTerr = new bool(false);
+}
 Player::Player(string newName, Hand* aHand)
 {
     name = newName;
-    playerCount++;
     hand = aHand;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
+    ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
-
-//2 arg Constructor
 Player::Player(string newName, vector <Territory*> &terr)
 {
     name = newName;
-    playerCount++;
     territories = terr;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
+    hand = new Hand();
+    ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
 
-//3 arg Constructor
+//3 arg Constructors
+Player::Player(string newName, Hand* aHand, OrdersList* ordList)
+{
+    name = newName;
+    hand = aHand;
+    ordersList = ordList;
+    flagConqTerr = new bool(false);
+}
+Player::Player(string newName, vector <Territory*> &terr, OrdersList* ordList)
+{
+    name = newName;
+    territories = terr;
+    hand = new Hand();
+    ordersList = ordList;
+    flagConqTerr = new bool(false);
+}
 Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
 {
     name = newName;
-    playerCount++;
     territories = terr;
     hand = aHand;
-    OrdersList alist = OrdersList();
-    ordersList = &alist;
+    ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
 }
 
 //Copy Constructor
 Player::Player(const Player& pl)
 {
     name = pl.name;
-    playerCount++;
     territories = pl.territories;
     hand = pl.hand;
     ordersList = pl.ordersList;
+    flagConqTerr = pl.flagConqTerr;
 }
 
 //Destructor
 Player::~Player()
 {
-    playerCount--;
+    //This deletes all the Territory objects stored in the vector
+    for(vector<Territory*>::iterator it = territories.begin(); it != territories.end(); ++it)
+    {
+        delete *it;
+    }
+    //This erases all the pointers stored in the vector
     territories.clear();
+
     delete hand;
     hand = NULL;
     delete ordersList;
     ordersList = NULL;
+    delete flagConqTerr;
+    flagConqTerr = NULL;
 }
 
 //Assignment operator overload
@@ -83,13 +112,14 @@ Player& Player :: operator = (const Player& pl)
     this->territories = pl.territories;
     this->hand = pl.hand;
     this->ordersList = pl.ordersList;
+    this->flagConqTerr = pl.flagConqTerr;
     return *this;
 }
 
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Player &aPlayer)
 {
-    strm << "Player named \"" << aPlayer.name << "\" has the following:";
+    strm << "Player named \"" << aPlayer.name << "\"";
 
     if(!aPlayer.getTerritories().empty()){
         strm << "\nTerritories: ";
@@ -99,26 +129,25 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
             strm << x->getName() << " ";
         }
     }else{
-        strm << "\nTerritories: No Territories";
+        strm << "\nTerritories: No Territories\n";
     }
 
-    if(aPlayer.getOrderList()->getOrdList().size() < 10000){
-        strm << "\nOrders: " << aPlayer.getOrderList();
+    if(!aPlayer.getOrderList()->getOrdList().empty()){
+        strm << "\nOrders: " << *aPlayer.getOrderList();
     }else{
-        strm << "\nOrders: No Orders";
+        strm << "\nOrders: No Orders\n";
     }
 
-    if(aPlayer.getHand()->getCards()->size() < 10000){
-        strm << aPlayer.getHand();
+    if(!aPlayer.getHand()->getCards()->empty()){
+        strm << *aPlayer.getHand();
     }else{
-        strm << "Hand: No nHand";
+        strm << "Hand: No Hand\n";
     }
 
-    return strm << endl;
+    strm << "Player has " << aPlayer.getPool() << " armies in his reinforcement pool" <<endl;
+
+    return strm;
 }
-
-//Initializing the playerCount to 0
-int Player::playerCount = 0;
 
 //Accessors
 
@@ -137,9 +166,24 @@ OrdersList* Player::getOrderList() const
     return ordersList;
 }
 
-int Player::getPlayerCount()
+int Player::getPool() const
 {
-    return playerCount;
+    return rPool;
+}
+
+bool Player::getFlagConqTerr() const
+{
+    return *flagConqTerr;
+}
+//This is a method for testing purposes.
+vector<Territory*>* Player::getPointerToTerritories()
+{
+     return &territories;
+}
+
+void Player::setPool(int numberOfArmies)
+{
+    rPool = numberOfArmies;
 }
 
 //Mutators
@@ -158,6 +202,30 @@ void Player::setHand(Hand* h)
 {
     this->hand = h;
 }
+
+void Player::setFlagConqTerr(bool flag)
+{
+    *flagConqTerr = flag;
+}
+
+void Player::addToPool(int numberOfArmies)
+{
+    rPool += numberOfArmies;
+}
+
+bool Player::removeFromPool(int numberOfArmies)
+{
+    if((rPool - numberOfArmies) >= 0)
+    {
+        rPool -= numberOfArmies;
+        return true; //Operation successful
+    }
+    else
+    {
+        return false; //Operation not successful
+    }
+}
+
 
 //Required Methods
 
@@ -254,19 +322,20 @@ void Player::issueOrder(string ordType, Player* targetPlayer)
 }
 
 //Splits the list of all territories into almost equal or equal parts depending on the number of players.
-void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers, int playerCount)
+void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers)
 {
 
     int territoryCount = allTerritories.size();
+    int playerCount = allPlayers.size();
 
     int subLength = territoryCount / playerCount;
     int remainder = territoryCount % playerCount;
     int limit = min(playerCount, territoryCount);
 
-    int startIndex = 0;
+    int startIndex = 1; //Start index is one because the first element in allTerritories is always null
     int endIndex = 0;
 
-    for(int i = 0; i < limit; i++) {
+    for(int i = 0; i < limit; ++i) {
         endIndex += (remainder > 0) ? (subLength + !!(remainder--)) : subLength;
 
         vector <Territory*> subTerritories(allTerritories.begin() + startIndex, allTerritories.begin() + endIndex);
@@ -276,4 +345,3 @@ void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> 
     }
 
 }
-

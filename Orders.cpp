@@ -2,6 +2,9 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <stdlib.h>
+#include <time.h>
+#include "Map.h"
 using std::string;
 //For storing elements
 using std::list;
@@ -143,7 +146,22 @@ void OrdersList::remove(int index)
 //addOrder method for adding an order in the OrdersList
 void OrdersList:: addOrder(Order* order)
 {
-    ordList.push_back(order);
+    if (order->getOrderType() == "Deploy")
+    {
+        ordList.push_front(order);
+    }
+    else
+    {
+        ordList.push_back(order);
+    }
+
+}
+void OrdersList:: executeFirstOrder()
+{
+    Order* firstOrder = *ordList.begin();
+    firstOrder->execute();
+    delete firstOrder;
+    ordList.pop_front();
 }
 //Order Implementation
 //Default Constructor
@@ -180,6 +198,12 @@ ostream& operator <<(ostream &strm, const Order &ord)
 {
     return strm << ord.doPrint();
 }
+Order::Order(Territory* targetTerr, vector<Territory*>* ownedTerr, string oType)
+{
+    targetTerritory = targetTerr;
+    ownedTerritories = ownedTerr;
+    orderType = oType;
+}
 //doPrint method for the stream insertion operator of Order
 string Order::doPrint() const
 {
@@ -194,6 +218,10 @@ vector<Territory*>* Order::getOwnedTerritories() const
 {
     return ownedTerritories;
 }
+string Order::getOrderType() const
+{
+    return orderType;
+}
 void Order:: setTargetTerritory(Territory* newTarTerr)
 {
     targetTerritory = newTarTerr;
@@ -201,6 +229,27 @@ void Order:: setTargetTerritory(Territory* newTarTerr)
 void Order:: setOwnedTerritories(vector<Territory*>* ownedTerr)
 {
     ownedTerritories = ownedTerr;
+}
+
+Player*** Order::playersCannotAttackList = new Player**[6];
+int Order::sizeOfPlCantAttList = 6;
+int Order::indexOfEnd = 0;
+void Order::setUpPlayerCannotAttackList()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        playersCannotAttackList[i] = new Player*[2];
+        playersCannotAttackList[i][0] = NULL;
+        playersCannotAttackList[i][1] = NULL;
+    }
+}
+void Order::clearPlayerCannotAttackList()
+{
+    for(int i = 0; i < sizeOfPlCantAttList; i++)
+    {
+        playersCannotAttackList[i][0] = NULL;
+        playersCannotAttackList[i][1] = NULL;
+    }
 }
 /*
 //Duplicate function
@@ -225,6 +274,7 @@ bool Order:: validate()
 }
 */
 //Execute implementation
+/*
 void Order:: execute()
 {
     if(validate())
@@ -236,20 +286,21 @@ void Order:: execute()
         cout << "The order cannot be executed." << endl;
     }
 }
+*/
 //Deploy implementation
 //Default constructor
-Deploy::Deploy():Order()
+Deploy::Deploy():Order(NULL, NULL, "Deploy")
 {
     nAddedArmies = 0;
 }
 //3-arg constructor
 Deploy::Deploy(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies)
-: Order(targetTerritory,ownedTerr)
+: Order(targetTerritory,ownedTerr, "Deploy")
 {
     nAddedArmies = nOfArmies;
 }
 //Copy Constructor
-Deploy::Deploy(const Deploy& depl): Order(depl.targetTerritory, depl.ownedTerritories)
+Deploy::Deploy(const Deploy& depl): Order(depl.targetTerritory, depl.ownedTerritories, "Deploy")
 {
     nAddedArmies = depl.nAddedArmies;
 }
@@ -258,6 +309,7 @@ Deploy& Deploy:: operator = (const Deploy& depl)
 {
     Order::operator=(depl);
     this->nAddedArmies = depl.nAddedArmies;
+    this->orderType = "Deploy";
     return *this;
 }
 //Destructor
@@ -298,11 +350,16 @@ bool Deploy::validate()
 {
     //If the pointers points to an existing object and the number of armies deployed is not equal or less than 0,
     //It returns false
-    if(targetTerritory == NULL || ownedTerritories == NULL || nAddedArmies <= 0)
+    if(targetTerritory == NULL || ownedTerritories == NULL || nAddedArmies <= 0 || ownedTerritories->empty())
     {
         return false;
     }
-
+    //Checks if the targetTerritory belongs to the player.
+    if (ownedTerritories->at(0)->getPlayer() == targetTerritory->getPlayer())
+    {
+        return true;
+    }
+    /*
     //Cycles through the list of territories a player has to check if the targetted territory is owned by the player
     for(vector<Territory*>::iterator it = ownedTerritories->begin(); it != ownedTerritories->end();++it)
     {
@@ -313,6 +370,7 @@ bool Deploy::validate()
             return true;
         }
     }
+    */
     //Otherwise, returns false
     return false;
 
@@ -324,7 +382,7 @@ void Deploy::execute()
     if (validate())
     {
         //Actual execution of the method
-        //targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()+nAddedArmies);
+        targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()+nAddedArmies);
 
         cout << "Deploying " << nAddedArmies << " armies on the targetted territory." << endl;
     }
@@ -339,20 +397,29 @@ void Deploy::execute()
 
 //Advance Implementation
 //Default Constructor
-Advance::Advance():Order()
+Advance::Advance():Order(NULL, NULL, "Advance")
 {
     nMovedArmies = 0;
     sourceTerritory = NULL;
 }
 //4 args constructor
 Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr,
-                  int nOfArmies, Territory* sourceTerr): Order(targetTerritory,ownedTerr)
+                  int nOfArmies, Territory* sourceTerr): Order(targetTerritory,ownedTerr, "Advance")
 {
     nMovedArmies = nOfArmies;
     sourceTerritory = sourceTerr;
 }
+Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies,
+         Territory* sourceTerr, vector<Territory*>* enemyTerrs, bool* flag):
+             Order(targetTerritory, ownedTerr, "Advance")
+{
+    nMovedArmies = nOfArmies;
+    sourceTerritory = sourceTerr;
+    enemyTerritories = enemyTerrs;
+    flagConq = flag;
+}
 //Copy Constructor
-Advance::Advance(const Advance& adv):Order(adv.targetTerritory, adv.ownedTerritories)
+Advance::Advance(const Advance& adv):Order(adv.targetTerritory, adv.ownedTerritories, "Advance")
 {
     nMovedArmies = adv.nMovedArmies;
     sourceTerritory = adv.sourceTerritory;
@@ -363,6 +430,7 @@ Advance& Advance :: operator = (const Advance& adv)
     Order::operator=(adv);
     this->nMovedArmies = adv.nMovedArmies;
     this->sourceTerritory = adv.sourceTerritory;
+    this->orderType = "Advance";
     return *this;
 }
 //Destructor
@@ -372,6 +440,8 @@ Advance::~Advance()
     ownedTerritories = NULL;
     nMovedArmies = 0;
     sourceTerritory = NULL;
+    flagConq = NULL;
+    enemyTerritories = NULL;
 }
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Advance &adv)
@@ -393,6 +463,14 @@ void Advance:: setNOfArmies(int nOA)
 void Advance::setSourceTerritory(Territory* sourceTerr)
 {
     sourceTerritory = sourceTerr;
+}
+void Advance::setFlagConqTerr(bool* flag)
+{
+    flagConq = flag;
+}
+void Advance::setEnemyTerritories(vector<Territory*>* enmyTerrs)
+{
+    enemyTerritories = enmyTerrs;
 }
 int Advance:: getNOfArmies()
 {
@@ -416,12 +494,45 @@ bool Advance:: validate()
     //If the target territory is not adjacent to the source territory, then it is not valid
     //If the sourceTerritory does not have enough armies, then it is not valid
     if (sourceTerritory == NULL || targetTerritory == NULL || nMovedArmies <= 0 || ownedTerritories == NULL ||
-        sourceTerritory->isAdjacentTo(*targetTerritory) || sourceTerritory->getAmountOfArmies() < nMovedArmies)
+         sourceTerritory->getAmountOfArmies() < nMovedArmies || ownedTerritories->empty())
     {
+        cout << "Some values are NULL" << endl;
         return false;
     }
+    if (!sourceTerritory->isAdjacentTo(*targetTerritory))
+    {
+        cout << "Target territory and source territory are not adjacent."<< endl;
+        return false;
+    }
+    //If the targetTerritory is an enemy territory, we need to check if the player owning that territory
+    //is not under negotiation.
+    if (sourceTerritory->getPlayer() != targetTerritory->getPlayer())
+    {
+        //Cycles through the playersCannotAttackList to see if the calling player and the enemy player
+        //are under negotiations.
+        for(int i = 0; i < indexOfEnd; i++)
+            {
+                //Creates variables
+                Player* attPl = sourceTerritory->getPlayer();
+                Player* defPl = targetTerritory->getPlayer();
 
+                //If the pair of players is in the list, then the Advance order is invalid
+                if ((attPl == playersCannotAttackList[i][0] || attPl == playersCannotAttackList[i][1])
+                    && (defPl == playersCannotAttackList[i][0] || defPl == playersCannotAttackList[i][1]))
+                {
+                    attPl = NULL;
+                    defPl = NULL;
+                    cout << "These players are under negotiations" << endl;
+                    return false;
+                }
+            }
+    }
     //Checking if the source territory is owned by the player
+    if (ownedTerritories->at(0)->getPlayer() == sourceTerritory->getPlayer())
+    {
+        return true;
+    }
+    /*
     for (vector<Territory*>::iterator it = ownedTerritories->begin(); it != ownedTerritories->end(); ++it)
     {
         //If the source territory is owned by the player, then it is valid and returns true
@@ -430,7 +541,9 @@ bool Advance:: validate()
             return true;
         }
     }
+    */
     //Otherwise, returns false
+    cout << "The source territory is not owned by the player" << endl;
     return false;
 }
 //Implementation of execute function
@@ -439,52 +552,109 @@ void Advance:: execute()
     //Checks if the order is valid
     if(validate())
     {
-
+        //If the targetTerritory is an enemy territory, then this Advance order initiates an attack
         if (sourceTerritory->getPlayer() != targetTerritory->getPlayer())
         {
-            /*
+            cout << "Initiating an attack! Advancing " << nMovedArmies << " armies to the targetted enemy territory." << endl;
+            //Fields for the amount of attacking armies and of defending armies
             int nDefArmies = targetTerritory->getAmountOfArmies();
             int nAttArmies = nMovedArmies;
-            for (; nAttArmies  )
-            {
+            //Records how many armies were killed.
+            int nDeadAttArmies = 0;
+            int nDeadDefArmies = 0;
 
+            //Setting up the seed of the random number generator
+            srand(time(NULL));
+            int chance = 0;
+
+            //Calculate how many defending armies are killed
+            for (int i = 0; i < nAttArmies && nDeadDefArmies < nDefArmies; i++)
+            {
+                chance = rand() % 100;
+                if (chance < 60)
+                {
+                    ++nDeadDefArmies;
+                }
             }
-            */
-            cout << "Initiating an attack! Advancing " << nMovedArmies << " armies to the targetted enemy territory." << endl;
+            //Calculate how many attacking armies are killed
+            for (int i = 0; i < nDefArmies && nDeadAttArmies < nAttArmies; i++)
+            {
+                chance = rand() % 100;
+                if (chance < 70)
+                {
+                    ++nDeadAttArmies;
+                }
+            }
+
+            //Substract the amount of armies killed
+            nAttArmies -= nDeadAttArmies;
+            nDefArmies -= nDeadDefArmies;
+
+            //If there are remaining attacking armies and no more defending armies, then the territory is conquered
+            if (nAttArmies > 0 && nDefArmies == 0)
+            {
+                //Switches ownership of the territory
+                targetTerritory->setPlayer(sourceTerritory->getPlayer());
+                targetTerritory->setAmountOfArmies(nAttArmies);
+                if (enemyTerritories != NULL)
+                {
+                    for (vector<Territory*>::const_iterator it = enemyTerritories->begin(); it != enemyTerritories->end(); ++it)
+                    {
+                        if (targetTerritory == *it)
+                        {
+                            enemyTerritories->erase(it);
+                            break;
+                        }
+                    }
+                }
+
+                ownedTerritories->push_back(targetTerritory);
+                sourceTerritory->setAmountOfArmies(sourceTerritory->getAmountOfArmies()-nMovedArmies);
+                *flagConq = true;
+            }
+            //Otherwise, the remaining respective armies returns back to their respective territory.
+            else
+            {
+                //Sets the amount of armies
+                targetTerritory->setAmountOfArmies(nDefArmies);
+                sourceTerritory->setAmountOfArmies(sourceTerritory->getAmountOfArmies() -nMovedArmies + nAttArmies);
+            }
         }
+        //Otherwise, it simply transfers the armies from the sourceTerritory to the targetTerritory
         else
         {
             //Transfer the selected armies from the source territory to the target territory
-            /*
+
             targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()+nMovedArmies);
-            sourceTerritory->setAmountOfArmies(sourceTerritoru->getAmountOfArmies()-nMovedArmies);
-            */
+            sourceTerritory->setAmountOfArmies(sourceTerritory->getAmountOfArmies()-nMovedArmies);
+
             cout << "Initiating a reinforcement! Advancing " << nMovedArmies << " armies to the targetted ally territory." << endl;
         }
     }
     //
     else
     {
-        cout << "This order cannot be executed";
+        cout << "This order cannot be executed" << endl;
     }
 }
 //Implementation of the subclass Bomb
 //Default constructor
-Bomb::Bomb():Order()
+Bomb::Bomb():Order(NULL, NULL, "Bomb")
 {
 }
-//1 arg constructor
-Bomb::Bomb(Territory* targetTerritory, vector<Territory*>* ownedTerr): Order(targetTerritory,ownedTerr)
+//2 arg constructor
+Bomb::Bomb(Territory* targetTerritory, vector<Territory*>* ownedTerr): Order(targetTerritory,ownedTerr, "Bomb")
 {
 }
 //Copy constructor
-Bomb::Bomb(const Bomb& bomb): Order(bomb.targetTerritory, bomb.ownedTerritories)
+Bomb::Bomb(const Bomb& bomb): Order(bomb.targetTerritory, bomb.ownedTerritories, "Bomb")
 {
 }
 //Overload assignment operator
 Bomb& Bomb :: operator = (const Bomb& bomb)
 {
     Order::operator=(bomb);
+    this->orderType = "Bomb";
     return *this;
 }
 //Destructor
@@ -514,11 +684,16 @@ Order* Bomb::duplicate()
 bool Bomb::validate()
 {
     //If the pointers point to an existing object
-    if (targetTerritory == NULL || ownedTerritories == NULL)
+    if (targetTerritory == NULL || ownedTerritories == NULL || ownedTerritories->empty())
     {
         return false;
     }
-     //Checking if the target territory is owned by the player
+    //Checking if the target territory is owned by the player
+    if (ownedTerritories->at(0)->getPlayer() == targetTerritory->getPlayer())
+    {
+        return false;
+    }
+    /*
     for (vector<Territory*>::iterator it = ownedTerritories->begin(); it != ownedTerritories->end(); ++it)
     {
         //If the target territory is owned by the player, then the order is not valid.
@@ -527,6 +702,7 @@ bool Bomb::validate()
             return false;
         }
     }
+    */
     //Checking if the targetted territory is adjacent to any of the player owned territories
     for (vector<Territory*>::iterator it = ownedTerritories->begin(); it != ownedTerritories->end();++it)
     {
@@ -544,8 +720,8 @@ void Bomb::execute()
     //If the order validates, it executes it
     if(validate())
     {
-        //targetTerritory->getAmountOfArmies(targetTerritory->getAmountOfArmies()/2);
         cout << "Bomb the targetted Territory " << *targetTerritory << endl;
+        targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()/2);
     }
     //Otherwise, it sends an error message
     else
@@ -556,22 +732,31 @@ void Bomb::execute()
 
 //Implementation of Blockade
 //Default Constructor
-Blockade::Blockade():Order()
+Blockade::Blockade():Order(NULL, NULL, "Blockade")
 {
+    neutralPlayer = NULL;
 }
 //2 arg Constructor
-Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr):Order(targetTerritory, ownedTerr)
+Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr):Order(targetTerritory, ownedTerr, "Blockade")
 {
+    neutralPlayer = NULL;
+}
+//3 arg Constructor
+Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr, Player* neutralPl):Order(targetTerritory, ownedTerr, "Blockade")
+{
+    neutralPlayer = neutralPl;
 }
 //Copy Constructor
-Blockade::Blockade(const Blockade& block):Order(block.targetTerritory,block.ownedTerritories)
+Blockade::Blockade(const Blockade& block):Order(block.targetTerritory,block.ownedTerritories, "Blockade")
 {
-
+    neutralPlayer = block.neutralPlayer;
 }
 //Overload the assignment operator
 Blockade& Blockade::operator = (const Blockade& block)
 {
     Order::operator=(block);
+    this->neutralPlayer = block.neutralPlayer;
+    this->orderType = "Blockade";
     return *this;
 }
 //Destructor
@@ -597,6 +782,15 @@ Order* Blockade::duplicate()
     //Creates a new object and returns its pointer
     return new Blockade(targetTerritory,ownedTerritories);
 }
+//Setter and Getter
+Player* Blockade::getNeutralPlayer()
+{
+    return neutralPlayer;
+}
+void Blockade::setNeutralPlayer(Player* nPl)
+{
+    neutralPlayer = nPl;
+}
 //Implementation of validate
 bool Blockade:: validate()
 {
@@ -606,6 +800,11 @@ bool Blockade:: validate()
         return false;
     }
     //Checks if the targetted territory is owned by the player
+    if (ownedTerritories->at(0)->getPlayer() == targetTerritory->getPlayer())
+    {
+        return true;
+    }
+    /*
     for (vector<Territory*>::iterator it = ownedTerritories->begin(); it != ownedTerritories->end(); ++it)
     {
         //If it is, then the order is valid and the function returns true
@@ -614,6 +813,7 @@ bool Blockade:: validate()
             return true;
         }
     }
+    */
     //Otherwise, returns false
     return false;
 }
@@ -623,12 +823,17 @@ void Blockade:: execute()
     //Checks if the order is valid
     if (validate())
     {
-        /*
-        targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()*3);
-        targetTerritory->setPlayer(new Player("NEUTRAL"));
-        ownedTerritories->remove(targetTerritory);
-        */
         cout << "Blockade the targetted territory " << *(targetTerritory) << ". It has now 3 times the amount of armies and is neutral" << endl;
+        //Executes the order
+        targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()*3);
+        targetTerritory->setPlayer(neutralPlayer);
+        for (vector<Territory*>::const_iterator it = ownedTerritories->begin(); it != ownedTerritories->end(); ++it)
+        {
+            if (targetTerritory == *it)
+            {
+                ownedTerritories->erase(it);
+            }
+        }
     }
     //Otherwise, sends an error message
     else
@@ -639,18 +844,18 @@ void Blockade:: execute()
 
 //Implementation of Airlift
 //Default Constructor
-Airlift::Airlift():Order()
+Airlift::Airlift():Order(NULL, NULL, "Airlift")
 {
 }
 //4 args constructor
 Airlift::Airlift(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr):
-    Order(targetTerritory, ownedTerr)
+    Order(targetTerritory, ownedTerr, "Airlift")
 {
     nMovedArmies = nOfArmies;
     sourceTerritory = sourceTerr;
 }
 //Copy Constructor
-Airlift::Airlift(const Airlift& airLi):Order(airLi.targetTerritory, airLi.ownedTerritories)
+Airlift::Airlift(const Airlift& airLi):Order(airLi.targetTerritory, airLi.ownedTerritories, "Airlift")
 {
     nMovedArmies = airLi.nMovedArmies;
     sourceTerritory = airLi.sourceTerritory;
@@ -661,6 +866,7 @@ Airlift& Airlift::operator = (const Airlift& airLi)
     Order::operator=(airLi);
     this->nMovedArmies = airLi.nMovedArmies;
     this->sourceTerritory = airLi.sourceTerritory;
+    this->orderType = "Airlift";
     return *this;
 }
 //Destructor
@@ -711,12 +917,18 @@ bool Airlift::validate()
 {
     //If the pointers don't point to an existing object
     if(nMovedArmies == 0 || sourceTerritory == NULL || targetTerritory == NULL || ownedTerritories == NULL
-       || sourceTerritory->getAmountOfArmies() < nMovedArmies)
+       || sourceTerritory->getAmountOfArmies() < nMovedArmies || ownedTerritories->empty())
     {
         cout << "Wrong values" << endl;
         return false;
     }
+    Player* pl = ownedTerritories->at(0)->getPlayer();
 
+    if (pl == sourceTerritory->getPlayer() && pl == targetTerritory->getPlayer())
+    {
+        return true;
+    }
+    /*
     bool srcTerrIsOwned = false;
     bool tgtTerrIsOwned = false;
     //Checks if the source territory is owned by the player
@@ -734,18 +946,19 @@ bool Airlift::validate()
     }
 
     return (srcTerrIsOwned && tgtTerrIsOwned);
+    */
+    //Otherwise return false
+    return false;
 }
 //Implementation of execute
 void Airlift::execute()
 {
     if (validate())
     {
-        /*
-        targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()+nMovedArmies);
-        sourceTerritory->setAmountOfArmies(sourceTerritoru->getAmountOfArmies()-nMovedArmies);
-        */
-        cout << "Airlift deployment! From " << *(sourceTerritory) << " To " << *(targetTerritory) << endl;
 
+        cout << "Airlift deployment of " << nMovedArmies << " armies! From " << *(sourceTerritory) << " To " << *(targetTerritory) << endl;
+        targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()+nMovedArmies);
+        sourceTerritory->setAmountOfArmies(sourceTerritory->getAmountOfArmies()-nMovedArmies);
     }
     else
     {
@@ -755,27 +968,30 @@ void Airlift::execute()
 
 //Negotiate Implementation
 //Default Constructor
-Negotiate::Negotiate():Order()
+Negotiate::Negotiate():Order(NULL, NULL, "Negotiate")
 {
 }
 //2 args constructor
-Negotiate::Negotiate(Player* cPlayer, Player* tPlayer):Order()
+Negotiate::Negotiate(Player* cPlayer, Player* tPlayer):Order(NULL, NULL, "Negotiate")
 {
     callingPlayer = cPlayer;
     targetPlayer = tPlayer;
 }
+
 //Copy Constructor
-Negotiate::Negotiate(const Negotiate& negotiate): Order()
+Negotiate::Negotiate(const Negotiate& negotiate): Order(NULL, NULL, "Negotiate")
 {
     callingPlayer = negotiate.callingPlayer;
     targetPlayer = negotiate.targetPlayer;
 }
+
 //Assignment Operator overload
 Negotiate& Negotiate::operator = (const Negotiate& negotiate)
 {
     Order::operator=(negotiate);
     this->callingPlayer = negotiate.callingPlayer;
     this->targetPlayer = negotiate.targetPlayer;
+    this->orderType = "Negotiate";
     return *this;
 }
 //Destructor
@@ -835,7 +1051,46 @@ void Negotiate::execute()
 {
     if (validate())
     {
+        //This expands the multidimensional array in order to add more entries
+        if (indexOfEnd >= sizeOfPlCantAttList)
+        {
+            cout << "creating new list" << endl;
+            //Creates a new multidimensional array
+            Player*** newPlCantAttList;
+            newPlCantAttList = new Player**[sizeOfPlCantAttList*2];
+            for (int i = 0; i < sizeOfPlCantAttList; i++)
+            {
+                newPlCantAttList[i] = new Player*[2];
+                if (i <= indexOfEnd)
+                {
+                    newPlCantAttList[i][0] = playersCannotAttackList[i][0];
+                    newPlCantAttList[i][1] = playersCannotAttackList[i][1];
+                }
+                else
+                {
+                    newPlCantAttList[i][0] = NULL;
+                    newPlCantAttList[i][1] = NULL;
+                }
+            }
+            for (int i = 0; i < sizeOfPlCantAttList; i++)
+            {
+                delete playersCannotAttackList[i];
+            }
+            delete playersCannotAttackList;
+            playersCannotAttackList = NULL;
+            playersCannotAttackList = newPlCantAttList;
+            sizeOfPlCantAttList *= 2;
+        }
+        playersCannotAttackList[indexOfEnd][0] = callingPlayer;
+        playersCannotAttackList[indexOfEnd][1] = targetPlayer;
+        indexOfEnd++;
         cout << "Negotiation have been settled between the two players" << endl;
+        /*
+        set<Player*> setPl{};
+        setPl.insert(targetPlayer);
+        setPl.insert(callingPlayer);
+        plrsCantAttackList->insert(setPl);
+        */
     }
     else
     {
