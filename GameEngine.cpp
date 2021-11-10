@@ -356,7 +356,6 @@ void GameEngine::startupPhase()
         command = getCommandProcessor()->getCommand();
         if (validate(command))
         {
-            Player* tempPlayer; //Temporary player pointer
             if((getState() == "start"||getState()=="maploaded") && (command.find("loadmap") !=string::npos))
             {
                 string filename=command.substr(command.find("loadmap")+9);
@@ -425,8 +424,8 @@ void GameEngine::startupPhase()
         }
     }
     while (!((command == "quit") && (getState() == "win")));
-//    delete tempPlayer;
-//    tempPlayer = NULL;
+    delete tempPlayer;
+    tempPlayer = NULL;
 }
 
 /**
