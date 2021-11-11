@@ -40,6 +40,7 @@ public:
     void initializeDeck();
     void randomizePlayOrder();
     void reinforcementPhase();
+    void executeOrderPhase();
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)
     friend std::ostream & operator << (std::ostream &out, const GameEngine &ge);
     friend std::istream & operator >> (std::istream &in,  GameEngine &ge);
