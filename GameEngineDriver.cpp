@@ -21,18 +21,14 @@ int main()
     if(s == "-console")
     {
         cout << "The game just started and right now it is in the state: start\n" << endl;
-        CommandProcessor *cp = new CommandProcessor();
-        game->setCommandProcessor(cp);
         game->startupPhase();
 
         /*Since, game must be a pointer, whenever it is no longer needed,
         the following two things must be done:
         1) deallocating memory:*/
-        cout << *game->getCommandProcessor();
-        delete cp;
+        //cout << *game->getCommandProcessor();
         delete game;
         //2) preventing dangling pointer errors:
-        cp = NULL;
         game = NULL;
     }
     if(s.find("file") != string::npos)
@@ -48,7 +44,7 @@ int main()
         /*Since, game must be a pointer, whenever it is no longer needed,
         the following two things must be done:
         1) deallocating memory:*/
-        cout << *game->getCommandProcessor();
+        //cout << *game->getCommandProcessor();
         delete flc;
         delete fcpa;
         delete game;
@@ -59,5 +55,3 @@ int main()
     }
     return 0;
 };
-
-
