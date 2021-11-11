@@ -16,6 +16,9 @@ using namespace std;
 GameEngine::GameEngine()
 {
     state = "start";
+    cp = new CommandProcessor();
+    lo = new LogObserver();
+    Attach(lo);
 }
 /**
 *Parameterized constructor that creates a GameEngine object, which state is initialized to the passed state as a parameter
@@ -50,6 +53,8 @@ GameEngine::~GameEngine()
     maploader = NULL;
     delete _map;
     _map = NULL;
+    delete lo;
+    lo = NULL;
 }
 /**
 *Copy constructor that creates a GameEngine object, which is a copy of the passed object.
@@ -110,6 +115,7 @@ void GameEngine::setCommandProcessor(CommandProcessor* newCp)
 void GameEngine::transition(string newState)
 {
     setState(newState);
+    Notify(this);
 }
 /**
 *Creates a vector of random card pointers to pass to be used when initializing the deck object
@@ -134,6 +140,14 @@ void GameEngine::randomizePlayOrder()
     default_random_engine randEngine{random_device{}()};
     shuffle(begin(players), end(players), randEngine);
 }
+
+string GameEngine::stringToLog()
+{
+    string s = getState();
+    s = ("Game Engine new state: " + s);
+    return s;
+}
+
 /**
 *validate method that checks if the passed command is a valid one for the current state,
 *effectuates the transition if the command is valid and outputs the necessary information about the
@@ -146,12 +160,16 @@ bool GameEngine::validate(string command)
 {
     if (command=="reset")
     {
+        getCommandProcessor()->getCommandList().back()->saveEffect("restarting the game");
         cout<<"restarting the game"<<endl;
         transition("start");
         return true;
     }
     if((getState() == "start") && (command.find("loadmap") !=string::npos))
     {
+        string filename = command.substr(command.find("loadmap")+9);
+        filename = filename.substr(0,filename.size()-1);
+        getCommandProcessor()->getCommandList().back()->saveEffect("map " + filename + " successfully loaded");
         cout << "\nThe entered command " << command << " is valid for state " << getState();
         transition("maploaded");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
@@ -160,6 +178,9 @@ bool GameEngine::validate(string command)
     }
     if((getState() == "maploaded") && (command.find("loadmap") !=string::npos))
     {
+        string filename = command.substr(command.find("loadmap")+9);
+        filename = filename.substr(0,filename.size()-1);
+        getCommandProcessor()->getCommandList().back()->saveEffect("map " + filename + " successfully loaded");
         cout << "\nThe entered command " << command << " is valid for state " << getState()
             << ", the game remains in the state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
@@ -167,6 +188,7 @@ bool GameEngine::validate(string command)
     }
     if((getState() == "maploaded") && (command == "validatemap"))
     {
+        getCommandProcessor()->getCommandList().back()->saveEffect("map is successfully validated");
         cout << "\nThe entered command " << command << " is valid for state " << getState();
         transition("mapvalidated");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
@@ -175,6 +197,9 @@ bool GameEngine::validate(string command)
     }
     if((getState() == "mapvalidated") && (command.find("addplayer") !=string::npos))
     {
+        string playername=command.substr(command.find("addplayer")+11);
+        playername = playername.substr(0,playername.size()-1);
+        getCommandProcessor()->getCommandList().back()->saveEffect("player " + playername + " successfully added");
         cout << "\nThe entered command " << command << " is valid for state " << getState();
         transition("playersadded");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
@@ -183,6 +208,9 @@ bool GameEngine::validate(string command)
     }
     if((getState() == "playersadded") && (command.find("addplayer") !=string::npos))
     {
+        string playername=command.substr(command.find("addplayer")+11);
+        playername = playername.substr(0,playername.size()-1);
+        getCommandProcessor()->getCommandList().back()->saveEffect("player " + playername + " successfully added");
         cout << "\nThe entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
         cout<<"--------------------------"<<endl;
@@ -190,6 +218,7 @@ bool GameEngine::validate(string command)
     }
     if((getState() == "playersadded") && (command == "gamestart"))
     {
+        getCommandProcessor()->getCommandList().back()->saveEffect("main loop of the game is successfully entered");
         cout << "\nThe entered command " << command << " is valid for state " << getState();
         transition("win");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
@@ -363,32 +392,28 @@ void GameEngine::startupPhase()
                 maploader = new MapLoader(filename);
                 _map = new Map(maploader->Load());
                 cout<<*_map<<endl;
-                getCommandProcessor()->getCommandList().back()->saveEffect("map " + filename + " successfully loaded");
             }
             if (command == "validatemap")
             {
                 if (!_map->validate())
                 {
+                    getCommandProcessor()->getCommandList().back()->saveEffect("map is invalid, returning to the start state");
                     cout<<"Map is invalid, returning to start state"<<endl;
                     transition("start");
-                    getCommandProcessor()->getCommandList().back()->saveEffect("map is invalid, returning to the start state");
                 }
-                else
-                    getCommandProcessor()->getCommandList().back()->saveEffect("map is successfully validated");
             }
             if (command.find("addplayer") !=string::npos)
             {
                 if (players.size()+1>MAXPLAYERS)
                 {
-                    cout<<"Maxiumum number of players reached, failed to add this player"<<endl;
                     getCommandProcessor()->getCommandList().back()->saveEffect("max number of players reached, failed to add this player");
+                    cout<<"Maxiumum number of players reached, failed to add this player"<<endl;
                     continue;
                 }
                 string playername=command.substr(command.find("addplayer")+11);
                 playername = playername.substr(0,playername.size()-1);
                 tempPlayer = new Player(playername);
                 players.push_back(tempPlayer);
-                getCommandProcessor()->getCommandList().back()->saveEffect("player " + playername + " successfully added");
             }
             if (command =="gamestart")
             {
@@ -418,7 +443,6 @@ void GameEngine::startupPhase()
 
                         cout << *players.at(i) << endl;
                     }
-                    getCommandProcessor()->getCommandList().back()->saveEffect("main loop of the game is successfully entered");
                 }
             }
         }

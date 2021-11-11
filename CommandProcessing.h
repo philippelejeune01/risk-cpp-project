@@ -1,14 +1,22 @@
 #ifndef COMMANDPROCESSING_H
 #define COMMANDPROCESSING_H
 
+#include "LoggingObserver.h"
 #include <string>
 #include <list>
 #include <iostream>
 #include <fstream>
 using namespace std;
 
+//Forward Declarations
+class CommandProcessor;
+class Command;
+class FileCommandProcessorAdapter;
+class FileLineReader;
+
+
 //Command class declaration.
-class Command
+class Command : public Subject, ILoggable
 {
 public:
     //Default constructor declaration:
@@ -26,16 +34,18 @@ public:
     void setCommand(string c);
     void setEffect(string e);
     //Other methods declarations:
+    string stringToLog();
     void saveEffect(string command);
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)
     friend std::ostream & operator << (std::ostream &out, const Command &c);
+    LogObserver* lo;
 private:
     string command;
     string effect;
 };
 
 //CommandProcessor class declaration.
-class CommandProcessor
+class CommandProcessor : public Subject, ILoggable
 {
 public:
     //Default constructor declaration:
@@ -53,9 +63,11 @@ public:
     //Setters declaration:
     void setCommandList(list<Command*> lc);
     //Other methods declarations:
+    string stringToLog();
     string getCommand();
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)
     friend std::ostream & operator << (std::ostream &out, const CommandProcessor &cp);
+    LogObserver* lo;
 protected:
     virtual string readCommand();
     void saveCommand(Command* obj);
