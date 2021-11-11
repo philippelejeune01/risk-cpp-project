@@ -1,0 +1,7 @@
+loadmap <europe.map>
+validatemap
+sdgdgsdgdsg
+addplayer <a1>
+addplayer <a2>
+gamestart
+quit
