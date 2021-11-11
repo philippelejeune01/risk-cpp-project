@@ -182,8 +182,6 @@ void GameEngine::startupPhase()
 
                     cout << *players.at(i) << endl;
                 }
-
-                issueOrdersPhase(players.at(0), players.at(1));
             }
         }
     }
