@@ -22,6 +22,8 @@ Command::Command(string c, string e)
 {
     this->command = c;
     this->effect = e;
+    lo = new LogObserver();
+    Attach(lo);
 }
 /**
 *Copy constructor that creates a Command object, which is a copy of the passed object.
@@ -75,6 +77,14 @@ void Command::setEffect(string e)
 {
     effect = e;
 }
+
+string Command::stringToLog()
+{
+    string s = getEffect();
+    s = ("Command's effect: " + s);
+    return s;
+}
+
 /**
 *Saves the effect of a Command object.
 *@param eff is a string that corresponds to the new effect of a Command object.
@@ -82,6 +92,7 @@ void Command::setEffect(string e)
 void Command::saveEffect(string eff)
 {
     setEffect(eff);
+    Notify(this);
 }
 /**
 *Overloaded stream insertion operator that outputs the current command and effect of the Command object.
@@ -104,6 +115,8 @@ CommandProcessor::CommandProcessor()
 {
     list<Command*> l;
     this->lc = l;
+    lo = new LogObserver();
+    Attach(lo);
 }
 /**
 *Parameterized constructor that creates a CommandProcessor object, which list of Command objects is initialized to the passed lc as a parameter.
@@ -161,7 +174,16 @@ void CommandProcessor::setCommandList(list<Command*> lc)
 void CommandProcessor::saveCommand(Command* obj)
 {
     lc.push_back(obj);
+    Notify(this);
 }
+
+string CommandProcessor::stringToLog()
+{
+    string s = getCommandList().back()->getCommand();
+    s = ("Command: " + s);
+    return s;
+}
+
 /**
 *getCommand reads the command from the console, stores this command in a string, creats a Command object based on the entered command,
 *saves the Command object in a list of Command objects of the CommandProcessor objects and then returns the stored command.
