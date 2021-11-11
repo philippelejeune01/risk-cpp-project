@@ -502,3 +502,47 @@ void GameEngine::issueOrdersPhase(Player* pl1, Player* pl2)
     pl1->issueOrder(_deck, pl2);
     pl2->issueOrder(_deck, pl1);
 }
+
+void GameEngine::executeOrderPhase(){
+    bool deployOrdersPresent = false;
+    vector<Player*>::iterator players_it = players.begin();
+
+    while(true){
+        if((*players_it)->getOrderList()->getOrdList().front()->getOrderType().compare("deploy") == 0){
+            (*players_it)->getOrderList()->executeFirstOrder();
+            players_it++;
+            deployOrdersPresent = true;
+        }
+
+        if(players_it == players.end()){
+            if(!deployOrdersPresent){
+                break;
+            }
+            players_it = players.begin();
+            deployOrdersPresent = false;
+            continue;
+        }else{
+            players_it++;
+        }
+
+    }
+    bool ordersLeft = false;
+    while(true){
+        if(!(*players_it)->getOrderList()->getOrdList().empty()){
+            (*players_it)->getOrderList()->executeFirstOrder();
+            players_it++;
+            ordersLeft = true;
+        }
+
+        if(players_it == players.end()){
+            if(!ordersLeft){
+                break;
+            }
+            players_it = players.begin();
+            ordersLeft = false;
+            continue;
+        }else{
+            players_it++;
+        }
+    }
+}
