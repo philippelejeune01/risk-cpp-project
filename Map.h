@@ -51,6 +51,8 @@ class Map
         void setEndOfContinents(const int *arr);
         bool isAdjacentto(Territory t1, Territory t2);
         bool validate();
+        int* getEndOfContinents();
+        int getNumberOfContinents();
         Map& operator =(const Map& m);
         friend ostream& operator<<(ostream &strm, Map &m);
         ~Map();
