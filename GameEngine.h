@@ -8,6 +8,7 @@ It contains all the class, variable and function declarations related to Game En
 #include "Map.h"
 #include "Player.h"
 #include "CommandProcessing.h"
+#include "LoggingObserver.h"
 #include <string>
 #include <iostream>
 #include <list>
@@ -21,7 +22,7 @@ const int MINPLAYERS = 2;
 const int MAXPLAYERS = 6;
 
 //GameEngine class declaration.
-class GameEngine
+class GameEngine : public Subject, ILoggable
 {
 public:
     //Default constructor declaration:
@@ -47,6 +48,7 @@ public:
     void startupPhase();
     void initializeDeck();
     void randomizePlayOrder();
+    string stringToLog();
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)
     friend std::ostream & operator << (std::ostream &out, const GameEngine &ge);
     friend std::istream & operator >> (std::istream &in,  GameEngine &ge);
@@ -55,6 +57,7 @@ public:
     vector<Player*> players;
     MapLoader* maploader;
     Map* _map;
+    LogObserver* lo;
 private:
     string state;
     CommandProcessor* cp;
