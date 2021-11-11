@@ -184,6 +184,7 @@ Territory::Territory(int tnum,int x,int y,int c,int num,Player* ownedP, string n
     amountOfArmies = num;
     ownedplayer = ownedP;
     name = n;
+    isUnderAttack = false;
 }
 Territory::Territory()
 {
@@ -239,6 +240,14 @@ int Territory::getAmountOfArmies()
 void Territory::setAmountOfArmies(int nOfArmies)
 {
     amountOfArmies = nOfArmies;
+}
+bool Territory::isTerritoryUnderAttack()
+{
+    return isUnderAttack;
+}
+void Territory::setAttackStatus(bool attack)
+{
+    isUnderAttack = attack;
 }
 bool Territory::isAdjacentTo(Territory &t2)
 {

@@ -13,6 +13,7 @@ class Territory
         string name;
         int xCoordinate,yCoordinate,continentNumber;
         int TerritoryNumber;
+        bool isUnderAttack;
         vector<Territory*> adjacentTerritories;
         void setTerritoryNum(int t);
         int getTerritoryNum();
@@ -30,6 +31,8 @@ class Territory
         Player* getPlayer();
         void setAmountOfArmies(int nOfArmies);
         int getAmountOfArmies();
+        bool isTerritoryUnderAttack();
+        void setAttackStatus(bool attack);
 
     private:
         int amountOfArmies;

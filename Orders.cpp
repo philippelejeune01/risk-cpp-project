@@ -1009,7 +1009,7 @@ ostream& operator <<(ostream &strm, const Negotiate &negotiate)
 //DoPrint method for the stream insertion operator of Negotiate
 string Negotiate::doPrint() const
 {
-    return "Negotiate: ";
+    return "Negotiate";
 }
 //Setters and Getters
 void Negotiate::setCallingPlayer(Player* cPlayer)

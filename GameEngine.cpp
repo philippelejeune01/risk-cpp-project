@@ -131,7 +131,6 @@ void GameEngine::startupPhase()
         std::getline(cin,command);
         if (passedCommand(command))
         {
-            Player* tempPlayer; //Temporary player pointer
             if((getState() == "start"||getState()=="map loaded") && (command.find("loadmap") !=string::npos))
             {
                 string filename=command.substr(command.find("loadmap")+9);
@@ -183,6 +182,8 @@ void GameEngine::startupPhase()
 
                     cout << *players.at(i) << endl;
                 }
+
+                issueOrdersPhase(players.at(0), players.at(1));
             }
         }
     }
@@ -359,4 +360,13 @@ void GameEngine::reinforcementPhase(){
         x->setPool(numberOfArmies);
         cout << numberOfArmies << endl;
     }
+}
+
+void GameEngine::issueOrdersPhase(Player* pl1, Player* pl2)
+{
+    cout << "--------------------------" << endl;
+    cout << "Issue Order Phase\n" << endl;
+
+    pl1->issueOrder(_deck, pl2);
+    pl2->issueOrder(_deck, pl1);
 }

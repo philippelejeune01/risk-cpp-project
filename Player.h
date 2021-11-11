@@ -30,10 +30,7 @@ class Player
         //Required Methods
         vector <Territory*> toDefend();
         vector <Territory*> toAttack();
-        void issueOrder(string ordType, Territory* targetTerritory, int nOfArmies);
-        void issueOrder(string ordType, Territory* targetTerritory, int nOfArmies, Territory* sourceTerr);
-        void issueOrder(string ordType, Territory* targetTerritory);
-        void issueOrder(string ordType, Player* targetPlayer);
+        void issueOrder(Deck* deck, Player* enemyPlayer);
         //Accesors and Mutators
         string getName();
         void setName(string newName);
@@ -45,6 +42,8 @@ class Player
         void setOrderList(OrdersList* aOrdersList);
         bool getFlagConqTerr() const;
         void setFlagConqTerr(bool flag);
+        bool getFlagIssueOrder() const;
+        void setFlagIssueOrder(bool flag);
         //This method is for testing purposes.
         vector<Territory*>* getPointerToTerritories();
         int getPool() const;
@@ -54,6 +53,8 @@ class Player
 
     private:
         string name;
+        //Determines if the player has more orders to issue
+        bool* flagIssueOrder;
         //The player's reinforcement pool
         int rPool;
         //The player's territories
@@ -62,6 +63,10 @@ class Player
         OrdersList* ordersList;
         //bool pointer that determines if the player instance has conquered at least one territory
         bool* flagConqTerr;
+        //Creates Deploy orders as long as the reinforcement pool is not empty
+        void createDeployOrders(vector <Territory*>* territoriesToDefend, Order* ord);
+        //Determines the number of armies to use in an attack order.
+        int determineNArmiesForAttack(int randIndexSource);
 };
 //Global function to assign territories to player's
 void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers);
