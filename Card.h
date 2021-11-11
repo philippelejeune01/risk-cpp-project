@@ -21,7 +21,7 @@ class Card
         Card(string s);
         Card(Card &c);
         ~Card();
-        Order* play(Deck &d, Hand &h);
+        Order* play(Deck* d, Hand* h, Territory* territoryToAttack, Territory* territoryToDefend, int randIndexSource, int nOfArmies, Player* player, Player* enemyPlayer);
         void setType(string s);
         Card& operator = (const Card& c);
         string getType();

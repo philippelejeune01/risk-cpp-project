@@ -18,6 +18,7 @@ Player::Player()
     hand = new Hand();
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
+    flagIssueOrder = new bool(true);
 }
 //1 arg Constructor
 Player::Player(string newName)
@@ -26,6 +27,7 @@ Player::Player(string newName)
     hand = new Hand();
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
+    flagIssueOrder = new bool(true);
 }
 //2 arg Constructors
 Player::Player(string newName, OrdersList* ordList)
@@ -34,6 +36,7 @@ Player::Player(string newName, OrdersList* ordList)
     hand = new Hand();
     ordersList = ordList;
     flagConqTerr = new bool(false);
+    flagIssueOrder = new bool(true);
 }
 Player::Player(string newName, Hand* aHand)
 {
@@ -41,6 +44,7 @@ Player::Player(string newName, Hand* aHand)
     hand = aHand;
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
+    flagIssueOrder = new bool(true);
 }
 Player::Player(string newName, vector <Territory*> &terr)
 {
@@ -49,6 +53,7 @@ Player::Player(string newName, vector <Territory*> &terr)
     hand = new Hand();
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
+    flagIssueOrder = new bool(true);
 }
 
 //3 arg Constructors
@@ -58,6 +63,7 @@ Player::Player(string newName, Hand* aHand, OrdersList* ordList)
     hand = aHand;
     ordersList = ordList;
     flagConqTerr = new bool(false);
+    flagIssueOrder = new bool(true);
 }
 Player::Player(string newName, vector <Territory*> &terr, OrdersList* ordList)
 {
@@ -66,6 +72,7 @@ Player::Player(string newName, vector <Territory*> &terr, OrdersList* ordList)
     hand = new Hand();
     ordersList = ordList;
     flagConqTerr = new bool(false);
+    flagIssueOrder = new bool(true);
 }
 Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
 {
@@ -74,6 +81,7 @@ Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
     hand = aHand;
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
+    flagIssueOrder = new bool(true);
 }
 
 //Copy Constructor
@@ -84,16 +92,12 @@ Player::Player(const Player& pl)
     hand = pl.hand;
     ordersList = pl.ordersList;
     flagConqTerr = pl.flagConqTerr;
+    flagIssueOrder = pl.flagIssueOrder;
 }
 
 //Destructor
 Player::~Player()
 {
-    //This deletes all the Territory objects stored in the vector
-    for(vector<Territory*>::iterator it = territories.begin(); it != territories.end(); ++it)
-    {
-        delete *it;
-    }
     //This erases all the pointers stored in the vector
     territories.clear();
 
@@ -103,6 +107,7 @@ Player::~Player()
     ordersList = NULL;
     delete flagConqTerr;
     flagConqTerr = NULL;
+    flagIssueOrder = NULL;
 }
 
 //Assignment operator overload
@@ -113,6 +118,7 @@ Player& Player :: operator = (const Player& pl)
     this->hand = pl.hand;
     this->ordersList = pl.ordersList;
     this->flagConqTerr = pl.flagConqTerr;
+    this->flagIssueOrder = pl.flagIssueOrder;
     return *this;
 }
 
@@ -175,6 +181,10 @@ bool Player::getFlagConqTerr() const
 {
     return *flagConqTerr;
 }
+bool Player::getFlagIssueOrder() const
+{
+    return *flagIssueOrder;
+}
 //This is a method for testing purposes.
 vector<Territory*>* Player::getPointerToTerritories()
 {
@@ -208,6 +218,11 @@ void Player::setFlagConqTerr(bool flag)
     *flagConqTerr = flag;
 }
 
+void Player::setFlagIssueOrder(bool flag)
+{
+    *flagIssueOrder = flag;
+}
+
 void Player::addToPool(int numberOfArmies)
 {
     rPool += numberOfArmies;
@@ -224,6 +239,84 @@ bool Player::removeFromPool(int numberOfArmies)
     {
         return false; //Operation not successful
     }
+}
+
+//Creates Deploy orders on territories to defend as long as the reinforcement pool is not empty
+void Player::createDeployOrders(vector <Territory*>* territoriesToDefend, Order* ord)
+{
+    int numberTerritoriesOwned = territoriesToDefend->size();
+    //Number of armies to deploy for each territory
+    int numberArmiesToDeploy = getPool() / numberTerritoriesOwned;
+    int remainder = getPool() % numberTerritoriesOwned;
+    //If there is a remainder, the last territory will be allocated more armies than others
+    //to make sure the reinforcement pool is equal to 0 after everything has been deployed.
+    int nArmiesToDeployLastTerritory = numberArmiesToDeploy + remainder;
+
+    //Creating Deploy orders
+    for(int i = 0; i < numberTerritoriesOwned; i++)
+    {
+        if(getPool() != 0)
+        {
+            if(getPool() == nArmiesToDeployLastTerritory)
+            {
+                removeFromPool(nArmiesToDeployLastTerritory);
+                ord = new Deploy(territoriesToDefend->at(i), &territories, nArmiesToDeployLastTerritory);
+                ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
+            }else
+            {
+                removeFromPool(numberArmiesToDeploy);
+                ord = new Deploy(territoriesToDefend->at(i), &territories, numberArmiesToDeploy);
+                ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
+            }
+        }
+    }
+}
+
+//Determines the number of armies to use in an attack/advance order.
+//The number is a random number generated between 0 and the number of armies in a specific source territory
+int Player::determineNArmiesForAttack(int randIndexSource)
+{
+    int randNOfArmies;
+    //If deploy orders have not been executed yet, that means there are no armies in the territories right now.
+    //To get the right number of armies we get it from the appropriate Deploy order if there is one.
+    if(territories.at(randIndexSource)->getAmountOfArmies() == 0)
+    {
+        if(ordersList->getOrdList().size() > randIndexSource)
+        {
+            list<Order*>::iterator it = next(ordersList->getOrdList().begin(), randIndexSource);
+            Deploy* deployOrder = dynamic_cast<Deploy*>((*it));
+            if(deployOrder != NULL)
+            {
+                int nOfArmies = deployOrder->getNAddedArmies();
+                //Generate random number between 1 and the number of armies from the source territory
+                randNOfArmies = rand() % nOfArmies + 1;
+            }
+            else
+            {
+                randNOfArmies = 0;
+            }
+        }
+        else
+        {
+            list<Order*>::iterator it = ordersList->getOrdList().begin();
+            Deploy* deployOrder = dynamic_cast<Deploy*>((*it));
+            if(deployOrder != NULL)
+            {
+                int nOfArmies = deployOrder->getNAddedArmies();
+                //Generate random number between 1 and the number of armies from the source territory
+                randNOfArmies = rand() % nOfArmies + 1;
+            }
+            else
+            {
+                randNOfArmies = 0;
+            }
+        }
+    }
+    else
+    {
+        randNOfArmies = rand() % territories.at(randIndexSource)->getAmountOfArmies() + 1;
+    }
+    return randNOfArmies;
 }
 
 
@@ -250,6 +343,8 @@ vector <Territory*> Player::toAttack()
                 }
 
                 if(attackTerr){
+                    //Set the target territory to be attacked
+                    territories[i]->adjacentTerritories[j]->setAttackStatus(attackTerr);
                     uniqueTerritoriesToAttack.insert(territories[i]->adjacentTerritories[j]);
                 }
             }
@@ -259,66 +354,166 @@ vector <Territory*> Player::toAttack()
     return territoriesToAttack;
 }
 
-//Returns the territories owned by the player.
+//Returns territories owned by the player that are under attack.
+//If no territories are under attack, return all territories owned by the player.
 vector <Territory*> Player::toDefend()
 {
-    return this->getTerritories();
-}
+    bool noTerritoriesUnderAttack = true;
+    vector <Territory*> territoriesToDefend;
 
-//Different implementations of issueOrder based on the parameters needed to create a specific order
-//Creates an order and places it in the player's list of orders
-void Player::issueOrder(string ordType, Territory* targetTerritory, int nOfArmies)
-{
-    Order* ord;
+    for(int i = 0; i < territories.size(); i++)
+    {
+        if(territories.at(i)->isTerritoryUnderAttack())
+        {
+            noTerritoriesUnderAttack = false;
+            territoriesToDefend.push_back(territories.at(i));
+        }
+    }
 
-    if(ordType == "Deploy"){
-        ord = new Deploy(targetTerritory, &territories, nOfArmies);
-        ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
-    }else{
-        cout << "Invalid Order" << endl;
+    if(!noTerritoriesUnderAttack)
+    {
+        return territoriesToDefend;
+    }else
+    {
+        return this->territories;
     }
 }
 
-void Player::issueOrder(string ordType, Territory* targetTerritory, int nOfArmies, Territory* sourceTerr)
+//Creates an order based on the armies in the player's reinforcement pool and the player's hand. Then places the order in the player's list of orders
+void Player::issueOrder(Deck* deck, Player* enemyPlayer)
 {
+    srand (time(NULL));
+    //Refers to the player having cards in their hand
+    bool isHandEmpty = getHand()->getCards()->empty();
+    bool* flagOrder;
+    vector <Territory*> territoriesToAttack = toAttack();
+    vector <Territory*> territoriesToDefend = toDefend();
     Order* ord;
+    Order* defendAdvanceOrd;
+    Order* attackAdvanceOrd;
+    Card* card;
+    //Generate random number indicating the random index to choose in the list of territories to attack/defend
+    int randIndexAttack = rand() % territoriesToAttack.size();
+    int randIndexDefend = rand() % territoriesToDefend.size();
+    //Generate random number indicating the random index to choose in the player's territories
+    int randIndexSource = rand() % territories.size();
 
-    if(ordType == "Advance"){
-        ord = new Advance(targetTerritory, &territories, nOfArmies, sourceTerr);
-        ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
-    }else if(ordType == "Airlift"){
-        ord = new Airlift(targetTerritory, &territories, nOfArmies, sourceTerr);
-        ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
-    }else{
-        cout << "Invalid Order" << endl;
+    //Determine if player has more orders to issue.
+    if(getPool() != 0 || !isHandEmpty)
+    {
+        flagOrder = new bool(true);
+        setFlagIssueOrder(flagOrder);
     }
-}
-
-void Player::issueOrder(string ordType, Territory* targetTerritory)
-{
-    Order* ord;
-
-    if(ordType == "Bomb"){
-        ord = new Bomb(targetTerritory, &territories);
-        ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
-    }else if(ordType == "Blockade"){
-        ord = new Blockade(targetTerritory, &territories);
-        ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
-    }else{
-        cout << "Invalid Order" << endl;
+    else
+    {
+        flagOrder = new bool(false);
+        setFlagIssueOrder(flagOrder);
     }
-}
 
-void Player::issueOrder(string ordType, Player* targetPlayer)
-{
-    Order* ord;
-
-    if(ordType == "Negotiate"){
-        ord = new Negotiate(this, targetPlayer);
-        ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
-    }else{
-        cout << "Invalid Order" << endl;
+    //Create deploy orders if player has armies in its reinforcement pool
+    if(getPool() != 0)
+    {
+        createDeployOrders(&territoriesToDefend, ord);
+        cout << "Created Deploy Orders" << endl;
     }
+
+    //Number of armies to use in an attack/advance order
+    int randNOfArmies = determineNArmiesForAttack(randIndexSource);
+
+    //If player has cards in his hand, select the first card to create an order
+    //Then create Advance orders
+    if(!isHandEmpty)
+    {
+        //Get the first card in the player's hand
+        card = getHand()->getCards()->front();
+        //Using play() to create the appropriate order based on the card type
+        ord = card->play(deck, getHand(), territoriesToAttack.at(randIndexAttack), territoriesToDefend.at(randIndexDefend), randIndexSource, randNOfArmies, this, enemyPlayer);
+
+        if(ord != NULL)
+        {
+            ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
+            cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
+        }
+
+        /*====Creating Advance orders====*/
+
+        //Find the index of one of the territories returned by toDefend() in the player's territories vector
+        string terrDefendName = territoriesToDefend.at(0)->getName();
+        for (vector<Territory*>::iterator it = territories.begin(); it != territories.end(); ++it)
+        {
+            if((*it)->getName() == terrDefendName)
+            {
+                auto index = distance(territories.begin(), it);
+                randIndexSource = index;
+            }
+        }
+
+        //Re-determine the number of armies to use in an attack/advance order
+        randNOfArmies = determineNArmiesForAttack(randIndexSource);
+
+        if(randNOfArmies != 0)
+        {
+            /*Create advance order to defend*/
+            //If the territory to defend and the source territory are the same, then generate another random index which is not the same as randIndexDefend
+            if(territoriesToDefend.at(randIndexDefend)->getName() == territories.at(randIndexSource)->getName())
+            {
+                int newRandIndex;
+
+                do
+                {
+                    newRandIndex = rand() % territoriesToDefend.size();
+                }
+                while(randIndexDefend == newRandIndex);
+
+                randIndexDefend = newRandIndex;
+                defendAdvanceOrd = new Advance(territoriesToDefend.at(randIndexDefend), &territories, randNOfArmies, territories.at(randIndexSource));
+            }
+            else
+            {
+                defendAdvanceOrd = new Advance(territoriesToDefend.at(randIndexDefend), &territories, randNOfArmies, territories.at(randIndexSource));
+            }
+            //Adding order to the end of the list
+            ordersList->move(defendAdvanceOrd, ordersList->getOrdList().size());
+            cout << "Created a " << defendAdvanceOrd->getOrderType() << " order (to defend) and placed it in the player's OrderList" << endl;
+        }
+        else
+        {
+            defendAdvanceOrd = NULL;
+            cout << "Cannot create advance order (to defend) - No armies in source territory " << territories.at(randIndexSource)->getName() << "\n" << endl;
+        }
+
+        //Create a new random Index
+        randIndexSource = rand() % territories.size();
+        //Re-determine the number of armies to use in an attack/advance order
+        randNOfArmies = determineNArmiesForAttack(randIndexSource);
+
+        if(randNOfArmies != 0)
+        {
+            /*Create advance order to attack*/
+            vector<Territory*> enemyTerritories = enemyPlayer->getTerritories();
+            bool* flagConq = new bool(true);
+            attackAdvanceOrd = new Advance(territoriesToAttack.at(randIndexAttack), &territories, randNOfArmies, territoriesToDefend.at(randIndexDefend), &enemyTerritories, flagConq);
+            ordersList->move(attackAdvanceOrd, ordersList->getOrdList().size());
+            //Set the attack status to false on the territory where an attack order has been created
+            territoriesToAttack.at(randIndexAttack)->setAttackStatus(false);
+            cout << "Created a " << attackAdvanceOrd->getOrderType() << " order (to attack) and placed it in the player's OrderList\n" << endl;
+
+            delete flagConq;
+            flagConq = NULL;
+        }
+        else
+        {
+            attackAdvanceOrd = NULL;
+            cout << "Cannot create advance order (to attack) - No armies in source territory " << territories.at(randIndexSource)->getName() << "\n" << endl;
+        }
+
+    }
+    else
+    {
+        cout << "No more orders to issue\n" << endl;
+    }
+
+    cout << *this << endl;
 }
 
 //Splits the list of all territories into almost equal or equal parts depending on the number of players.

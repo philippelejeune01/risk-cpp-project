@@ -494,6 +494,15 @@ void GameEngine::reinforcementPhase(){
     }
 }
 
+void GameEngine::issueOrdersPhase(Player* pl1, Player* pl2)
+{
+    cout << "--------------------------" << endl;
+    cout << "Issue Order Phase\n" << endl;
+
+    pl1->issueOrder(_deck, pl2);
+    pl2->issueOrder(_deck, pl1);
+}
+
 void GameEngine::executeOrderPhase(){
     bool deployOrdersPresent = false;
     vector<Player*>::iterator players_it = players.begin();
