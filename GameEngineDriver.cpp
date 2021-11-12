@@ -45,13 +45,12 @@ int main()
         the following two things must be done:
         1) deallocating memory:*/
         //cout << *game->getCommandProcessor();
-        delete flc;
-        delete fcpa;
         delete game;
         //2) preventing dangling pointer errors:
         flc = NULL;
         fcpa = NULL;
         game = NULL;
     }
+    LogObserver::output.close();
     return 0;
 };

@@ -17,6 +17,7 @@ class ILoggable
 {
 public:
     virtual string stringToLog()=0;
+    virtual ~ILoggable();
 protected:
     ILoggable();
 };
@@ -25,7 +26,7 @@ class Subject
 {
 public:
     Subject();
-    ~Subject();
+    virtual ~Subject();
     virtual void Attach(Observer* o);
     virtual void Detach(Observer* o);
     virtual void Notify(ILoggable* Ilog);
@@ -48,6 +49,7 @@ public:
     ~LogObserver();
     LogObserver();
     void Update(ILoggable* Ilog);
-    static void resetFile();
+
+    static ofstream output;
 };
 #endif // LOGGINGOBSERVER_H_INCLUDED

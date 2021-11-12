@@ -39,16 +39,14 @@ GameEngine::~GameEngine()
 {
     delete cp;
     cp = NULL;
+    delete _deck;
+    _deck = NULL;
     //This deletes all the Player objects stored in the vector
-    for(vector<Player*>::iterator it = players.begin(); it != players.end(); ++it)
-    {
-        delete *it;
-    }
+    cout << players.size()<<endl;
+
     //This erases all the pointers stored in the vector
     players.clear();
 
-    delete _deck;
-    _deck = NULL;
     delete maploader;
     maploader = NULL;
     delete _map;
