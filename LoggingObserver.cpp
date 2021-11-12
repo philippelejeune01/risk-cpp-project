@@ -60,12 +60,26 @@ LogObserver::~LogObserver()
 {
 
 }
+ofstream LogObserver::logOutput;
+//Opens the output stream to the file. Should be called at the beginning of the program.
+void LogObserver::openOutput()
+{
+    logOutput.open("gamelog.txt");
+}
+//Closes the output stream to the file. Should be called at the end of the program.
+void LogObserver::closeOutput()
+{
+    logOutput.close();
+}
 //Update method
 void LogObserver::Update(ILoggable* ILog)
 {
     //Creates and output stream
+    /*
     ofstream output;
     output.open("gamelog.txt");
     output << ILog->stringToLog() << endl;
     output.close();
+    */
+    logOutput << ILog->stringToLog() << endl;
 }
