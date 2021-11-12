@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Map.h"
+#include "LoggingObserver.h"
 using std::string;
 //For storing elements
 using std::list;
@@ -146,22 +147,32 @@ void OrdersList::remove(int index)
 //addOrder method for adding an order in the OrdersList
 void OrdersList:: addOrder(Order* order)
 {
+    //If the order is a Deploy object, then it is pushed at the front of the list
     if (order->getOrderType() == "Deploy")
     {
         ordList.push_front(order);
+        lastAddedWasDeployed = true;
     }
+    //Otherwise, it is added at the back
     else
     {
         ordList.push_back(order);
+        lastAddedWasDeployed = false;
     }
-
+    Notify(this);
 }
+//This method executes the order at the front of OrdersList and pops it
 void OrdersList:: executeFirstOrder()
 {
     Order* firstOrder = *ordList.begin();
     firstOrder->execute();
     delete firstOrder;
     ordList.pop_front();
+}
+string OrdersList::stringToLog()
+{
+    Order* ord = (lastAddedWasDeployed) ? ordList.front(): ordList.back();
+    return "Order Issued : " + ord->doPrint();
 }
 //Order Implementation
 //Default Constructor
@@ -234,8 +245,11 @@ void Order:: setOwnedTerritories(vector<Territory*>* ownedTerr)
 Player*** Order::playersCannotAttackList = new Player**[6];
 int Order::sizeOfPlCantAttList = 6;
 int Order::indexOfEnd = 0;
+//This method should be called at the start of the game. It sets up the multidimensional array
+//playersCannotAttackList.
 void Order::setUpPlayerCannotAttackList()
 {
+    sizeOfPlCantAttList = 6;
     for (int i = 0; i < 6; i++)
     {
         playersCannotAttackList[i] = new Player*[2];
@@ -243,6 +257,7 @@ void Order::setUpPlayerCannotAttackList()
         playersCannotAttackList[i][1] = NULL;
     }
 }
+//This method clears out the content of playersCannotAttackList. This should be called at the end of each round.
 void Order::clearPlayerCannotAttackList()
 {
     for(int i = 0; i < sizeOfPlCantAttList; i++)
@@ -250,6 +265,18 @@ void Order::clearPlayerCannotAttackList()
         playersCannotAttackList[i][0] = NULL;
         playersCannotAttackList[i][1] = NULL;
     }
+    indexOfEnd = 0;
+}
+//This method deletes the playersCannotAttackList from the program.
+void Order::deletePlayerCannotAttackList()
+{
+    for(int i = 0; i < sizeOfPlCantAttList; i++)
+    {
+        delete [] playersCannotAttackList[i];
+    }
+    indexOfEnd = 0;
+    sizeOfPlCantAttList = 0;
+    delete [] playersCannotAttackList;
 }
 /*
 //Duplicate function
@@ -345,6 +372,12 @@ Order* Deploy::duplicate()
     //Creates a new object and returns its pointer
     return new Deploy(targetTerritory,ownedTerritories,nAddedArmies);
 }
+//StringtoLog method from ILoggable
+string Deploy::stringToLog()
+{
+    return "Deploy Order Executed: " + std::to_string(nAddedArmies) + " armies are added on the territory "
+    + targetTerritory->getName();
+}
 //Implementation of validate
 bool Deploy::validate()
 {
@@ -392,7 +425,7 @@ void Deploy::execute()
         cout << "This order cannot be executed." << endl;
     }
 
-    //Notify(this);
+    Notify(this);
 }
 
 //Advance Implementation
@@ -485,6 +518,11 @@ Order* Advance::duplicate()
 {
     //Creates a new object and returns its pointer
     return new Advance(targetTerritory,ownedTerritories,nMovedArmies,sourceTerritory);
+}
+string Advance::stringToLog()
+{
+    return "Advance Order executed: " + std::to_string(nMovedArmies) + " armies are moved from the territory " + sourceTerritory->getName()
+    + " to the territory " + targetTerritory->getName();
 }
 //Implementation of validate function
 bool Advance:: validate()
@@ -631,11 +669,12 @@ void Advance:: execute()
             cout << "Initiating a reinforcement! Advancing " << nMovedArmies << " armies to the targetted ally territory." << endl;
         }
     }
-    //
+    //If the Advance is invalid
     else
     {
         cout << "This order cannot be executed" << endl;
     }
+    Notify(this);
 }
 //Implementation of the subclass Bomb
 //Default constructor
@@ -679,6 +718,10 @@ Order* Bomb::duplicate()
 {
     //Creates a new object and returns its pointer
     return new Bomb(targetTerritory,ownedTerritories);
+}
+string Bomb::stringToLog()
+{
+    return "Bomb Order executed: the territory affected is " + targetTerritory->getName();
 }
 //Implementation of validate
 bool Bomb::validate()
@@ -728,6 +771,7 @@ void Bomb::execute()
     {
         cout << "This order cannot be executed." << endl;
     }
+    Notify(this);
 }
 
 //Implementation of Blockade
@@ -791,6 +835,10 @@ void Blockade::setNeutralPlayer(Player* nPl)
 {
     neutralPlayer = nPl;
 }
+string Blockade::stringToLog()
+{
+    return "Blockade Order executed: the targetted territory is " + targetTerritory->getName();
+}
 //Implementation of validate
 bool Blockade:: validate()
 {
@@ -840,6 +888,7 @@ void Blockade:: execute()
     {
         cout << "This order cannot be executed." << endl;
     }
+    Notify(this);
 }
 
 //Implementation of Airlift
@@ -912,6 +961,11 @@ Order* Airlift::duplicate()
     //Creates a new object and returns its pointer
     return new Airlift(targetTerritory,ownedTerritories,nMovedArmies,sourceTerritory);
 }
+string Airlift::stringToLog()
+{
+    return "Airlift Order executed: "+ std::to_string(nMovedArmies) + " armies are moved from the territory " + sourceTerritory->getName()
+    + " to the territory " + targetTerritory->getName();;
+}
 //Implementation of validate
 bool Airlift::validate()
 {
@@ -964,6 +1018,7 @@ void Airlift::execute()
     {
         cout << "The order cannot be executed" << endl;
     }
+    Notify(this);
 }
 
 //Negotiate Implementation
@@ -1009,7 +1064,7 @@ ostream& operator <<(ostream &strm, const Negotiate &negotiate)
 //DoPrint method for the stream insertion operator of Negotiate
 string Negotiate::doPrint() const
 {
-    return "Negotiate";
+    return "Negotiate: Between two players";
 }
 //Setters and Getters
 void Negotiate::setCallingPlayer(Player* cPlayer)
@@ -1033,6 +1088,10 @@ Order* Negotiate::duplicate()
 {
     //Creates a new object and returns its pointer
     return new Negotiate(callingPlayer,targetPlayer);
+}
+string Negotiate::stringToLog()
+{
+    return "Negotiate Order executed: the two players are now under a truce.";
 }
 //Implementation of validate
 bool Negotiate::validate()
@@ -1058,10 +1117,10 @@ void Negotiate::execute()
             //Creates a new multidimensional array
             Player*** newPlCantAttList;
             newPlCantAttList = new Player**[sizeOfPlCantAttList*2];
-            for (int i = 0; i < sizeOfPlCantAttList; i++)
+            for (int i = 0; i < sizeOfPlCantAttList * 2; i++)
             {
                 newPlCantAttList[i] = new Player*[2];
-                if (i <= indexOfEnd)
+                if (i < indexOfEnd)
                 {
                     newPlCantAttList[i][0] = playersCannotAttackList[i][0];
                     newPlCantAttList[i][1] = playersCannotAttackList[i][1];
@@ -1074,10 +1133,9 @@ void Negotiate::execute()
             }
             for (int i = 0; i < sizeOfPlCantAttList; i++)
             {
-                delete playersCannotAttackList[i];
+                delete [] playersCannotAttackList[i];
             }
-            delete playersCannotAttackList;
-            playersCannotAttackList = NULL;
+            delete [] playersCannotAttackList;
             playersCannotAttackList = newPlCantAttList;
             sizeOfPlCantAttList *= 2;
         }
@@ -1096,5 +1154,6 @@ void Negotiate::execute()
     {
         cout << "The order cannot be executed." << endl;
     }
+    Notify(this);
 }
 
