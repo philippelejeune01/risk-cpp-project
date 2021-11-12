@@ -231,6 +231,7 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("the game will restart");
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("start");
+        players.clear();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".";
         cout << "\nThe game starts again!" << endl;
         cout<<"--------------------------"<<endl;
