@@ -12,6 +12,7 @@ class LogObserver;
 using std::string;
 using std::list;
 using std::ofstream;
+using std::ostream;
 //Abstract classes
 class ILoggable
 {
@@ -49,7 +50,9 @@ public:
     ~LogObserver();
     LogObserver();
     void Update(ILoggable* Ilog);
-
+    LogObserver& operator = (const LogObserver& log);
+    LogObserver(const LogObserver& log);
+    friend ostream& operator <<(ostream &strm, const LogObserver &log);
     static ofstream output;
 };
 #endif // LOGGINGOBSERVER_H_INCLUDED
