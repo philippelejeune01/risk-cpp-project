@@ -2,7 +2,7 @@
 #define LOGGINGOBSERVER_H_INCLUDED
 #include <iostream>
 #include <list>
-#include <fstream>
+
 //Forward Declarations
 class Subject;
 class ILoggable;
@@ -11,7 +11,7 @@ class LogObserver;
 
 using std::string;
 using std::list;
-using std::ofstream;
+
 //Abstract classes
 class ILoggable
 {
@@ -48,9 +48,5 @@ public:
     ~LogObserver();
     LogObserver();
     void Update(ILoggable* Ilog);
-    static void openOutput();
-    static void closeOutput();
-private:
-    static ofstream logOutput;
 };
 #endif // LOGGINGOBSERVER_H_INCLUDED

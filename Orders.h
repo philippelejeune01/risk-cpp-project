@@ -5,7 +5,6 @@
 #include <vector>
 #include <set>
 #include "Map.h"
-#include "LoggingObserver.h"
 using std::string;
 //For storing elements
 using std::list;
@@ -17,7 +16,7 @@ class Player;
 
 //Declarations of Order class and its subclasses
 //Declarations of Order class and its subclasses
-class Order: public Subject, public ILoggable {
+class Order {
 public:
     //Constructors
     Order();
@@ -37,11 +36,9 @@ public:
     virtual bool validate()=0;
     virtual void execute()=0;
     string getOrderType() const;
-
     static void setUpPlayerCannotAttackList();
     static void clearPlayerCannotAttackList();
-    static void deletePlayerCannotAttackList();
-    virtual string doPrint() const;
+
 protected:
     Order(Territory* targetTerr, vector<Territory*>* ownedTerr, string oType);
     //targetTerritory refers to the territory affected by the order
@@ -57,13 +54,12 @@ protected:
     static int sizeOfPlCantAttList;
     static int indexOfEnd;
     string orderType;
-
 private:
-
+    virtual string doPrint() const;
 };
 
 //Declaration of OrdersList class
-class OrdersList: public Subject, public ILoggable{
+class OrdersList{
 public:
     //Constructors
     OrdersList();
@@ -81,11 +77,9 @@ public:
     void remove(int index);
     void addOrder(Order* order);
     void executeFirstOrder();
-    string stringToLog();
 private:
-    //List of orders
+    //Is temporarily an array
     list<Order*> ordList;
-    bool lastAddedWasDeployed;
 };
 
 //Order's subclasses.
@@ -108,12 +102,10 @@ public:
     //Functions every subclasses has to override
     bool validate();
     void execute();
-    string stringToLog();
 private:
     //nAddedArmies refers to the amount of armies to be deployed to the targetted territory
     int nAddedArmies;
     string doPrint() const;
-
 };
 
 //Advance validates if the source territory is owned by the calling player
@@ -140,7 +132,6 @@ public:
     //Functions every subclasses has to override
     bool validate();
     void execute();
-    string stringToLog();
 private:
     //nMovedArmies refers to the amount of armies to be moved from one territory to another
     int nMovedArmies;
@@ -151,7 +142,6 @@ private:
     vector<Territory*>* enemyTerritories;
     bool* flagConq;
     string doPrint() const;
-
 };
 
 //Bomb validates if the target territory is not owned by the calling player
@@ -168,7 +158,6 @@ public:
     bool validate();
     void execute();
     friend ostream& operator <<(ostream &strm, const Bomb &bomb);
-    string stringToLog();
 private:
     string doPrint() const;
 };
@@ -190,11 +179,9 @@ public:
     friend ostream& operator <<(ostream &strm, const Blockade &block);
     Player* getNeutralPlayer();
     void setNeutralPlayer(Player* nPl);
-    string stringToLog();
 private:
     string doPrint() const;
     Player* neutralPlayer;
-
 };
 
 //Airlift validates if the source territory is owned by the calling player
@@ -216,7 +203,6 @@ public:
     //Functions every subclasses has to override
     bool validate();
     void execute();
-    string stringToLog();
 private:
     //nMovedArmies indicates the amount of armies to be moved
     int nMovedArmies;
@@ -244,7 +230,6 @@ public:
     //Functions every subclasses has to override
     bool validate();
     void execute();
-    string stringToLog();
 private:
     //callingPlayer refers to the player making the negotiate order
     Player* callingPlayer;
