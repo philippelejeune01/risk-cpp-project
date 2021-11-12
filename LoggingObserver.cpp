@@ -60,16 +60,12 @@ LogObserver::~LogObserver()
 {
 
 }
-ofstream LogObserver::logOutput;
-//Opens the output stream to the file. Should be called at the beginning of the program.
-void LogObserver::openOutput()
+//This erases the content of the file gamelog.txt
+void LogObserver::resetFile()
 {
-    logOutput.open("gamelog.txt");
-}
-//Closes the output stream to the file. Should be called at the end of the program.
-void LogObserver::closeOutput()
-{
-    logOutput.close();
+    ofstream output;
+    output.open("gamelog.txt");
+    output.close();
 }
 //Update method
 void LogObserver::Update(ILoggable* ILog)
@@ -77,7 +73,7 @@ void LogObserver::Update(ILoggable* ILog)
     //Creates and output stream
 
     ofstream output;
-    output.open("gamelog.txt");
+    output.open("gamelog.txt", std::ios_base::app);
     output << ILog->stringToLog() << endl;
     output.close();
 
