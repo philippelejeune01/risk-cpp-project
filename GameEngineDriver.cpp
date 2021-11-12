@@ -53,5 +53,6 @@ int main()
         fcpa = NULL;
         game = NULL;
     }
+    LogObserver::output.close();
     return 0;
 };

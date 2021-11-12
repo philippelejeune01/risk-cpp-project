@@ -58,24 +58,20 @@ LogObserver::LogObserver():Observer()
 }
 LogObserver::~LogObserver()
 {
-
+    //output.close();
 }
 //This erases the content of the file gamelog.txt
-void LogObserver::resetFile()
-{
-    ofstream output;
-    output.open("gamelog.txt");
-    output.close();
-}
+ofstream LogObserver::output;
 //Update method
 void LogObserver::Update(ILoggable* ILog)
 {
     //Creates and output stream
 
-    ofstream output;
-    output.open("gamelog.txt", std::ios_base::app);
-    output << ILog->stringToLog() << endl;
-    output.close();
-
-    //logOutput << ILog->stringToLog() << endl;
+    if (!output.is_open())
+    {
+        output.open("gamelog.txt");
+        output << ILog->stringToLog() << endl ;
+    }
+    else
+        output << ILog->stringToLog() << endl;
 }

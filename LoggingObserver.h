@@ -48,6 +48,7 @@ public:
     ~LogObserver();
     LogObserver();
     void Update(ILoggable* Ilog);
-    static void resetFile();
+
+    static ofstream output;
 };
 #endif // LOGGINGOBSERVER_H_INCLUDED
