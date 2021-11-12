@@ -42,7 +42,7 @@ GameEngine::~GameEngine()
     delete _deck;
     _deck = NULL;
     //This deletes all the Player objects stored in the vector
-    cout << players.size()<<endl;
+    //cout << players.size()<<endl;
 
     //This erases all the pointers stored in the vector
     players.clear();
@@ -138,7 +138,10 @@ void GameEngine::randomizePlayOrder()
     default_random_engine randEngine{random_device{}()};
     shuffle(begin(players), end(players), randEngine);
 }
-
+/**
+*stringToLog method that creates a string that stores the new state of the GameEngine.
+*@return a string that stores the new state of the GameEngine.
+*/
 string GameEngine::stringToLog()
 {
     string s = getState();
@@ -187,7 +190,7 @@ bool GameEngine::validate(string command)
     if((getState() == "maploaded") && (command == "validatemap"))
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("map is successfully validated");
-        cout << "\nThe entered command " << command << " is valid for state " << getState();
+        cout << "The entered command " << command << " is valid for state " << getState();
         transition("mapvalidated");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
@@ -220,7 +223,7 @@ bool GameEngine::validate(string command)
         cout << "\nThe entered command " << command << " is valid for state " << getState();
         transition("win");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
+        cout<<"--------------------------\n"<<endl;
         return true;
     }
     if((getState() == "win") && (command == "replay"))
@@ -229,7 +232,7 @@ bool GameEngine::validate(string command)
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("start");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".";
-        cout << "The game starts again!\n" << endl;
+        cout << "\nThe game starts again!" << endl;
         cout<<"--------------------------"<<endl;
         return true;
     }
@@ -243,7 +246,8 @@ bool GameEngine::validate(string command)
     else
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("no effect since this command is not valid in current state");
-        cout << "\nThe entered command " << command << " is invalid, please try again and enter a valid command:\n"<< endl;
+        cout << "\nThe entered command " << command << " is invalid, please try again and enter a valid command:"<< endl;
+        cout<<"--------------------------"<<endl;
         return false;
     }
 }
