@@ -20,31 +20,31 @@ int main()
     getline(std::cin, s);
     if(s == "-console")
     {
-        cout << "The game just started and right now it is in the state: start\n" << endl;
+        cout << "\nThe game just started and right now it is in the state: start" << endl;
         game->startupPhase();
 
         /*Since, game must be a pointer, whenever it is no longer needed,
         the following two things must be done:
         1) deallocating memory:*/
-        //cout << *game->getCommandProcessor();
         delete game;
         //2) preventing dangling pointer errors:
         game = NULL;
     }
-    if(s.find("file") != string::npos)
+    if(s.find("-file") != string::npos)
     {
-        string name = s.substr(s.find("file")+6);
+        string name = s.substr(s.find("-file")+7);
         name = name.substr(0,name.size()-1);
         FileLineReader *flc = new FileLineReader(name);
         FileCommandProcessorAdapter *fcpa = new FileCommandProcessorAdapter(flc);
         game->setCommandProcessor(fcpa);
-        cout << "The game just started and right now it is in the state: start\n" << endl;
+        cout << "\nThe game just started and right now it is in the state: start" << endl;
         game->startupPhase();
 
+        /*Since, game must be a pointer, whenever it is no longer needed,
+        the following two things must be done:
+        1) deallocating memory:*/
         delete game;
         //2) preventing dangling pointer errors:
-        flc = NULL;
-        fcpa = NULL;
         game = NULL;
     }
     LogObserver::output.close();
