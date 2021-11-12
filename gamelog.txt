@@ -1,4 +1,0 @@
-Deploy Order Executed: 4 armies are added on the territory Quebec
-Order Issued : Advance: 1 armies: From Vancouver(7 armies) to Quebec(1 armies)
-Order Issued : Advance: 8 armies: From Quebec(1 armies) to Gatineau(1 armies)
-Order Issued : Deploy: 4 armies on Quebec(1 armies)
