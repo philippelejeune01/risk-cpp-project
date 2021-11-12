@@ -49,8 +49,9 @@ public:
     void initializeDeck();
     void randomizePlayOrder();
     void reinforcementPhase();
-    void executeOrderPhase();
+    void executeOrderPhase(Player* pl1, Player* pl2);
     void issueOrdersPhase(Player* pl1, Player* pl2);
+    void mainGameLoop();
     string stringToLog();
 
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)

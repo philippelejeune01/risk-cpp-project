@@ -475,6 +475,12 @@ std::istream &operator >> (std::istream &in,  GameEngine &ge)
     return in;
 }
 
+void shift(vector<vector<Player*>> &playerPairs){
+    for(int i=0;i<playerPairs.size();i++){
+
+    }
+}
+
 void GameEngine::reinforcementPhase(){
     for (auto x : players){
         int numberOfArmies = (x->getTerritories().size())/3;
@@ -503,46 +509,50 @@ void GameEngine::issueOrdersPhase(Player* pl1, Player* pl2)
     pl2->issueOrder(_deck, pl1);
 }
 
-void GameEngine::executeOrderPhase(){
-    bool deployOrdersPresent = false;
-    vector<Player*>::iterator players_it = players.begin();
+void GameEngine::executeOrderPhase(Player* pl1, Player* pl2){
+    cout << "--------------------------" << endl;
+    cout << "Execute Order Phase\n" << endl;
+    if(!pl1->getOrderList()->getOrdList().empty())
+        pl1->getOrderList()->executeFirstOrder();
 
-    while(true){
-        if((*players_it)->getOrderList()->getOrdList().front()->getOrderType().compare("deploy") == 0){
-            (*players_it)->getOrderList()->executeFirstOrder();
-            players_it++;
-            deployOrdersPresent = true;
+    if(!pl2->getOrderList()->getOrdList().empty())
+        pl2->getOrderList()->executeFirstOrder();
+}
+void GameEngine::mainGameLoop(){
+    reinforcementPhase();
+    //add dummy player if number of players is odd
+    if(players.size() % 2 == 1){
+        players.push_back(NULL);
+    }
+
+    int playerSize = players.size();
+    vector<vector<Player*>> playerPairs;
+    //create a pair of player from players
+    for(int i=0;i<playerSize/2;i++){
+        vector<Player*> pair;
+        pair.push_back(players.at(i));
+        pair.push_back(players.at((playerSize/2)+i));
+        playerPairs.push_back(pair);
+    }
+
+    for(int i=0;i<playerPairs.size();i++){
+        vector<Player*> pair = playerPairs.at(i);
+        if(pair.at(0)->getFlagIssueOrder() || pair.at(1)->getFlagIssueOrder()){
+            issueOrdersPhase(pair.at(0), pair.at(1));
         }
+        shift(playerPairs);
+    }
 
-        if(players_it == players.end()){
-            if(!deployOrdersPresent){
-                break;
-            }
-            players_it = players.begin();
-            deployOrdersPresent = false;
+    for(int i=0;i<playerPairs.size();i++){
+        vector<Player*> pair = playerPairs.at(i);
+        //if there is a bye (when players are odd)
+        if(pair.at(0)==NULL || pair.at(1)==NULL){
             continue;
         }else{
-            players_it++;
+            executeOrderPhase(pair.at(0), pair.at(1));
         }
 
-    }
-    bool ordersLeft = false;
-    while(true){
-        if(!(*players_it)->getOrderList()->getOrdList().empty()){
-            (*players_it)->getOrderList()->executeFirstOrder();
-            players_it++;
-            ordersLeft = true;
-        }
 
-        if(players_it == players.end()){
-            if(!ordersLeft){
-                break;
-            }
-            players_it = players.begin();
-            ordersLeft = false;
-            continue;
-        }else{
-            players_it++;
-        }
     }
+
 }
