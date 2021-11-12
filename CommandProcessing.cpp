@@ -77,7 +77,10 @@ void Command::setEffect(string e)
 {
     effect = e;
 }
-
+/**
+*stringToLog method that creates a string that stores the effect of the Command.
+*@return a string that stores the effect of the Command.
+*/
 string Command::stringToLog()
 {
     string s = getEffect();
@@ -107,6 +110,7 @@ std::ostream &operator << (std::ostream &out, const Command &c)
     << c.effect << endl;
     return out;
 }
+
 
 /**
 *Default constructor that creates a CommandProcessor object, which has an empty list of Command objects.
@@ -176,7 +180,10 @@ void CommandProcessor::saveCommand(Command* obj)
     lc.push_back(obj);
     Notify(this);
 }
-
+/**
+*stringToLog method that creates a string that stores the command of the CommandProcessor.
+*@return a string that stores the command of the CommandProcessor.
+*/
 string CommandProcessor::stringToLog()
 {
     string s = getCommandList().back()->getCommand();
@@ -203,7 +210,7 @@ std::string CommandProcessor::getCommand()
 std::string CommandProcessor::readCommand()
 {
     string command;
-    cout << "Please enter a valid command:" << endl;
+    cout << "\nPlease enter a valid command:" << endl;
     getline(std::cin, command);
     return command;
 }
