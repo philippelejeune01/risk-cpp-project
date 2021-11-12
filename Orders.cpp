@@ -17,6 +17,8 @@ using std::endl;
 //Default Constructor
 OrdersList::OrdersList()
 {
+    logO = new LogObserver();
+    this->Attach(logO);
 }
 //Constructor with 1 arg: list<Order*>
 OrdersList::OrdersList(list<Order*>* ls)
@@ -28,6 +30,8 @@ OrdersList::OrdersList(list<Order*>* ls)
         //Maintains the passed list order
         ordList.push_back((*it)->duplicate());
     }
+    logO = new LogObserver();
+    this->Attach(logO);
 }
 //Copy Constructor
 OrdersList::OrdersList(const OrdersList& ordsL)
@@ -39,6 +43,8 @@ OrdersList::OrdersList(const OrdersList& ordsL)
         //Maintains the passed OrdersList
         ordList.push_back((*it)->duplicate());
     }
+    logO = new LogObserver();
+    this->Attach(logO);
 }
 //Destructor
 OrdersList::~OrdersList()
@@ -178,18 +184,24 @@ string OrdersList::stringToLog()
 //Default Constructor
 Order::Order()
 {
+    logO = new LogObserver();
+    this->Attach(logO);
 }
 //Two arg constructor
 Order::Order(Territory* targetTerr, vector<Territory*>* ownedTerr)
 {
     targetTerritory = targetTerr;
     ownedTerritories = ownedTerr;
+    logO = new LogObserver();
+    this->Attach(logO);
 }
 //Copy Constructor
 Order::Order(const Order& ord)
 {
     targetTerritory = ord.getTargetTerritory();
     ownedTerritories = ord.getOwnedTerritories();
+    logO = new LogObserver();
+    this->Attach(logO);
 }
 //Assignment operator overload.
 Order& Order::operator = (const Order& ord)
@@ -214,6 +226,8 @@ Order::Order(Territory* targetTerr, vector<Territory*>* ownedTerr, string oType)
     targetTerritory = targetTerr;
     ownedTerritories = ownedTerr;
     orderType = oType;
+    logO = new LogObserver();
+    this->Attach(logO);
 }
 //doPrint method for the stream insertion operator of Order
 string Order::doPrint() const
