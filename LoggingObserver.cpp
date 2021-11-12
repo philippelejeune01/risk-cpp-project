@@ -1,5 +1,6 @@
 #include "LoggingObserver.h"
 #include <iostream>
+#include <string>
 #include <list>
 #include <fstream>
 using std::list;
@@ -7,6 +8,7 @@ using std::ofstream;
 using std::string;
 using std::endl;
 using std::cout;
+using std::ostream;
 //ILoggable constructor. It is an interface
 ILoggable::ILoggable()
 {
@@ -64,7 +66,25 @@ LogObserver::~LogObserver()
 {
 
 }
+
+
 ofstream LogObserver::output;
+//assignment operator
+LogObserver& LogObserver::operator = (const LogObserver& log)
+{
+    return *this;
+}
+//copy constructor
+LogObserver::LogObserver(const LogObserver& log)
+{
+
+}
+//stream insertion operator
+ostream& operator <<(ostream &strm, const LogObserver &log)
+{
+    strm <<"Sending data to log file \"gamelog.txt\" \n";
+    return strm;
+}
 //Update method
 void LogObserver::Update(ILoggable* ILog)
 {

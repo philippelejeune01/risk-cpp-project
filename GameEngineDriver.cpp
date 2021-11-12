@@ -41,10 +41,6 @@ int main()
         cout << "The game just started and right now it is in the state: start\n" << endl;
         game->startupPhase();
 
-        /*Since, game must be a pointer, whenever it is no longer needed,
-        the following two things must be done:
-        1) deallocating memory:*/
-        //cout << *game->getCommandProcessor();
         delete game;
         //2) preventing dangling pointer errors:
         flc = NULL;
