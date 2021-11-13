@@ -20,6 +20,27 @@ GameEngine::GameEngine()
     lo = new LogObserver();
     Attach(lo);
 }
+void GameEngine::shift(Player *playerPairs[][2], int size){
+    // 1 2 3 4
+    // 5 6 7 8
+    Player *tempPlayer;
+    for(int i=0;i<size;i++){
+        for (int j = 0; j < 2; ++j) {
+            if(i==0 && j==0){
+                continue;
+            }else if(j==0){
+                tempPlayer = playerPairs[i][j];
+                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)];
+                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)] = tempPlayer;
+            }else{
+                tempPlayer = playerPairs[i][j];
+                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)];
+                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)] = tempPlayer;
+            }
+        }
+    }
+}
+
 /**
 *Parameterized constructor that creates a GameEngine object, which state is initialized to the passed state as a parameter
 *and CommandProcessor object is initialized to the passed command processor object as a parameter.
@@ -365,7 +386,7 @@ bool GameEngine::passedCommand()
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("executeorders");
-        //issueOrdersPhase();
+        issueOrdersPhase();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
@@ -375,6 +396,7 @@ bool GameEngine::passedCommand()
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
         executeOrderPhase();
+        shift(playerPairs,players.size());
         cout<<"--------------------------"<<endl;
         return true;
     }
@@ -525,26 +547,6 @@ std::istream &operator >> (std::istream &in,  GameEngine &ge)
     return in;
 }
 
-void shift(Player *playerPairs[][2], int size){
-    // 1 2 3 4
-    // 5 6 7 8
-    Player *tempPlayer;
-    for(int i=0;i<size;i++){
-        for (int j = 0; j < 2; ++j) {
-            if(i==0 && j==0){
-                continue;
-            }else if(j==0){
-                tempPlayer = playerPairs[i][j];
-                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)];
-                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)] = tempPlayer;
-            }else{
-                tempPlayer = playerPairs[i][j];
-                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)];
-                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)] = tempPlayer;
-            }
-        }
-    }
-}
 
 void GameEngine::reinforcementPhase(){
     for (auto x : players){
@@ -564,7 +566,6 @@ void GameEngine::reinforcementPhase(){
         cout << numberOfArmies << endl;
     }
 }
-
 void GameEngine::issueOrdersPhase()
 {
     cout << "--------------------------" << endl;
@@ -576,7 +577,6 @@ void GameEngine::issueOrdersPhase()
     }
 
     int playerSize = players.size();
-    Player *playerPairs[playerSize/2][2];
     //create a pair of player from players
     for(int i=0;i<playerSize/2;i++){
         playerPairs[i][0] = players.at(i);
