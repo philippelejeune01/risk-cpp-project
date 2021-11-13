@@ -49,8 +49,8 @@ public:
     void initializeDeck();
     void randomizePlayOrder();
     void reinforcementPhase();
-    void executeOrderPhase(Player* pl1, Player* pl2);
-    void issueOrdersPhase(Player* pl1, Player* pl2);
+    void executeOrderPhase();
+    void issueOrdersPhase();
     void mainGameLoop();
     string stringToLog();
 
