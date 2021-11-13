@@ -52,7 +52,7 @@ public:
     void reinforcementPhase();
     void executeOrderPhase();
     void issueOrdersPhase();
-    void mainGameLoop();
+    void shift(Player *playerPairs[][2], int size);
     string stringToLog();
 
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)
@@ -67,5 +67,6 @@ public:
 private:
     string state;
     CommandProcessor* cp;
+    Player *playerPairs[][2];
 };
 #endif // GAMEENGINE_H
