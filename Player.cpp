@@ -261,12 +261,14 @@ void Player::createDeployOrders(vector <Territory*>* territoriesToDefend, Order*
             {
                 removeFromPool(nArmiesToDeployLastTerritory);
                 ord = new Deploy(territoriesToDefend->at(i), &territories, nArmiesToDeployLastTerritory);
-                ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
+                ordersList->addOrder(ord);
+                //ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
             }else
             {
                 removeFromPool(numberArmiesToDeploy);
                 ord = new Deploy(territoriesToDefend->at(i), &territories, numberArmiesToDeploy);
-                ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
+                ordersList->addOrder(ord);
+                //ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
             }
         }
     }
@@ -431,7 +433,8 @@ void Player::issueOrder(Deck* deck, Player* enemyPlayer)
 
         if(ord != NULL)
         {
-            ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
+            ordersList->addOrder(ord);
+            //ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
             cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
         }
 
@@ -473,7 +476,8 @@ void Player::issueOrder(Deck* deck, Player* enemyPlayer)
                 defendAdvanceOrd = new Advance(territoriesToDefend.at(randIndexDefend), &territories, randNOfArmies, territories.at(randIndexSource));
             }
             //Adding order to the end of the list
-            ordersList->move(defendAdvanceOrd, ordersList->getOrdList().size());
+            ordersList->addOrder(defendAdvanceOrd);
+            //ordersList->move(defendAdvanceOrd, ordersList->getOrdList().size());
             cout << "Created a " << defendAdvanceOrd->getOrderType() << " order (to defend) and placed it in the player's OrderList" << endl;
         }
         else
@@ -493,7 +497,8 @@ void Player::issueOrder(Deck* deck, Player* enemyPlayer)
             vector<Territory*> enemyTerritories = enemyPlayer->getTerritories();
             bool* flagConq = new bool(true);
             attackAdvanceOrd = new Advance(territoriesToAttack.at(randIndexAttack), &territories, randNOfArmies, territoriesToDefend.at(randIndexDefend), &enemyTerritories, flagConq);
-            ordersList->move(attackAdvanceOrd, ordersList->getOrdList().size());
+            ordersList->addOrder(attackAdvanceOrd);
+            //ordersList->move(attackAdvanceOrd, ordersList->getOrdList().size());
             //Set the attack status to false on the territory where an attack order has been created
             territoriesToAttack.at(randIndexAttack)->setAttackStatus(false);
             cout << "Created a " << attackAdvanceOrd->getOrderType() << " order (to attack) and placed it in the player's OrderList\n" << endl;
