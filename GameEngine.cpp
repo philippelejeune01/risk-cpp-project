@@ -525,6 +525,27 @@ std::istream &operator >> (std::istream &in,  GameEngine &ge)
     return in;
 }
 
+void shift(Player *playerPairs[][2], int size){
+    // 1 2 3 4
+    // 5 6 7 8
+    Player *tempPlayer;
+    for(int i=0;i<size;i++){
+        for (int j = 0; j < 2; ++j) {
+            if(i==0 && j==0){
+                continue;
+            }else if(j==0){
+                tempPlayer = playerPairs[i][j];
+                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)];
+                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)] = tempPlayer;
+            }else{
+                tempPlayer = playerPairs[i][j];
+                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)];
+                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)] = tempPlayer;
+            }
+        }
+    }
+}
+
 void GameEngine::reinforcementPhase(){
     for (auto x : players){
         int numberOfArmies = (x->getTerritories().size())/3;
@@ -544,55 +565,52 @@ void GameEngine::reinforcementPhase(){
     }
 }
 
-void GameEngine::issueOrdersPhase(Player* pl1, Player* pl2)
+void GameEngine::issueOrdersPhase()
 {
     cout << "--------------------------" << endl;
     cout << "Issue Order Phase\n" << endl;
 
-    pl1->issueOrder(_deck, pl2);
-    pl2->issueOrder(_deck, pl1);
+    //add dummy player if number of players is odd
+    if(players.size() % 2 == 1){
+        players.push_back(NULL);
+    }
+
+    int playerSize = players.size();
+    Player *playerPairs[playerSize/2][2];
+    //create a pair of player from players
+    for(int i=0;i<playerSize/2;i++){
+        playerPairs[i][0] = players.at(i);
+        playerPairs[i][1] = players.at((playerSize/2)+i);
+    }
+
+    for(int i=0;i<playerSize;i++){
+        //if there is a bye (when players are odd)
+        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL){
+            continue;
+        }
+        else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder()){
+            playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
+        }
+    }
 }
 
 void GameEngine::executeOrderPhase(){
-    bool deployOrdersPresent = false;
-    vector<Player*>::iterator players_it = players.begin();
+    cout << "--------------------------" << endl;
+    cout << "Execute Order Phase\n" << endl;
+    if(players.size() % 2 == 1){
+        players.push_back(NULL);
+    }
 
-    while(true){
-        if((*players_it)->getOrderList()->getOrdList().front()->getOrderType().compare("deploy") == 0){
-            (*players_it)->getOrderList()->executeFirstOrder();
-            players_it++;
-            deployOrdersPresent = true;
-        }
-
-        if(players_it == players.end()){
-            if(!deployOrdersPresent){
-                break;
-            }
-            players_it = players.begin();
-            deployOrdersPresent = false;
+    int playerSize = players.size();
+    Player *playerPairs[playerSize/2][2];
+    for(int i=0;i<playerSize;i++){
+        //if there is a bye (when players are odd)
+        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL){
             continue;
         }else{
-            players_it++;
-        }
-
-    }
-    bool ordersLeft = false;
-    while(true){
-        if(!(*players_it)->getOrderList()->getOrdList().empty()){
-            (*players_it)->getOrderList()->executeFirstOrder();
-            players_it++;
-            ordersLeft = true;
-        }
-
-        if(players_it == players.end()){
-            if(!ordersLeft){
-                break;
-            }
-            players_it = players.begin();
-            ordersLeft = false;
-            continue;
-        }else{
-            players_it++;
+            playerPairs[i][0]->getOrderList()->executeFirstOrder();
+            playerPairs[i][1]->getOrderList()->executeFirstOrder();
         }
     }
+
 }
