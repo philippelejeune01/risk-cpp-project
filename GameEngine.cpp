@@ -475,9 +475,14 @@ std::istream &operator >> (std::istream &in,  GameEngine &ge)
     return in;
 }
 
-void shift(vector<vector<Player*>> &playerPairs){
+void shift(Player *playerPairs){
+    // 1 2 3 4
+    // 5 6 7 8
     for(int i=0;i<playerPairs.size();i++){
-
+        if(i==0){
+            continue;
+            std::rotate(playerPairs.begin(), playerPairs.end(), )
+        }
     }
 }
 
@@ -526,33 +531,30 @@ void GameEngine::mainGameLoop(){
     }
 
     int playerSize = players.size();
-    vector<vector<Player*>> playerPairs;
+    Player *playerPairs[playerSize/2][2];
     //create a pair of player from players
     for(int i=0;i<playerSize/2;i++){
-        vector<Player*> pair;
-        pair.push_back(players.at(i));
-        pair.push_back(players.at((playerSize/2)+i));
-        playerPairs.push_back(pair);
+        playerPairs[i][0] = players.at(i);
+        playerPairs[i][1] = players.at((playerSize/2)+i);
     }
 
-    for(int i=0;i<playerPairs.size();i++){
-        vector<Player*> pair = playerPairs.at(i);
-        if(pair.at(0)->getFlagIssueOrder() || pair.at(1)->getFlagIssueOrder()){
-            issueOrdersPhase(pair.at(0), pair.at(1));
-        }
-        shift(playerPairs);
-    }
-
-    for(int i=0;i<playerPairs.size();i++){
-        vector<Player*> pair = playerPairs.at(i);
+    for(int i=0;i<playerSize;i++){
         //if there is a bye (when players are odd)
-        if(pair.at(0)==NULL || pair.at(1)==NULL){
+        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL){
             continue;
-        }else{
-            executeOrderPhase(pair.at(0), pair.at(1));
         }
-
-
+        else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder()){
+            issueOrdersPhase(playerPairs[i][0], playerPairs[i][1]);
+        }
     }
 
+    for(int i=0;i<playerSize;i++){
+        //if there is a bye (when players are odd)
+        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL){
+                continue;
+        }else{
+            executeOrderPhase(playerPairs[i][0], playerPairs[i][1]);
+        }
+    }
+    shift(playerPairs);
 }
