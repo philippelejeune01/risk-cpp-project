@@ -57,8 +57,7 @@ protected:
     static int sizeOfPlCantAttList;
     static int indexOfEnd;
     string orderType;
-
-private:
+    LogObserver* logO;
 
 };
 
@@ -86,6 +85,7 @@ private:
     //List of orders
     list<Order*> ordList;
     bool lastAddedWasDeployed;
+    LogObserver* logO;
 };
 
 //Order's subclasses.

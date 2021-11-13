@@ -4,4 +4,11 @@ sdgdgsdgdsg
 addplayer <a1>
 addplayer <a2>
 gamestart
+replay
+loadmap <solar.map>
+validatemap
+addplayer <Joe>
+addplayer <Mary>
+addplayer <Bob>
+gamestart
 quit

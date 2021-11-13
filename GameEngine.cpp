@@ -39,16 +39,14 @@ GameEngine::~GameEngine()
 {
     delete cp;
     cp = NULL;
+    delete _deck;
+    _deck = NULL;
     //This deletes all the Player objects stored in the vector
-    for(vector<Player*>::iterator it = players.begin(); it != players.end(); ++it)
-    {
-        delete *it;
-    }
+    //cout << players.size()<<endl;
+
     //This erases all the pointers stored in the vector
     players.clear();
 
-    delete _deck;
-    _deck = NULL;
     delete maploader;
     maploader = NULL;
     delete _map;
@@ -140,7 +138,10 @@ void GameEngine::randomizePlayOrder()
     default_random_engine randEngine{random_device{}()};
     shuffle(begin(players), end(players), randEngine);
 }
-
+/**
+*stringToLog method that creates a string that stores the new state of the GameEngine.
+*@return a string that stores the new state of the GameEngine.
+*/
 string GameEngine::stringToLog()
 {
     string s = getState();
@@ -189,7 +190,7 @@ bool GameEngine::validate(string command)
     if((getState() == "maploaded") && (command == "validatemap"))
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("map is successfully validated");
-        cout << "\nThe entered command " << command << " is valid for state " << getState();
+        cout << "The entered command " << command << " is valid for state " << getState();
         transition("mapvalidated");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
@@ -216,38 +217,72 @@ bool GameEngine::validate(string command)
         cout<<"--------------------------"<<endl;
         return true;
     }
+
     if((getState() == "playersadded") && (command == "gamestart"))
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("main loop of the game is successfully entered");
-        cout << "\nThe entered command " << command << " is valid for state " << getState();
+        cout << "The entered command " << command << " is valid for state " << getState();
+        transition("assignreinforcement");
+        //reinforcementPhase();
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+    if((getState() == "assignreinforcement") && (command == "issueorder"))
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
+        cout << "The entered command " << command << " is valid for state " << getState();
+        transition("issueorders");
+        //issueOrdersPhase();
+        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+
+    if((getState() == "issueoders") && (command == "execorder"))
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("Issue Order Phase");
+        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
+            << getState() << ".\n";
+        //executeOrderPhase();
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+
+    if((getState() == "executeorders") && (command == "win"))
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("Execute Order Phase");
+        cout << "The entered command " << command << " is valid for state " << getState();
         transition("win");
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "win") && (command == "replay"))
+
+    if(command == "replay")
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("the game will restart");
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("start");
+        players.clear();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".";
-        cout << "The game starts again!\n" << endl;
+        cout << "\nThe game starts again!" << endl;
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "win") && (command == "quit"))
+    if(command == "quit")
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("the game ends");
         cout << "The entered command " << command << " is valid for state " << getState() << ", therefore the game is "
             << "successfully terminated.\n";
         cout<<"--------------------------"<<endl;
+        return true;
     }
-    else
-    {
-        getCommandProcessor()->getCommandList().back()->saveEffect("no effect since this command is not valid in current state");
-        cout << "\nThe entered command " << command << " is invalid, please try again and enter a valid command:\n"<< endl;
-        return false;
-    }
+
+    getCommandProcessor()->getCommandList().back()->saveEffect("no effect since this command is not valid in current state");
+    cout << "\nThe entered command " << command << " is invalid, please try again and enter a valid command:"<< endl;
+    cout<<"--------------------------"<<endl;
+    return false;
 }
 /**
 *PassedCommand method that checks if the passed command is a valid one for the current state,
@@ -330,6 +365,7 @@ bool GameEngine::passedCommand()
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("executeorders");
+        //issueOrdersPhase();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
@@ -338,6 +374,7 @@ bool GameEngine::passedCommand()
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
+        executeOrderPhase();
         cout<<"--------------------------"<<endl;
         return true;
     }
@@ -358,7 +395,7 @@ bool GameEngine::passedCommand()
         return true;
     }
 
-    if((getState() == "win") && (command == "replay"))
+    if (command == "replay")
     {
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("start");
@@ -367,14 +404,26 @@ bool GameEngine::passedCommand()
         cout<<"--------------------------"<<endl;
         return true;
     }
-    if((getState() == "win") && (command == "quit"))
+    if(command == "quit")
     {
         cout << "The entered command " << command << " is valid for state " << getState() << ", therefore the game is "
             << "successfully terminated.\n";
         cout<<"--------------------------"<<endl;
+        return true;
     }
     cout << "The entered command " << command << " is invalid, please try again and enter a valid command:\n"<< endl;
     return false;
+}
+void GameEngine::mainGameLoop()
+{
+    string command;
+    do
+    {
+        command = getCommandProcessor()->getCommand();
+        if (!validate(command)) cout<<"Wrong Command, try a valid command\n";
+        if (command=="replay") startupPhase();
+    }
+    while (!(command == "quit") && !(getState() == "win"));
 }
 void GameEngine::startupPhase()
 {
@@ -444,10 +493,11 @@ void GameEngine::startupPhase()
                         cout << *players.at(i) << endl;
                     }
                 }
+
             }
         }
     }
-    while (!((command == "quit") && (getState() == "win")));
+    while (!(command=="gamestart"));
     delete tempPlayer;
     tempPlayer = NULL;
 }
@@ -564,4 +614,3 @@ void GameEngine::executeOrderPhase(){
     }
 
 }
-
