@@ -46,6 +46,7 @@ public:
     bool validate(string command);
     bool passedCommand();
     void startupPhase();
+    void mainGameLoop();
     void initializeDeck();
     void randomizePlayOrder();
     void reinforcementPhase();

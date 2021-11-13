@@ -22,7 +22,7 @@ int main()
     {
         cout << "\nThe game just started and right now it is in the state: start" << endl;
         game->startupPhase();
-
+        game->mainGameLoop();
         /*Since, game must be a pointer, whenever it is no longer needed,
         the following two things must be done:
         1) deallocating memory:*/
@@ -39,7 +39,7 @@ int main()
         game->setCommandProcessor(fcpa);
         cout << "\nThe game just started and right now it is in the state: start" << endl;
         game->startupPhase();
-
+        game->mainGameLoop();
         /*Since, game must be a pointer, whenever it is no longer needed,
         the following two things must be done:
         1) deallocating memory:*/
