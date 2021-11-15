@@ -244,7 +244,7 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("main loop of the game is successfully entered");
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("assignreinforcement");
-        //reinforcementPhase();
+        reinforcementPhase();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
@@ -254,18 +254,18 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("issueorders");
-        //issueOrdersPhase();
+        issueOrdersPhase();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
 
-    if((getState() == "issueoders") && (command == "execorder"))
+    if((getState() == "issueorders") && (command == "execorder"))
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("Issue Order Phase");
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
-        //executeOrderPhase();
+        executeOrderPhase();
         cout<<"--------------------------"<<endl;
         return true;
     }
@@ -589,7 +589,9 @@ void GameEngine::issueOrdersPhase()
             continue;
         }
         else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder()){
+            cout << "Before issue Order" << endl;
             playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
+            cout << "Before issue Order" << endl;
         }
     }
 }
