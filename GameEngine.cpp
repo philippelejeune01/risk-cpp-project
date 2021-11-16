@@ -244,11 +244,21 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("main loop of the game is successfully entered");
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("assignreinforcement");
-        reinforcementPhase();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
+
+    if((getState() == "assignreinforcement") && (command == "reinforce"))
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
+        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
+            << getState() << ".\n";
+        reinforcementPhase();
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+
     if((getState() == "assignreinforcement") && (command == "issueorder"))
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
@@ -515,13 +525,12 @@ void GameEngine::startupPhase()
                         cout << *players.at(i) << endl;
                     }
                 }
-
             }
         }
     }
     while (!(command=="gamestart"));
-    delete tempPlayer;
-    tempPlayer = NULL;
+//    delete tempPlayer;
+//    tempPlayer = NULL;
 }
 
 /**
@@ -549,6 +558,8 @@ std::istream &operator >> (std::istream &in,  GameEngine &ge)
 
 
 void GameEngine::reinforcementPhase(){
+    cout << "\n--------------------------" << endl;
+    cout << "Reinforcement Phase\n" << endl;
     for (auto x : players){
         int numberOfArmies = (x->getTerritories().size())/3;
         int i;
@@ -562,13 +573,14 @@ void GameEngine::reinforcementPhase(){
         if(numberOfArmies<3){
             numberOfArmies = 3;
         }
-        x->setPool(numberOfArmies);
-        cout << numberOfArmies << endl;
+        x->addToPool(numberOfArmies);
+        cout << "- Number of armies added to player's pool: " << numberOfArmies << "\n" << endl;
+        cout << *x << endl;
     }
 }
 void GameEngine::issueOrdersPhase()
 {
-    cout << "--------------------------" << endl;
+    cout << "\n--------------------------" << endl;
     cout << "Issue Order Phase\n" << endl;
 
     //add dummy player if number of players is odd
@@ -589,9 +601,7 @@ void GameEngine::issueOrdersPhase()
             continue;
         }
         else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder()){
-            cout << "Before issue Order" << endl;
             playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
-            cout << "Before issue Order" << endl;
         }
     }
 }
