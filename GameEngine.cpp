@@ -156,8 +156,8 @@ void GameEngine::initializeDeck()
 */
 void GameEngine::randomizePlayOrder()
 {
-    default_random_engine randEngine{random_device{}()};
-    shuffle(begin(players), end(players), randEngine);
+    //default_random_engine randEngine{random_device{}()};
+    //shuffle(begin(players), end(players), randEngine);
 }
 /**
 *stringToLog method that creates a string that stores the new state of the GameEngine.
@@ -244,11 +244,21 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("main loop of the game is successfully entered");
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("assignreinforcement");
-        reinforcementPhase();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
+
+    if((getState() == "assignreinforcement") && (command == "reinforce"))
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
+        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
+            << getState() << ".\n";
+        reinforcementPhase();
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+
     if((getState() == "assignreinforcement") && (command == "issueorder"))
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
@@ -312,130 +322,40 @@ bool GameEngine::validate(string command)
 *the passed command is invalid.
 *@param command is a string that corresponds to the command passed.
 */
-bool GameEngine::passedCommand()
+
+
+void GameEngine::setPlayersTerritories()
 {
-    string command = getCommandProcessor()->getCommand();
-    if (command=="reset")
-    {
-        cout<<"restarting the game"<<endl;
-        transition("start");
-        return true;
-    }
-    if((getState() == "start") && (command.find("loadmap") !=string::npos))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("maploaded");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "maploaded") && (command.find("loadmap") !=string::npos))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState()
-            << ", the game remains in the state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "maploaded") && (command == "validatemap"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("mapvalidated");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "mapvalidated") && (command.find("addplayer") !=string::npos))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("playersadded");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "playersadded") && (command.find("addplayer") !=string::npos))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
-            << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "playersadded") && (command == "gamestart"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("assignreinforcement");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "assignreinforcement") && (command == "issueorder"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("issueorders");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "issueorders") && (command == "issueorder"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
-            << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "issueorders") && (command == "issueordersend"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("executeorders");
-        issueOrdersPhase();
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "executeorders") && (command == "execorder"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
-            << getState() << ".\n";
-        executeOrderPhase();
-        shift(playerPairs,players.size());
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "executeorders") && (command == "endexecorders"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("assignreinforcement");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "executeorders") && (command == "win"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("win");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
+    int territoryCount = _map->numOfTerritories;
+    int playerCount = players.size();
+    int subLength = territoryCount / playerCount;
+    int remainder = territoryCount % playerCount;
+    int limit = min(playerCount, territoryCount);
+
+    int startIndex = 1; //Start index is one because the first element in allTerritories is always null
+    int endIndex = 0;
+
+    for(int i = 0; i < limit; ++i) {
+        endIndex += (remainder > 0) ? (subLength + !!(remainder--)) : subLength;
+        //cout<<"start index: "<<startIndex<<"end index: "<<endIndex<<endl;
+        vector <Territory*> subTerritories;
+
+        for (int j=startIndex;j<=endIndex;j++)
+        {
+            subTerritories.push_back(_map->territories[j]);
+            //cout<<_map->territories[j]->name<<endl;
+        }
+        for (int j=startIndex;j<=endIndex;j++)
+        {
+            _map->territories[j]->setPlayer(players.at(i));
+            //cout<<_map->territories[j]->name<<"is given to: "<<_map->territories[j]->ownedplayer->name<<endl;
+        }
+        players.at(i)->setTerritories(subTerritories);
+        startIndex = endIndex+1;
     }
 
-    if (command == "replay")
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("start");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".";
-        cout << "The game starts again!\n" << endl;
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if(command == "quit")
-    {
-        cout << "The entered command " << command << " is valid for state " << getState() << ", therefore the game is "
-            << "successfully terminated.\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    cout << "The entered command " << command << " is invalid, please try again and enter a valid command:\n"<< endl;
-    return false;
 }
+
 void GameEngine::mainGameLoop()
 {
     string command;
@@ -461,7 +381,7 @@ void GameEngine::startupPhase()
                 string filename=command.substr(command.find("loadmap")+9);
                 filename = filename.substr(0,filename.size()-1);
                 maploader = new MapLoader(filename);
-                _map = new Map(maploader->Load());
+                _map = new Map(*maploader->Load());
                 cout<<*_map<<endl;
             }
             if (command == "validatemap")
@@ -498,8 +418,7 @@ void GameEngine::startupPhase()
                 else
                 {
                     // Distribute all territories to players in almost equald parts depending on the number of players
-                    setPlayersTerritories(_map->getTerritories(), players);
-
+                    setPlayersTerritories();
                     //Randomize the order of play
                     randomizePlayOrder();
 
@@ -515,13 +434,12 @@ void GameEngine::startupPhase()
                         cout << *players.at(i) << endl;
                     }
                 }
-
             }
         }
     }
     while (!(command=="gamestart"));
-    delete tempPlayer;
-    tempPlayer = NULL;
+//    delete tempPlayer;
+//    tempPlayer = NULL;
 }
 
 /**
@@ -546,29 +464,48 @@ std::istream &operator >> (std::istream &in,  GameEngine &ge)
     in >> ge.state;
     return in;
 }
-
+bool GameEngine::doesPlayerOwnContinent(int cnum,Player* player)
+{
+    int i;
+    if (cnum==1) i=1;
+    else
+        i=_map->endofContinents[cnum-1]+1;
+    for (i; i<= _map->endofContinents[cnum];i++)
+    {
+        //cout<<"checking territory "<<i<<endl;
+        if (_map->territories.at(i)->ownedplayer != player)
+            return false;
+    }
+    return true;
+}
 
 void GameEngine::reinforcementPhase(){
-    for (auto x : players){
-        int numberOfArmies = (x->getTerritories().size())/3;
-        int i;
-        int *continent_ptr = _map->getEndOfContinents();
-        for(i = 1;i<_map->getNumberOfContinents();i++){
-            if(_map->doesPlayerOwnAllTerritories(i, x)) {
-                numberOfArmies += *continent_ptr;
+
+    cout << "\n--------------------------" << endl;
+    cout << "Reinforcement Phase\n" << endl;
+    int nCont = _map->getNumberOfContinents();
+    for (int p=0;p<players.size();p++)
+    {
+        int numberOfArmies = (players[p]->getTerritories().size())/3;
+
+        for(int i = 1;i <= nCont;i++)
+            if(doesPlayerOwnContinent(i, players[p]))
+            {
+                //cout<<" owns continent " <<i<<endl;
+                numberOfArmies += _map->continentPoints[i-1];
             }
-            continent_ptr++;
-        }
-        if(numberOfArmies<3){
+        if(numberOfArmies<3)
             numberOfArmies = 3;
-        }
-        x->setPool(numberOfArmies);
-        cout << numberOfArmies << endl;
+
+        players[p]->addToPool(numberOfArmies);
+
+        cout << "- Number of armies added to player's pool: " << numberOfArmies << "\n" << endl;
+        cout << *players[p] << endl;
     }
 }
 void GameEngine::issueOrdersPhase()
 {
-    cout << "--------------------------" << endl;
+    cout << "\n--------------------------" << endl;
     cout << "Issue Order Phase\n" << endl;
 
     //add dummy player if number of players is odd
@@ -589,9 +526,7 @@ void GameEngine::issueOrdersPhase()
             continue;
         }
         else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder()){
-            cout << "Before issue Order" << endl;
             playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
-            cout << "Before issue Order" << endl;
         }
     }
 }

@@ -262,6 +262,7 @@ FileLineReader::FileLineReader(const FileLineReader& flr)
 string FileLineReader::readLineFromFile()
 {
     string line;
+    if (stream.peek()==EOF) { cout<<"end of test file"; exit(0); }
     getline(stream, line);
     return line;
 }
