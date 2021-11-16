@@ -156,8 +156,8 @@ void GameEngine::initializeDeck()
 */
 void GameEngine::randomizePlayOrder()
 {
-    //default_random_engine randEngine{random_device{}()};
-    //shuffle(begin(players), end(players), randEngine);
+    default_random_engine randEngine{random_device{}()};
+    shuffle(begin(players), end(players), randEngine);
 }
 /**
 *stringToLog method that creates a string that stores the new state of the GameEngine.
