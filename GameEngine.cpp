@@ -355,17 +355,39 @@ void GameEngine::setPlayersTerritories()
     }
 
 }
-
+bool GameEngine::gameOver()
+{
+    if (players.size()==1)
+    {
+        cout<<"Player "<<players[0]->name<<" has won the game!";
+        transition("win");
+        return true;
+    }
+    return false;
+}
+void GameEngine::removeLosingPlayers()
+{
+    //players.push_back(new Player("Ali"));
+    int count = players.size();
+    for (int i=0;i<count;i++)
+        if (players[i]->getTerritories().size()==0)
+        {
+            cout<<players[i]->name<<" has no more territories and is removed from the game\n Remaining players: "<< count-1<<endl;
+            players.erase(players.begin()+i);
+            count--;
+        }
+}
 void GameEngine::mainGameLoop()
 {
     string command;
     do
     {
+        removeLosingPlayers();
         command = getCommandProcessor()->getCommand();
         if (!validate(command)) cout<<"Wrong Command, try a valid command\n";
         if (command=="replay") startupPhase();
     }
-    while (!(command == "quit") && !(getState() == "win"));
+    while (!(command == "quit") && !(getState() == "win") && !gameOver());
 }
 void GameEngine::startupPhase()
 {

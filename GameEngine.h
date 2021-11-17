@@ -53,7 +53,8 @@ public:
     void executeOrderPhase();
     void issueOrdersPhase();
     void shift(Player *playerPairs[][2], int size);
-
+    bool gameOver();
+    void removeLosingPlayers();
     bool doesPlayerOwnContinent(int cnum,Player* player);
     string stringToLog();
 
