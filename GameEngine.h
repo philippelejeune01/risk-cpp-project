@@ -52,7 +52,7 @@ public:
     void reinforcementPhase();
     void executeOrderPhase();
     void issueOrdersPhase();
-    void shift(Player *playerPairs[][2], int size);
+    bool shift();
     bool gameOver();
     void removeLosingPlayers();
     bool doesPlayerOwnContinent(int cnum,Player* player);
@@ -69,6 +69,6 @@ public:
     LogObserver* lo;
     string state;
     CommandProcessor* cp;
-    Player *playerPairs[100][2];
+    Player *playerPairs[3][2];
 };
 #endif // GAMEENGINE_H

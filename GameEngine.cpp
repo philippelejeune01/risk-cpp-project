@@ -20,26 +20,7 @@ GameEngine::GameEngine()
     lo = new LogObserver();
     Attach(lo);
 }
-void GameEngine::shift(Player *playerPairs[][2], int size){
-    // 1 2 3 4
-    // 5 6 7 8
-    Player *tempPlayer;
-    for(int i=0;i<size;i++){
-        for (int j = 0; j < 2; ++j) {
-            if(i==0 && j==0){
-                continue;
-            }else if(j==0){
-                tempPlayer = playerPairs[i][j];
-                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)];
-                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)] = tempPlayer;
-            }else{
-                tempPlayer = playerPairs[i][j];
-                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)];
-                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)] = tempPlayer;
-            }
-        }
-    }
-}
+
 
 /**
 *Parameterized constructor that creates a GameEngine object, which state is initialized to the passed state as a parameter
@@ -525,6 +506,33 @@ void GameEngine::reinforcementPhase(){
         cout << *players[p] << endl;
     }
 }
+
+//round-robin shift
+bool GameEngine::shift()
+{
+    Player *tempPairs[3][2];
+    int pairs = players.size()/2 +players.size()%2;
+
+    if (pairs==1) return false;
+
+    tempPairs[0][0]=playerPairs[0][0];
+    tempPairs[0][1]=playerPairs[pairs-1][0];
+    tempPairs[1][0]=playerPairs[pairs-1][1];
+
+    for(int i=0;i<2;i++){
+        for (int j = 0; j<pairs; j++)
+        {
+            if ((j==1)&&(i==0)) continue;
+            if ((j==0)&&(i==1)) continue;
+            if ((i==0)&&(j==0)) continue;
+            tempPairs[j][i]=playerPairs[j-1][i];
+        }
+    }
+    for(int i=0;i<2;i++)
+        for (int j = 0; j<pairs; j++)
+            playerPairs[j][i]=tempPairs[j][i];
+}
+
 void GameEngine::issueOrdersPhase()
 {
     cout << "\n--------------------------" << endl;
@@ -542,14 +550,16 @@ void GameEngine::issueOrdersPhase()
         playerPairs[i][1] = players.at((playerSize/2)+i);
     }
 
-    for(int i=0;i<playerSize;i++){
+    shift(); //round-robin fashion
+
+    int pairs=playerSize/2+playerSize%2;
+
+    for(int i=0;i<pairs;i++){
         //if there is a bye (when players are odd)
-        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL){
+        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL)
             continue;
-        }
-        else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder()){
+        else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
             playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
-        }
     }
 }
 
