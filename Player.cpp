@@ -87,12 +87,12 @@ Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
 //Copy Constructor
 Player::Player(const Player& pl)
 {
-    name = pl.name;
-    territories = pl.territories;
-    hand = pl.hand;
-    ordersList = pl.ordersList;
-    flagConqTerr = pl.flagConqTerr;
-    flagIssueOrder = pl.flagIssueOrder;
+    this->name = pl.name;
+    this->territories = pl.territories;
+    this->hand = pl.hand;
+    this->ordersList = pl.ordersList;
+    this->flagConqTerr = pl.flagConqTerr;
+    this->flagIssueOrder = pl.flagIssueOrder;
 }
 
 //Destructor
@@ -151,7 +151,6 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
     }
 
     strm << "Player has " << aPlayer.getPool() << " armies in his reinforcement pool" <<endl;
-
     return strm;
 }
 
@@ -521,27 +520,4 @@ void Player::issueOrder(Deck* deck, Player* enemyPlayer)
     cout << *this << endl;
 }
 
-//Splits the list of all territories into almost equal or equal parts depending on the number of players.
-void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers)
-{
 
-    int territoryCount = allTerritories.size();
-    int playerCount = allPlayers.size();
-
-    int subLength = territoryCount / playerCount;
-    int remainder = territoryCount % playerCount;
-    int limit = min(playerCount, territoryCount);
-
-    int startIndex = 1; //Start index is one because the first element in allTerritories is always null
-    int endIndex = 0;
-
-    for(int i = 0; i < limit; ++i) {
-        endIndex += (remainder > 0) ? (subLength + !!(remainder--)) : subLength;
-
-        vector <Territory*> subTerritories(allTerritories.begin() + startIndex, allTerritories.begin() + endIndex);
-        allPlayers.at(i)->setTerritories(subTerritories);
-
-        startIndex = endIndex;
-    }
-
-}

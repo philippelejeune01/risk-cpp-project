@@ -20,26 +20,7 @@ GameEngine::GameEngine()
     lo = new LogObserver();
     Attach(lo);
 }
-void GameEngine::shift(Player *playerPairs[][2], int size){
-    // 1 2 3 4
-    // 5 6 7 8
-    Player *tempPlayer;
-    for(int i=0;i<size;i++){
-        for (int j = 0; j < 2; ++j) {
-            if(i==0 && j==0){
-                continue;
-            }else if(j==0){
-                tempPlayer = playerPairs[i][j];
-                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)];
-                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 0 : 1)] = tempPlayer;
-            }else{
-                tempPlayer = playerPairs[i][j];
-                playerPairs[i][j] = playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)];
-                playerPairs[(i+1) % size][j+( ((i+1)%size) == i+1 ? 1 : 0)] = tempPlayer;
-            }
-        }
-    }
-}
+
 
 /**
 *Parameterized constructor that creates a GameEngine object, which state is initialized to the passed state as a parameter
@@ -244,11 +225,21 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("main loop of the game is successfully entered");
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("assignreinforcement");
-        reinforcementPhase();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
     }
+
+    if((getState() == "assignreinforcement") && (command == "reinforce"))
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
+        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
+            << getState() << ".\n";
+        reinforcementPhase();
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
+
     if((getState() == "assignreinforcement") && (command == "issueorder"))
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
@@ -312,140 +303,72 @@ bool GameEngine::validate(string command)
 *the passed command is invalid.
 *@param command is a string that corresponds to the command passed.
 */
-bool GameEngine::passedCommand()
+
+
+void GameEngine::setPlayersTerritories()
 {
-    string command = getCommandProcessor()->getCommand();
-    if (command=="reset")
-    {
-        cout<<"restarting the game"<<endl;
-        transition("start");
-        return true;
-    }
-    if((getState() == "start") && (command.find("loadmap") !=string::npos))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("maploaded");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "maploaded") && (command.find("loadmap") !=string::npos))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState()
-            << ", the game remains in the state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "maploaded") && (command == "validatemap"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("mapvalidated");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "mapvalidated") && (command.find("addplayer") !=string::npos))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("playersadded");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "playersadded") && (command.find("addplayer") !=string::npos))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
-            << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "playersadded") && (command == "gamestart"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("assignreinforcement");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "assignreinforcement") && (command == "issueorder"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("issueorders");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "issueorders") && (command == "issueorder"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
-            << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "issueorders") && (command == "issueordersend"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("executeorders");
-        issueOrdersPhase();
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "executeorders") && (command == "execorder"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
-            << getState() << ".\n";
-        executeOrderPhase();
-        shift(playerPairs,players.size());
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "executeorders") && (command == "endexecorders"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("assignreinforcement");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    if((getState() == "executeorders") && (command == "win"))
-    {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("win");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
-        cout<<"--------------------------"<<endl;
-        return true;
+    int territoryCount = _map->numOfTerritories;
+    int playerCount = players.size();
+    int subLength = territoryCount / playerCount;
+    int remainder = territoryCount % playerCount;
+    int limit = min(playerCount, territoryCount);
+
+    int startIndex = 1; //Start index is one because the first element in allTerritories is always null
+    int endIndex = 0;
+
+    for(int i = 0; i < limit; ++i) {
+        endIndex += (remainder > 0) ? (subLength + !!(remainder--)) : subLength;
+        //cout<<"start index: "<<startIndex<<"end index: "<<endIndex<<endl;
+        vector <Territory*> subTerritories;
+
+        for (int j=startIndex;j<=endIndex;j++)
+        {
+            subTerritories.push_back(_map->territories[j]);
+            //cout<<_map->territories[j]->name<<endl;
+        }
+        for (int j=startIndex;j<=endIndex;j++)
+        {
+            _map->territories[j]->setPlayer(players.at(i));
+            //cout<<_map->territories[j]->name<<"is given to: "<<_map->territories[j]->ownedplayer->name<<endl;
+        }
+        players.at(i)->setTerritories(subTerritories);
+        startIndex = endIndex+1;
     }
 
-    if (command == "replay")
+}
+bool GameEngine::gameOver()
+{
+    if (players.size()==1)
     {
-        cout << "The entered command " << command << " is valid for state " << getState();
-        transition("start");
-        cout << ", therefore the game is successfully transited to the next state " << getState() << ".";
-        cout << "The game starts again!\n" << endl;
-        cout<<"--------------------------"<<endl;
+        cout<<"Player "<<players[0]->name<<" has won the game!";
+        transition("win");
         return true;
     }
-    if(command == "quit")
-    {
-        cout << "The entered command " << command << " is valid for state " << getState() << ", therefore the game is "
-            << "successfully terminated.\n";
-        cout<<"--------------------------"<<endl;
-        return true;
-    }
-    cout << "The entered command " << command << " is invalid, please try again and enter a valid command:\n"<< endl;
     return false;
+}
+void GameEngine::removeLosingPlayers()
+{
+    //players.push_back(new Player("Ali"));
+    int count = players.size();
+    for (int i=0;i<count;i++)
+        if (players[i]->getTerritories().size()==0)
+        {
+            cout<<players[i]->name<<" has no more territories and is removed from the game\n Remaining players: "<< count-1<<endl;
+            players.erase(players.begin()+i);
+            count--;
+        }
 }
 void GameEngine::mainGameLoop()
 {
     string command;
     do
     {
+        removeLosingPlayers();
         command = getCommandProcessor()->getCommand();
         if (!validate(command)) cout<<"Wrong Command, try a valid command\n";
         if (command=="replay") startupPhase();
     }
-    while (!(command == "quit") && !(getState() == "win"));
+    while (!(command == "quit") && !(getState() == "win") && !gameOver());
 }
 void GameEngine::startupPhase()
 {
@@ -461,7 +384,7 @@ void GameEngine::startupPhase()
                 string filename=command.substr(command.find("loadmap")+9);
                 filename = filename.substr(0,filename.size()-1);
                 maploader = new MapLoader(filename);
-                _map = new Map(maploader->Load());
+                _map = new Map(*maploader->Load());
                 cout<<*_map<<endl;
             }
             if (command == "validatemap")
@@ -498,8 +421,7 @@ void GameEngine::startupPhase()
                 else
                 {
                     // Distribute all territories to players in almost equald parts depending on the number of players
-                    setPlayersTerritories(_map->getTerritories(), players);
-
+                    setPlayersTerritories();
                     //Randomize the order of play
                     randomizePlayOrder();
 
@@ -515,13 +437,12 @@ void GameEngine::startupPhase()
                         cout << *players.at(i) << endl;
                     }
                 }
-
             }
         }
     }
     while (!(command=="gamestart"));
-    delete tempPlayer;
-    tempPlayer = NULL;
+//    delete tempPlayer;
+//    tempPlayer = NULL;
 }
 
 /**
@@ -546,29 +467,75 @@ std::istream &operator >> (std::istream &in,  GameEngine &ge)
     in >> ge.state;
     return in;
 }
-
+bool GameEngine::doesPlayerOwnContinent(int cnum,Player* player)
+{
+    int i;
+    if (cnum==1) i=1;
+    else
+        i=_map->endofContinents[cnum-1]+1;
+    for (i; i<= _map->endofContinents[cnum];i++)
+    {
+        //cout<<"checking territory "<<i<<endl;
+        if (_map->territories.at(i)->ownedplayer != player)
+            return false;
+    }
+    return true;
+}
 
 void GameEngine::reinforcementPhase(){
-    for (auto x : players){
-        int numberOfArmies = (x->getTerritories().size())/3;
-        int i;
-        int *continent_ptr = _map->getEndOfContinents();
-        for(i = 1;i<_map->getNumberOfContinents();i++){
-            if(_map->doesPlayerOwnAllTerritories(i, x)) {
-                numberOfArmies += *continent_ptr;
+
+    cout << "\n--------------------------" << endl;
+    cout << "Reinforcement Phase\n" << endl;
+    int nCont = _map->getNumberOfContinents();
+    for (int p=0;p<players.size();p++)
+    {
+        int numberOfArmies = (players[p]->getTerritories().size())/3;
+
+        for(int i = 1;i <= nCont;i++)
+            if(doesPlayerOwnContinent(i, players[p]))
+            {
+                //cout<<" owns continent " <<i<<endl;
+                numberOfArmies += _map->continentPoints[i-1];
             }
-            continent_ptr++;
-        }
-        if(numberOfArmies<3){
+        if(numberOfArmies<3)
             numberOfArmies = 3;
-        }
-        x->setPool(numberOfArmies);
-        cout << numberOfArmies << endl;
+
+        players[p]->addToPool(numberOfArmies);
+
+        cout << "- Number of armies added to player's pool: " << numberOfArmies << "\n" << endl;
+        cout << *players[p] << endl;
     }
 }
+
+//round-robin shift
+bool GameEngine::shift()
+{
+    Player *tempPairs[3][2];
+    int pairs = players.size()/2 +players.size()%2;
+
+    if (pairs==1) return false;
+
+    tempPairs[0][0]=playerPairs[0][0];
+    tempPairs[0][1]=playerPairs[pairs-1][0];
+    tempPairs[1][0]=playerPairs[pairs-1][1];
+
+    for(int i=0;i<2;i++){
+        for (int j = 0; j<pairs; j++)
+        {
+            if ((j==1)&&(i==0)) continue;
+            if ((j==0)&&(i==1)) continue;
+            if ((i==0)&&(j==0)) continue;
+            tempPairs[j][i]=playerPairs[j-1][i];
+        }
+    }
+    for(int i=0;i<2;i++)
+        for (int j = 0; j<pairs; j++)
+            playerPairs[j][i]=tempPairs[j][i];
+}
+
 void GameEngine::issueOrdersPhase()
 {
-    cout << "--------------------------" << endl;
+    cout << "\n--------------------------" << endl;
     cout << "Issue Order Phase\n" << endl;
 
     //add dummy player if number of players is odd
@@ -583,16 +550,16 @@ void GameEngine::issueOrdersPhase()
         playerPairs[i][1] = players.at((playerSize/2)+i);
     }
 
-    for(int i=0;i<playerSize;i++){
+    shift(); //round-robin fashion
+
+    int pairs=playerSize/2+playerSize%2;
+
+    for(int i=0;i<pairs;i++){
         //if there is a bye (when players are odd)
-        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL){
+        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL)
             continue;
-        }
-        else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder()){
-            cout << "Before issue Order" << endl;
+        else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
             playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
-            cout << "Before issue Order" << endl;
-        }
     }
 }
 

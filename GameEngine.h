@@ -44,15 +44,18 @@ public:
     //Other methods declarations:
     void transition(string newState);
     bool validate(string command);
-    bool passedCommand();
     void startupPhase();
     void mainGameLoop();
     void initializeDeck();
+    void setPlayersTerritories();
     void randomizePlayOrder();
     void reinforcementPhase();
     void executeOrderPhase();
     void issueOrdersPhase();
-    void shift(Player *playerPairs[][2], int size);
+    bool shift();
+    bool gameOver();
+    void removeLosingPlayers();
+    bool doesPlayerOwnContinent(int cnum,Player* player);
     string stringToLog();
 
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)
@@ -64,9 +67,8 @@ public:
     MapLoader* maploader;
     Map* _map;
     LogObserver* lo;
-private:
     string state;
     CommandProcessor* cp;
-    Player *playerPairs[][2];
+    Player *playerPairs[3][2];
 };
 #endif // GAMEENGINE_H

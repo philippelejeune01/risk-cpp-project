@@ -19,6 +19,7 @@ class Territory
         int getTerritoryNum();
         bool isAdjacentTo(Territory &t2);
         Territory(int tnum,int x,int y,int c,int num,Player* ownedP, string n);
+        Territory(const Territory& t);
         Territory();
         ~Territory();
         friend ostream& operator <<(ostream &strm, const Territory &terr);
@@ -41,16 +42,16 @@ class Territory
 class Map
 {
     public:
-        Map(vector<int>* adjacency,vector<Territory*> listOfTerritories,int nOfContinents,int nOfTerritories,int endOf[]);
+        Map(vector<int>* adjacency,vector<Territory*> listOfTerritories,int nOfContinents,int nOfTerritories,int endOf[],vector<int> contPoints);
         Map(const Map& m);
         Map();
 
         void setAdjacency(vector<int>* adjacency);
         void setTerritories(vector<Territory*> territories);
-        bool doesPlayerOwnAllTerritories(int cnum,Player* player);
         vector <Territory*> getTerritories() const;
         void setNumberOfContinents(int n);
         void setNumberOfTerritories(int n);
+        void setContinentPoints(vector<int> contPoints);
         void setEndOfContinents(const int *arr);
         bool isAdjacentto(Territory t1, Territory t2);
         bool validate();
@@ -60,18 +61,18 @@ class Map
         friend ostream& operator<<(ostream &strm, Map &m);
         ~Map();
 
-    protected:
         int numOfTerritories, numOfContinents;
         vector<int>* adjacencyList;
         vector<Territory*> territories;
         int endofContinents[100];
+        vector<int> continentPoints;
 
 };
 class MapLoader
 {
     public:
         MapLoader(string filepath);
-        Map Load();
+        Map* Load();
     private:
         string filepath;
 

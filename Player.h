@@ -51,7 +51,7 @@ class Player
         void addToPool(int numberOfArmies);
         bool removeFromPool(int numberOfArmies);
 
-    private:
+    //protected:
         string name;
         //Determines if the player has more orders to issue
         bool* flagIssueOrder;
@@ -69,6 +69,5 @@ class Player
         int determineNArmiesForAttack(int randIndexSource);
 };
 //Global function to assign territories to player's
-void setPlayersTerritories(vector <Territory*> allTerritories, vector <Player*> allPlayers);
 
 #endif // PLAYER_H
