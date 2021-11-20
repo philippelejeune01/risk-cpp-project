@@ -887,10 +887,9 @@ bool Blockade:: validate()
     return false;
 }
 //Implementation of execute
-void Blockade:: execute()
+void Blockade::execute()
 {
     //Checks if the order is valid
-    cout<<"hi";
     if (validate())
     {
         cout << "Blockade the targetted territory " << *(targetTerritory) << ". It has now 3 times the amount of armies and is neutral" << endl;

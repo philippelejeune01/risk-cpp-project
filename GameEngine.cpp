@@ -559,9 +559,11 @@ void GameEngine::issueOrdersPhase()
          //if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
     {
         if (playerPairs[i][0]!=NULL)
-            playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
+            if (playerPairs[i][0]->getFlagIssueOrder())
+                playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
         if (playerPairs[i][0]!=NULL)
-            playerPairs[i][1]->issueOrder(_deck, playerPairs[i][0]);
+            if(playerPairs[i][1]->getFlagIssueOrder())
+                playerPairs[i][1]->issueOrder(_deck, playerPairs[i][0]);
     }
 
 }

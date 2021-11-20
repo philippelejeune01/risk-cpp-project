@@ -1,0 +1,72 @@
+Command: loadmap <europe.map>
+Command's effect: map europe.map successfully loaded
+Game Engine new state: maploaded
+Command: validatemap
+Command's effect: map is successfully validated
+Game Engine new state: mapvalidated
+Command: sdgdgsdgdsg
+Command's effect: no effect since this command is not valid in current state
+Command: addplayer <a1>
+Command's effect: player a1 successfully added
+Game Engine new state: playersadded
+Command: addplayer <a2>
+Command's effect: player a2 successfully added
+Command: addplayer <a3>
+Command's effect: player a3 successfully added
+Command: addplayer <a4>
+Command's effect: player a4 successfully added
+Command: addplayer <a5>
+Command's effect: player a5 successfully added
+Command: addplayer <a6>
+Command's effect: player a6 successfully added
+Command: gamestart
+Command's effect: main loop of the game is successfully entered
+Game Engine new state: assignreinforcement
+Command: reinforce
+Command's effect: Assign reinforcement phase
+Command: issueorder
+Command's effect: Assign reinforcement phase
+Game Engine new state: issueorders
+Order Issued : Deploy: 13 armies on Hungary(0 armies)
+Order Issued : Deploy: 13 armies on Austria(0 armies)
+Order Issued : Deploy: 13 armies on Switzerland(0 armies)
+Order Issued : Deploy: 14 armies on Italy(0 armies)
+Order Issued : Negotiate: Between two players
+Order Issued : Advance: 5 armies: From Hungary(0 armies) to Switzerland(0 armies)
+Order Issued : Advance: 2 armies: From Switzerland(0 armies) to Sicily(0 armies)
+Order Issued : Deploy: 53 armies on Sardinia(0 armies)
+Order Issued : Blockade: Sardinia(0 armies)
+Order Issued : Advance: 44 armies: From Sardinia(0 armies) to Spain(0 armies)
+Order Issued : Deploy: 13 armies on Wales(0 armies)
+Order Issued : Deploy: 13 armies on Belgum(0 armies)
+Order Issued : Deploy: 13 armies on Netherlands(0 armies)
+Order Issued : Deploy: 14 armies on Denmark(0 armies)
+Order Issued : Advance: 5 armies: From Wales(0 armies) to Netherlands(0 armies)
+Order Issued : Advance: 2 armies: From Netherlands(0 armies) to England(0 armies)
+Order Issued : Deploy: 26 armies on France(0 armies)
+Order Issued : Deploy: 27 armies on Luxembourg(0 armies)
+Order Issued : Blockade: France(0 armies)
+Order Issued : Advance: 17 armies: From France(0 armies) to Luxembourg(0 armies)
+Order Issued : Advance: 14 armies: From Luxembourg(0 armies) to Germany(0 armies)
+Order Issued : Deploy: 17 armies on England(0 armies)
+Order Issued : Deploy: 17 armies on Scotland(0 armies)
+Order Issued : Deploy: 19 armies on Rep_Ireland(0 armies)
+Order Issued : Bomb: Denmark(0 armies)
+Order Issued : Advance: 15 armies: From England(0 armies) to Rep_Ireland(0 armies)
+Order Issued : Advance: 18 armies: From Rep_Ireland(0 armies) to Denmark(0 armies)
+Order Issued : Deploy: 17 armies on Poland(0 armies)
+Order Issued : Deploy: 17 armies on Czech_Rep(0 armies)
+Order Issued : Deploy: 19 armies on Slovakia(0 armies)
+Order Issued : Airlift 4 armies: From Poland(0 armies) to Poland(0 armies)
+Order Issued : Advance: 11 armies: From Poland(0 armies) to Slovakia(0 armies)
+Order Issued : Advance: 18 armies: From Slovakia(0 armies) to Belgum(0 armies)
+Command: execorder
+Command's effect: Issue Order Phase
+Deploy Order Executed: 14 armies are added on the territory Italy
+Deploy Order Executed: 13 armies are added on the territory Switzerland
+Deploy Order Executed: 13 armies are added on the territory Austria
+Deploy Order Executed: 13 armies are added on the territory Hungary
+Negotiate Order executed: the two players are now under a truce.
+Advance Order executed: 5 armies are moved from the territory Hungary to the territory Switzerland
+Advance Order executed: 2 armies are moved from the territory Switzerland to the territory Sicily
+Deploy Order Executed: 53 armies are added on the territory Sardinia
