@@ -33,6 +33,7 @@ public:
     void setOwnedTerritories(vector<Territory*>* ownedTerr);
     //duplicate method
     virtual Order* duplicate()=0;
+
     //Functions every subclasses has to implement
     virtual bool validate()=0;
     virtual void execute()=0;
@@ -73,8 +74,9 @@ public:
     //Destructor
     ~OrdersList();
     friend ostream& operator <<(ostream &strm, const OrdersList &ordLs);
-
+    bool isEmpty();
     list<Order*> getOrdList() const;
+    string getFirstOrderType();
     //2 required methods
     void move(Order* order, int index);
     void remove(int index);

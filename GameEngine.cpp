@@ -257,6 +257,7 @@ bool GameEngine::validate(string command)
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
         executeOrderPhase();
+        transition("executeorders");
         cout<<"--------------------------"<<endl;
         return true;
     }
@@ -342,6 +343,7 @@ bool GameEngine::gameOver()
     {
         cout<<"Player "<<players[0]->name<<" has won the game!";
         transition("win");
+        Order::deletePlayerCannotAttackList();
         return true;
     }
     return false;
@@ -361,9 +363,18 @@ void GameEngine::removeLosingPlayers()
 void GameEngine::mainGameLoop()
 {
     string command;
+    Order::setUpPlayerCannotAttackList();
+    int playerSize=players.size();
+    for(int i=0;i<playerSize/2;i++){
+        playerPairs[i][0] = players.at(i);
+        playerPairs[i][1] = players.at((playerSize/2)+i);
+    }
     do
     {
         removeLosingPlayers();
+        reinforcementPhase();
+        issueOrdersPhase();
+        executeOrderPhase();
         command = getCommandProcessor()->getCommand();
         if (!validate(command)) cout<<"Wrong Command, try a valid command\n";
         if (command=="replay") startupPhase();
@@ -545,41 +556,77 @@ void GameEngine::issueOrdersPhase()
 
     int playerSize = players.size();
     //create a pair of player from players
-    for(int i=0;i<playerSize/2;i++){
-        playerPairs[i][0] = players.at(i);
-        playerPairs[i][1] = players.at((playerSize/2)+i);
-    }
+
 
     shift(); //round-robin fashion
 
     int pairs=playerSize/2+playerSize%2;
 
-    for(int i=0;i<pairs;i++){
-        //if there is a bye (when players are odd)
-        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL)
-            continue;
-        else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
-            playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
+    for(int i=0;i<pairs;i++)
+         //if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
+    {
+        if (playerPairs[i][0]!=NULL)
+            if (playerPairs[i][0]->getFlagIssueOrder())
+            {
+                playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
+                //players.at(i)->setOrderList(playerPairs[i][0]->getOrderList());
+            }
+        if (playerPairs[i][0]!=NULL)
+            if(playerPairs[i][1]->getFlagIssueOrder())
+            {
+                playerPairs[i][1]->issueOrder(_deck, playerPairs[i][0]);
+                // players.at(i+(playerSize/2))->setOrderList(playerPairs[i][0]->getOrderList());
+            }
     }
+
 }
 
 void GameEngine::executeOrderPhase(){
     cout << "--------------------------" << endl;
     cout << "Execute Order Phase\n" << endl;
-    if(players.size() % 2 == 1){
+    /*if(players.size() % 2 == 1){
         players.push_back(NULL);
-    }
-
+    }*/
     int playerSize = players.size();
-    Player *playerPairs[playerSize/2][2];
-    for(int i=0;i<playerSize;i++){
-        //if there is a bye (when players are odd)
-        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL){
-            continue;
-        }else{
-            playerPairs[i][0]->getOrderList()->executeFirstOrder();
-            playerPairs[i][1]->getOrderList()->executeFirstOrder();
+    int pairs=playerSize/2+playerSize%2;
+    OrdersList* pOrd;
+    int counter=0;
+    bool flag[playerSize]={true};
+    for (int i=0;i<playerSize;i++)
+    {
+        if (players.at(i)!=NULL)
+        {
+            pOrd = players.at(i)->getOrderList();
+            if (!pOrd->isEmpty())
+            {
+                while (pOrd->getFirstOrderType()=="Deploy")
+                    pOrd->executeFirstOrder();
+            }
+            else
+                continue;
         }
+        pOrd=NULL;
     }
-
+    bool flag2;
+    while (true)
+    {
+        pOrd = players.at(counter)->getOrderList();
+        if (pOrd->isEmpty()) flag[counter]=false;
+        else
+            pOrd->executeFirstOrder();
+        flag2=false;
+        for (int i=0;i<playerSize;i++)
+            if (flag[i])
+                flag2=true;
+        if (!flag2)
+            break;
+        counter=(counter+1)%playerSize;
+    }
+    for (int i=0;i<playerSize;i++)
+        if(players.at(i)->getFlagConqTerr())
+        {
+            players.at(i)->getHand()->addCard(_deck->draw());
+            players.at(i)->getHand()->addCard(_deck->draw());
+        }
+    Order::clearPlayerCannotAttackList();
 }
