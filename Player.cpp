@@ -436,7 +436,8 @@ void Player::issueOrder(Deck* deck, Player* enemyPlayer)
             //ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
             cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
         }
-
+        else
+            cout<<"Order is Null\n";
         /*====Creating Advance orders====*/
 
         //Find the index of one of the territories returned by toDefend() in the player's territories vector
@@ -461,13 +462,13 @@ void Player::issueOrder(Deck* deck, Player* enemyPlayer)
             {
                 int newRandIndex;
 
-                do
+                /*do
                 {
                     newRandIndex = rand() % territoriesToDefend.size();
                 }
                 while(randIndexDefend == newRandIndex);
 
-                randIndexDefend = newRandIndex;
+                randIndexDefend = newRandIndex;*/
                 defendAdvanceOrd = new Advance(territoriesToDefend.at(randIndexDefend), &territories, randNOfArmies, territories.at(randIndexSource));
             }
             else
@@ -489,21 +490,16 @@ void Player::issueOrder(Deck* deck, Player* enemyPlayer)
         randIndexSource = rand() % territories.size();
         //Re-determine the number of armies to use in an attack/advance order
         randNOfArmies = determineNArmiesForAttack(randIndexSource);
-
         if(randNOfArmies != 0)
         {
             /*Create advance order to attack*/
-            vector<Territory*> enemyTerritories = enemyPlayer->getTerritories();
-            bool* flagConq = new bool(true);
-            attackAdvanceOrd = new Advance(territoriesToAttack.at(randIndexAttack), &territories, randNOfArmies, territoriesToDefend.at(randIndexDefend), &enemyTerritories, flagConq);
+            attackAdvanceOrd = new Advance(territoriesToAttack.at(randIndexAttack), &territories, randNOfArmies, territoriesToDefend.at(randIndexDefend), territoriesToAttack.at(randIndexAttack)->getPlayer()->getPointerToTerritories(), flagConqTerr);
             ordersList->addOrder(attackAdvanceOrd);
             //ordersList->move(attackAdvanceOrd, ordersList->getOrdList().size());
             //Set the attack status to false on the territory where an attack order has been created
             territoriesToAttack.at(randIndexAttack)->setAttackStatus(false);
             cout << "Created a " << attackAdvanceOrd->getOrderType() << " order (to attack) and placed it in the player's OrderList\n" << endl;
 
-            delete flagConq;
-            flagConq = NULL;
         }
         else
         {

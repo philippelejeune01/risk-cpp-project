@@ -42,57 +42,36 @@ Card& Card:: operator = (const Card& c)
 */
 Order* Card::play(Deck* d, Hand* h, Territory* territoryToAttack, Territory* territoryToDefend, int randIndexSource, int nOfArmies, Player* player, Player* enemyPlayer){
 
-    vector<Territory*> playerTerritories = player->getTerritories();
-    Order* o;
+    vector<Territory*>* playerTerritories = player->getPointerToTerritories();
+    Order* o=NULL;
     if (type.compare("bomb") == 0)
     {
-        o = new Bomb(territoryToAttack, &playerTerritories);
+        o = new Bomb(territoryToAttack, playerTerritories);
         //Set the attack status to false on the territory where an attack order has been created
-        territoryToAttack->setAttackStatus(false);
+        //territoryToAttack->setAttackStatus(false);
     }
     else if (type.compare("reinforcement") == 0)
     {
-        int numberTerritoriesOwned = playerTerritories.size();
-        //Number of armies to deploy for each territory
-        int numberArmiesToDeploy = player->getPool() / numberTerritoriesOwned;
-        int remainder = player->getPool() % numberTerritoriesOwned;
-        //If there is a remainder, the last territory will be allocated more armies than others
-        //to make sure the reinforcement pool is equal to 0 after everything has been deployed.
-        int nArmiesToDeployLastTerritory = numberArmiesToDeploy + remainder;
-
-        if(player->getPool() != 0)
-        {
-            if(player->getPool() == nArmiesToDeployLastTerritory)
-            {
-                player->removeFromPool(nArmiesToDeployLastTerritory);
-                o = new Deploy(territoryToDefend, &playerTerritories, nArmiesToDeployLastTerritory);
-            }else
-            {
-                player->removeFromPool(numberArmiesToDeploy);
-                o = new Deploy(territoryToDefend, &playerTerritories, numberArmiesToDeploy);
-            }
-        }else
-        {
-            o = NULL;
-            cout << "Cannot create deploy order - No armies left in reinforcement pool" << endl;
-        }
+       player->addToPool(5);
+       cout<<"added 5 armies to player's reinforcement pool\n";
     }
     else if (type.compare("blockade") == 0)
     {
         //Create a neutral player
         Player* neutralPlayer = new Player("neutral");
-        o = new Blockade(territoryToDefend, &playerTerritories, neutralPlayer);
+        o = new Blockade(territoryToDefend, playerTerritories, neutralPlayer);
+
     }
     else if (type.compare("airlift") == 0)
     {
         if(nOfArmies != 0)
         {
-            o = new Airlift(territoryToDefend, &playerTerritories, nOfArmies, playerTerritories.at(randIndexSource));
+            o = new Airlift(territoryToDefend, playerTerritories, nOfArmies, playerTerritories->at(randIndexSource));
         }
         else
         {
             o = NULL;
-            cout << "Cannot create airlift order - No armies in source territory " << playerTerritories.at(randIndexSource)->getName() << "\n" << endl;
+            cout << "Cannot create airlift order - No armies in source territory " << playerTerritories->at(randIndexSource)->getName() << "\n" << endl;
         }
     }
     else if (type.compare("diplomacy") == 0)

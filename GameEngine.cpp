@@ -343,6 +343,7 @@ bool GameEngine::gameOver()
     {
         cout<<"Player "<<players[0]->name<<" has won the game!";
         transition("win");
+        Order::deletePlayerCannotAttackList();
         return true;
     }
     return false;
@@ -362,9 +363,18 @@ void GameEngine::removeLosingPlayers()
 void GameEngine::mainGameLoop()
 {
     string command;
+    Order::setUpPlayerCannotAttackList();
+    int playerSize=players.size();
+    for(int i=0;i<playerSize/2;i++){
+        playerPairs[i][0] = players.at(i);
+        playerPairs[i][1] = players.at((playerSize/2)+i);
+    }
     do
     {
         removeLosingPlayers();
+        reinforcementPhase();
+        issueOrdersPhase();
+        executeOrderPhase();
         command = getCommandProcessor()->getCommand();
         if (!validate(command)) cout<<"Wrong Command, try a valid command\n";
         if (command=="replay") startupPhase();
@@ -546,10 +556,7 @@ void GameEngine::issueOrdersPhase()
 
     int playerSize = players.size();
     //create a pair of player from players
-    for(int i=0;i<playerSize/2;i++){
-        playerPairs[i][0] = players.at(i);
-        playerPairs[i][1] = players.at((playerSize/2)+i);
-    }
+
 
     shift(); //round-robin fashion
 
@@ -560,10 +567,16 @@ void GameEngine::issueOrdersPhase()
     {
         if (playerPairs[i][0]!=NULL)
             if (playerPairs[i][0]->getFlagIssueOrder())
+            {
                 playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
+                //players.at(i)->setOrderList(playerPairs[i][0]->getOrderList());
+            }
         if (playerPairs[i][0]!=NULL)
             if(playerPairs[i][1]->getFlagIssueOrder())
+            {
                 playerPairs[i][1]->issueOrder(_deck, playerPairs[i][0]);
+                // players.at(i+(playerSize/2))->setOrderList(playerPairs[i][0]->getOrderList());
+            }
     }
 
 }
@@ -576,19 +589,44 @@ void GameEngine::executeOrderPhase(){
     }*/
     int playerSize = players.size();
     int pairs=playerSize/2+playerSize%2;
-    OrdersList* p1Ord;
-    OrdersList* p2Ord;
-    for(int i=0;i<pairs;i++)
+    OrdersList* pOrd;
+    int counter=0;
+    bool flag[playerSize]={true};
+    for (int i=0;i<playerSize;i++)
     {
-        if (playerPairs[i][0]!=NULL)
-            p1Ord = playerPairs[i][0]->getOrderList();
-        if (playerPairs[i][1]!=NULL)
-            p2Ord = playerPairs[i][1]->getOrderList();
-        while (!p1Ord->isEmpty()&&playerPairs[i][0]!=NULL)
-            p1Ord->executeFirstOrder();
-        while (!p2Ord->isEmpty()&&playerPairs[i][1]!=NULL)
-            p2Ord->executeFirstOrder();
+        if (players.at(i)!=NULL)
+        {
+            pOrd = players.at(i)->getOrderList();
+            if (!pOrd->isEmpty())
+            {
+                while (pOrd->getFirstOrderType()=="Deploy")
+                    pOrd->executeFirstOrder();
+            }
+            else
+                continue;
+        }
+        pOrd=NULL;
     }
-    p1Ord = NULL;
-    p2Ord = NULL;
+    bool flag2;
+    while (true)
+    {
+        pOrd = players.at(counter)->getOrderList();
+        if (pOrd->isEmpty()) flag[counter]=false;
+        else
+            pOrd->executeFirstOrder();
+        flag2=false;
+        for (int i=0;i<playerSize;i++)
+            if (flag[i])
+                flag2=true;
+        if (!flag2)
+            break;
+        counter=(counter+1)%playerSize;
+    }
+    for (int i=0;i<playerSize;i++)
+        if(players.at(i)->getFlagConqTerr())
+        {
+            players.at(i)->getHand()->addCard(_deck->draw());
+            players.at(i)->getHand()->addCard(_deck->draw());
+        }
+    Order::clearPlayerCannotAttackList();
 }

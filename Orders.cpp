@@ -132,10 +132,7 @@ void OrdersList::move(Order* order, int index)
 }
 bool OrdersList::isEmpty()
 {
-    if (ordList.size()==0)
-        return true;
-    else
-        return false;
+    return ordList.empty();
 }
 //This removes an order at a particular index
 void OrdersList::remove(int index)
@@ -237,6 +234,10 @@ Order::Order(Territory* targetTerr, vector<Territory*>* ownedTerr, string oType)
     this->Attach(logO);
 }
 //doPrint method for the stream insertion operator of Order
+string OrdersList::getFirstOrderType()
+{
+    return ordList.front()->getOrderType();
+}
 string Order::doPrint() const
 {
     return "Targetted Territory: " + targetTerritory->getName() + "(" + std::to_string(targetTerritory->getAmountOfArmies()) + " armies)";
@@ -263,13 +264,14 @@ void Order:: setOwnedTerritories(vector<Territory*>* ownedTerr)
     ownedTerritories = ownedTerr;
 }
 
-Player*** Order::playersCannotAttackList = new Player**[6];
+Player*** Order::playersCannotAttackList = NULL;
 int Order::sizeOfPlCantAttList = 6;
 int Order::indexOfEnd = 0;
 //This method should be called at the start of the game. It sets up the multidimensional array
 //playersCannotAttackList.
 void Order::setUpPlayerCannotAttackList()
 {
+    playersCannotAttackList = new Player**[6];
     sizeOfPlCantAttList = 6;
     for (int i = 0; i < 6; i++)
     {
@@ -298,6 +300,7 @@ void Order::deletePlayerCannotAttackList()
     indexOfEnd = 0;
     sizeOfPlCantAttList = 0;
     delete [] playersCannotAttackList;
+    playersCannotAttackList = NULL;
 }
 /*
 //Duplicate function
@@ -406,6 +409,7 @@ bool Deploy::validate()
     //It returns false
     if(targetTerritory == NULL || ownedTerritories == NULL || nAddedArmies <= 0 || ownedTerritories->empty())
     {
+        cout<<"Null values \n";
         return false;
     }
     //Checks if the targetTerritory belongs to the player.
@@ -426,6 +430,7 @@ bool Deploy::validate()
     }
     */
     //Otherwise, returns false
+    cout<<"territory is not owned by you"<<endl;
     return false;
 
 }
@@ -438,7 +443,7 @@ void Deploy::execute()
         //Actual execution of the method
         targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()+nAddedArmies);
 
-        cout << "Deploying " << nAddedArmies << " armies on the targetted territory." << endl;
+        cout << "Deploying " << nAddedArmies << " armies on the targetted territory:" <<*targetTerritory<< endl;
     }
     //Warns the player the order could not be done
     else
@@ -552,6 +557,7 @@ bool Advance:: validate()
     //of armies is not equal or below 0.
     //If the target territory is not adjacent to the source territory, then it is not valid
     //If the sourceTerritory does not have enough armies, then it is not valid
+    cout<<"In Advance:\n";
     if (sourceTerritory == NULL || targetTerritory == NULL || nMovedArmies <= 0 || ownedTerritories == NULL ||
          sourceTerritory->getAmountOfArmies() < nMovedArmies || ownedTerritories->empty())
     {
@@ -606,7 +612,7 @@ bool Advance:: validate()
     return false;
 }
 //Implementation of execute function
-void Advance:: execute()
+void Advance::execute()
 {
     //Checks if the order is valid
     if(validate())
@@ -748,13 +754,16 @@ string Bomb::stringToLog()
 bool Bomb::validate()
 {
     //If the pointers point to an existing object
+    cout<<"In Bomb:\n";
     if (targetTerritory == NULL || ownedTerritories == NULL || ownedTerritories->empty())
     {
+        cout<<"Null values \n";
         return false;
     }
     //Checking if the target territory is owned by the player
     if (ownedTerritories->at(0)->getPlayer() == targetTerritory->getPlayer())
     {
+        cout<<"territory is owned by this player,cannot be bombed!\n";
         return false;
     }
     /*
@@ -776,6 +785,7 @@ bool Bomb::validate()
         }
     }
     //Otherwise
+    cout<<"Not Adjacent to this territory!\n";
     return false;
 }
 //Implementation of execute
@@ -864,8 +874,10 @@ string Blockade::stringToLog()
 bool Blockade:: validate()
 {
     //Checks if the pointers point to an existing object
+    cout<<"In Blockade:\n";
     if (targetTerritory == NULL || ownedTerritories == NULL)
     {
+        cout<<"Null values \n";
         return false;
     }
     //Checks if the targetted territory is owned by the player
@@ -884,6 +896,7 @@ bool Blockade:: validate()
     }
     */
     //Otherwise, returns false
+    cout<<"Not owned by this player!\n";
     return false;
 }
 //Implementation of execute
@@ -991,6 +1004,7 @@ string Airlift::stringToLog()
 bool Airlift::validate()
 {
     //If the pointers don't point to an existing object
+    cout<<"In Airlift:\n";
     if(nMovedArmies == 0 || sourceTerritory == NULL || targetTerritory == NULL || ownedTerritories == NULL
        || sourceTerritory->getAmountOfArmies() < nMovedArmies || ownedTerritories->empty())
     {
@@ -1023,6 +1037,7 @@ bool Airlift::validate()
     return (srcTerrIsOwned && tgtTerrIsOwned);
     */
     //Otherwise return false
+    cout<<"Neither territory is owned by player!";
     return false;
 }
 //Implementation of execute
@@ -1118,8 +1133,10 @@ string Negotiate::stringToLog()
 bool Negotiate::validate()
 {
     //Checks if the pointers point to an existing object. If it is not, then it is not valid
+    cout<<"In Negotiate:\n";
     if (callingPlayer == NULL || targetPlayer == NULL || callingPlayer == targetPlayer)
     {
+        cout<<"Null values \n";
         return false;
     }
     //Otherwise, it is valid

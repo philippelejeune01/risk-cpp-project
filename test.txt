@@ -8,6 +8,3 @@ addplayer <a4>
 addplayer <a5>
 addplayer <a6>
 gamestart
-reinforce
-issueorder
-execorder
