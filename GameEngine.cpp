@@ -257,6 +257,7 @@ bool GameEngine::validate(string command)
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
         executeOrderPhase();
+        transition("executeorders");
         cout<<"--------------------------"<<endl;
         return true;
     }
@@ -554,32 +555,38 @@ void GameEngine::issueOrdersPhase()
 
     int pairs=playerSize/2+playerSize%2;
 
-    for(int i=0;i<pairs;i++){
-        //if there is a bye (when players are odd)
-        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL)
-            continue;
-        else if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
+    for(int i=0;i<pairs;i++)
+         //if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
+    {
+        if (playerPairs[i][0]!=NULL)
             playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
+        if (playerPairs[i][0]!=NULL)
+            playerPairs[i][1]->issueOrder(_deck, playerPairs[i][0]);
     }
+
 }
 
 void GameEngine::executeOrderPhase(){
     cout << "--------------------------" << endl;
     cout << "Execute Order Phase\n" << endl;
-    if(players.size() % 2 == 1){
+    /*if(players.size() % 2 == 1){
         players.push_back(NULL);
-    }
-
+    }*/
     int playerSize = players.size();
-    Player *playerPairs[playerSize/2][2];
-    for(int i=0;i<playerSize;i++){
-        //if there is a bye (when players are odd)
-        if(playerPairs[i][0]==NULL || playerPairs[i][1]==NULL){
-            continue;
-        }else{
-            playerPairs[i][0]->getOrderList()->executeFirstOrder();
-            playerPairs[i][1]->getOrderList()->executeFirstOrder();
-        }
+    int pairs=playerSize/2+playerSize%2;
+    OrdersList* p1Ord;
+    OrdersList* p2Ord;
+    for(int i=0;i<pairs;i++)
+    {
+        if (playerPairs[i][0]!=NULL)
+            p1Ord = playerPairs[i][0]->getOrderList();
+        if (playerPairs[i][1]!=NULL)
+            p2Ord = playerPairs[i][1]->getOrderList();
+        while (!p1Ord->isEmpty()&&playerPairs[i][0]!=NULL)
+            p1Ord->executeFirstOrder();
+        while (!p2Ord->isEmpty()&&playerPairs[i][1]!=NULL)
+            p2Ord->executeFirstOrder();
     }
-
+    p1Ord = NULL;
+    p2Ord = NULL;
 }

@@ -10,3 +10,4 @@ addplayer <a6>
 gamestart
 reinforce
 issueorder
+execorder

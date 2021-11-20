@@ -130,6 +130,13 @@ void OrdersList::move(Order* order, int index)
     }
 
 }
+bool OrdersList::isEmpty()
+{
+    if (ordList.size()==0)
+        return true;
+    else
+        return false;
+}
 //This removes an order at a particular index
 void OrdersList::remove(int index)
 {
@@ -883,6 +890,7 @@ bool Blockade:: validate()
 void Blockade:: execute()
 {
     //Checks if the order is valid
+    cout<<"hi";
     if (validate())
     {
         cout << "Blockade the targetted territory " << *(targetTerritory) << ". It has now 3 times the amount of armies and is neutral" << endl;
