@@ -3,8 +3,4 @@ validatemap
 sdgdgsdgdsg
 addplayer <a1>
 addplayer <a2>
-addplayer <a3>
-addplayer <a4>
-addplayer <a5>
-addplayer <a6>
 gamestart

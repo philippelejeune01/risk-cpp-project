@@ -11,62 +11,2929 @@ Command's effect: player a1 successfully added
 Game Engine new state: playersadded
 Command: addplayer <a2>
 Command's effect: player a2 successfully added
-Command: addplayer <a3>
-Command's effect: player a3 successfully added
-Command: addplayer <a4>
-Command's effect: player a4 successfully added
-Command: addplayer <a5>
-Command's effect: player a5 successfully added
-Command: addplayer <a6>
-Command's effect: player a6 successfully added
 Command: gamestart
 Command's effect: main loop of the game is successfully entered
 Game Engine new state: assignreinforcement
-Command: reinforce
-Command's effect: Assign reinforcement phase
-Command: issueorder
-Command's effect: Assign reinforcement phase
+Game Engine new state: assignreinforcement
 Game Engine new state: issueorders
-Order Issued : Deploy: 13 armies on Hungary(0 armies)
-Order Issued : Deploy: 13 armies on Austria(0 armies)
-Order Issued : Deploy: 13 armies on Switzerland(0 armies)
-Order Issued : Deploy: 14 armies on Italy(0 armies)
+Order Issued : Deploy: 5 armies on Hungary(0 armies)
+Order Issued : Deploy: 5 armies on Austria(0 armies)
+Order Issued : Deploy: 5 armies on Switzerland(0 armies)
+Order Issued : Deploy: 5 armies on Italy(0 armies)
+Order Issued : Deploy: 5 armies on Sicily(0 armies)
+Order Issued : Deploy: 5 armies on Sardinia(0 armies)
+Order Issued : Deploy: 5 armies on Corsica(0 armies)
+Order Issued : Deploy: 5 armies on Majorca(0 armies)
+Order Issued : Deploy: 5 armies on France(0 armies)
+Order Issued : Deploy: 5 armies on Spain(0 armies)
+Order Issued : Deploy: 5 armies on Portugal(0 armies)
+Order Issued : Deploy: 7 armies on Luxembourg(0 armies)
+Order Issued : Bomb: Rep_Ireland(0 armies)
+Order Issued : Advance: 7 armies: From Hungary(0 armies) to Italy(0 armies)
+Order Issued : Advance: 3 armies: From Italy(0 armies) to Rep_Ireland(0 armies)
+Order Issued : Deploy: 12 armies on England(0 armies)
+Order Issued : Deploy: 12 armies on Belgum(0 armies)
+Order Issued : Deploy: 12 armies on Germany(0 armies)
+Order Issued : Deploy: 12 armies on Czech_Rep(0 armies)
+Order Issued : Deploy: 15 armies on Slovakia(0 armies)
+Order Issued : Advance: 1 armies: From England(0 armies) to Slovakia(0 armies)
+Order Issued : Advance: 13 armies: From Slovakia(0 armies) to Austria(0 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 7 armies are added on the territory Luxembourg
+Deploy Order Executed: 5 armies are added on the territory Portugal
+Deploy Order Executed: 5 armies are added on the territory Spain
+Deploy Order Executed: 5 armies are added on the territory France
+Deploy Order Executed: 5 armies are added on the territory Majorca
+Deploy Order Executed: 5 armies are added on the territory Corsica
+Deploy Order Executed: 5 armies are added on the territory Sardinia
+Deploy Order Executed: 5 armies are added on the territory Sicily
+Deploy Order Executed: 5 armies are added on the territory Italy
+Deploy Order Executed: 5 armies are added on the territory Switzerland
+Deploy Order Executed: 5 armies are added on the territory Austria
+Deploy Order Executed: 5 armies are added on the territory Hungary
+Deploy Order Executed: 15 armies are added on the territory Slovakia
+Deploy Order Executed: 12 armies are added on the territory Czech_Rep
+Deploy Order Executed: 12 armies are added on the territory Germany
+Deploy Order Executed: 12 armies are added on the territory Belgum
+Deploy Order Executed: 12 armies are added on the territory England
+Bomb Order executed: the territory affected is Rep_Ireland
+Advance Order executed: 1 armies are moved from the territory England to the territory Slovakia
+Advance Order executed: 7 armies are moved from the territory Hungary to the territory Italy
+Advance Order executed: 13 armies are moved from the territory Slovakia to the territory Austria
+Advance Order executed: 3 armies are moved from the territory Italy to the territory Rep_Ireland
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(5 armies)
+Order Issued : Deploy: 1 armies on Switzerland(5 armies)
+Order Issued : Deploy: 1 armies on France(5 armies)
+Order Issued : Deploy: 1 armies on Spain(5 armies)
+Order Issued : Deploy: 2 armies on Luxembourg(7 armies)
+Order Issued : Bomb: Rep_Ireland(0 armies)
+Order Issued : Advance: 1 armies: From Hungary(5 armies) to Luxembourg(7 armies)
+Order Issued : Advance: 3 armies: From Luxembourg(7 armies) to Rep_Ireland(0 armies)
+Order Issued : Deploy: 3 armies on England(12 armies)
+Order Issued : Deploy: 3 armies on Belgum(12 armies)
+Order Issued : Deploy: 3 armies on Germany(12 armies)
+Order Issued : Deploy: 3 armies on Czech_Rep(12 armies)
+Order Issued : Deploy: 3 armies on Slovakia(2 armies)
+Order Issued : Deploy: 3 armies on Austria(9 armies)
+Order Issued : Airlift 1 armies: From Scotland(0 armies) to Czech_Rep(12 armies)
+Order Issued : Advance: 7 armies: From England(12 armies) to Czech_Rep(12 armies)
+Order Issued : Advance: 1 armies: From Czech_Rep(12 armies) to Switzerland(5 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 2 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 3 armies are added on the territory Austria
+Deploy Order Executed: 3 armies are added on the territory Slovakia
+Deploy Order Executed: 3 armies are added on the territory Czech_Rep
+Deploy Order Executed: 3 armies are added on the territory Germany
+Deploy Order Executed: 3 armies are added on the territory Belgum
+Deploy Order Executed: 3 armies are added on the territory England
+Bomb Order executed: the territory affected is Rep_Ireland
+Airlift Order executed: 1 armies are moved from the territory Scotland to the territory Czech_Rep
+Advance Order executed: 1 armies are moved from the territory Hungary to the territory Luxembourg
+Advance Order executed: 7 armies are moved from the territory England to the territory Czech_Rep
+Advance Order executed: 3 armies are moved from the territory Luxembourg to the territory Rep_Ireland
+Advance Order executed: 1 armies are moved from the territory Czech_Rep to the territory Switzerland
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(6 armies)
+Order Issued : Deploy: 1 armies on Italy(5 armies)
+Order Issued : Deploy: 1 armies on France(6 armies)
+Order Issued : Deploy: 1 armies on Spain(6 armies)
+Order Issued : Deploy: 2 armies on Luxembourg(9 armies)
+Order Issued : Deploy: 1 armies on England(15 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(0 armies)
+Order Issued : Deploy: 1 armies on Belgum(15 armies)
+Order Issued : Deploy: 1 armies on Germany(15 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(15 armies)
+Order Issued : Deploy: 1 armies on Slovakia(5 armies)
+Order Issued : Deploy: 7 armies on Austria(12 armies)
 Order Issued : Negotiate: Between two players
-Order Issued : Advance: 5 armies: From Hungary(0 armies) to Switzerland(0 armies)
-Order Issued : Advance: 2 armies: From Switzerland(0 armies) to Sicily(0 armies)
-Order Issued : Deploy: 53 armies on Sardinia(0 armies)
-Order Issued : Blockade: Sardinia(0 armies)
-Order Issued : Advance: 44 armies: From Sardinia(0 armies) to Spain(0 armies)
-Order Issued : Deploy: 13 armies on Wales(0 armies)
-Order Issued : Deploy: 13 armies on Belgum(0 armies)
-Order Issued : Deploy: 13 armies on Netherlands(0 armies)
-Order Issued : Deploy: 14 armies on Denmark(0 armies)
-Order Issued : Advance: 5 armies: From Wales(0 armies) to Netherlands(0 armies)
-Order Issued : Advance: 2 armies: From Netherlands(0 armies) to England(0 armies)
-Order Issued : Deploy: 26 armies on France(0 armies)
-Order Issued : Deploy: 27 armies on Luxembourg(0 armies)
-Order Issued : Blockade: France(0 armies)
-Order Issued : Advance: 17 armies: From France(0 armies) to Luxembourg(0 armies)
-Order Issued : Advance: 14 armies: From Luxembourg(0 armies) to Germany(0 armies)
-Order Issued : Deploy: 17 armies on England(0 armies)
-Order Issued : Deploy: 17 armies on Scotland(0 armies)
-Order Issued : Deploy: 19 armies on Rep_Ireland(0 armies)
-Order Issued : Bomb: Denmark(0 armies)
-Order Issued : Advance: 15 armies: From England(0 armies) to Rep_Ireland(0 armies)
-Order Issued : Advance: 18 armies: From Rep_Ireland(0 armies) to Denmark(0 armies)
-Order Issued : Deploy: 17 armies on Poland(0 armies)
-Order Issued : Deploy: 17 armies on Czech_Rep(0 armies)
-Order Issued : Deploy: 19 armies on Slovakia(0 armies)
-Order Issued : Airlift 4 armies: From Poland(0 armies) to Poland(0 armies)
-Order Issued : Advance: 11 armies: From Poland(0 armies) to Slovakia(0 armies)
-Order Issued : Advance: 18 armies: From Slovakia(0 armies) to Belgum(0 armies)
-Command: execorder
-Command's effect: Issue Order Phase
-Deploy Order Executed: 14 armies are added on the territory Italy
-Deploy Order Executed: 13 armies are added on the territory Switzerland
-Deploy Order Executed: 13 armies are added on the territory Austria
-Deploy Order Executed: 13 armies are added on the territory Hungary
-Negotiate Order executed: the two players are now under a truce.
-Advance Order executed: 5 armies are moved from the territory Hungary to the territory Switzerland
-Advance Order executed: 2 armies are moved from the territory Switzerland to the territory Sicily
-Deploy Order Executed: 53 armies are added on the territory Sardinia
+Order Issued : Advance: 1 armies: From England(15 armies) to Belgum(15 armies)
+Order Issued : Advance: 1 armies: From Belgum(15 armies) to Switzerland(6 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 2 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(7 armies)
+Order Issued : Deploy: 1 armies on Italy(6 armies)
+Order Issued : Deploy: 1 armies on France(7 armies)
+Order Issued : Deploy: 1 armies on Spain(7 armies)
+Order Issued : Deploy: 2 armies on Luxembourg(11 armies)
+Order Issued : Deploy: 1 armies on England(16 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(1 armies)
+Order Issued : Deploy: 1 armies on Belgum(16 armies)
+Order Issued : Deploy: 1 armies on Germany(16 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(16 armies)
+Order Issued : Deploy: 1 armies on Slovakia(6 armies)
+Order Issued : Deploy: 7 armies on Austria(19 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 2 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(8 armies)
+Order Issued : Deploy: 1 armies on Switzerland(6 armies)
+Order Issued : Deploy: 1 armies on Italy(7 armies)
+Order Issued : Deploy: 1 armies on France(8 armies)
+Order Issued : Deploy: 1 armies on Spain(8 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(13 armies)
+Order Issued : Deploy: 1 armies on England(17 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(2 armies)
+Order Issued : Deploy: 1 armies on Belgum(17 armies)
+Order Issued : Deploy: 1 armies on Germany(17 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(17 armies)
+Order Issued : Deploy: 1 armies on Slovakia(7 armies)
+Order Issued : Deploy: 7 armies on Austria(26 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(9 armies)
+Order Issued : Deploy: 1 armies on Switzerland(7 armies)
+Order Issued : Deploy: 1 armies on Italy(8 armies)
+Order Issued : Deploy: 1 armies on France(9 armies)
+Order Issued : Deploy: 1 armies on Spain(9 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(14 armies)
+Order Issued : Deploy: 1 armies on England(18 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(3 armies)
+Order Issued : Deploy: 1 armies on Belgum(18 armies)
+Order Issued : Deploy: 1 armies on Germany(18 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(18 armies)
+Order Issued : Deploy: 1 armies on Slovakia(8 armies)
+Order Issued : Deploy: 7 armies on Austria(33 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(10 armies)
+Order Issued : Deploy: 1 armies on Switzerland(8 armies)
+Order Issued : Deploy: 1 armies on Italy(9 armies)
+Order Issued : Deploy: 1 armies on France(10 armies)
+Order Issued : Deploy: 1 armies on Spain(10 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(15 armies)
+Order Issued : Deploy: 1 armies on England(19 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(4 armies)
+Order Issued : Deploy: 1 armies on Belgum(19 armies)
+Order Issued : Deploy: 1 armies on Germany(19 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(19 armies)
+Order Issued : Deploy: 1 armies on Slovakia(9 armies)
+Order Issued : Deploy: 7 armies on Austria(40 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(11 armies)
+Order Issued : Deploy: 1 armies on Switzerland(9 armies)
+Order Issued : Deploy: 1 armies on Italy(10 armies)
+Order Issued : Deploy: 1 armies on France(11 armies)
+Order Issued : Deploy: 1 armies on Spain(11 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(16 armies)
+Order Issued : Deploy: 1 armies on England(20 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(5 armies)
+Order Issued : Deploy: 1 armies on Belgum(20 armies)
+Order Issued : Deploy: 1 armies on Germany(20 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(20 armies)
+Order Issued : Deploy: 1 armies on Slovakia(10 armies)
+Order Issued : Deploy: 7 armies on Austria(47 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(12 armies)
+Order Issued : Deploy: 1 armies on Switzerland(10 armies)
+Order Issued : Deploy: 1 armies on Italy(11 armies)
+Order Issued : Deploy: 1 armies on France(12 armies)
+Order Issued : Deploy: 1 armies on Spain(12 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(17 armies)
+Order Issued : Deploy: 1 armies on England(21 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(6 armies)
+Order Issued : Deploy: 1 armies on Belgum(21 armies)
+Order Issued : Deploy: 1 armies on Germany(21 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(21 armies)
+Order Issued : Deploy: 1 armies on Slovakia(11 armies)
+Order Issued : Deploy: 7 armies on Austria(54 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(13 armies)
+Order Issued : Deploy: 1 armies on Switzerland(11 armies)
+Order Issued : Deploy: 1 armies on Italy(12 armies)
+Order Issued : Deploy: 1 armies on France(13 armies)
+Order Issued : Deploy: 1 armies on Spain(13 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(18 armies)
+Order Issued : Deploy: 1 armies on England(22 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(7 armies)
+Order Issued : Deploy: 1 armies on Belgum(22 armies)
+Order Issued : Deploy: 1 armies on Germany(22 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(22 armies)
+Order Issued : Deploy: 1 armies on Slovakia(12 armies)
+Order Issued : Deploy: 7 armies on Austria(61 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(14 armies)
+Order Issued : Deploy: 1 armies on Switzerland(12 armies)
+Order Issued : Deploy: 1 armies on Italy(13 armies)
+Order Issued : Deploy: 1 armies on France(14 armies)
+Order Issued : Deploy: 1 armies on Spain(14 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(19 armies)
+Order Issued : Deploy: 1 armies on England(23 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(8 armies)
+Order Issued : Deploy: 1 armies on Belgum(23 armies)
+Order Issued : Deploy: 1 armies on Germany(23 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(23 armies)
+Order Issued : Deploy: 1 armies on Slovakia(13 armies)
+Order Issued : Deploy: 7 armies on Austria(68 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(15 armies)
+Order Issued : Deploy: 1 armies on Switzerland(13 armies)
+Order Issued : Deploy: 1 armies on Italy(14 armies)
+Order Issued : Deploy: 1 armies on France(15 armies)
+Order Issued : Deploy: 1 armies on Spain(15 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(20 armies)
+Order Issued : Deploy: 1 armies on England(24 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(9 armies)
+Order Issued : Deploy: 1 armies on Belgum(24 armies)
+Order Issued : Deploy: 1 armies on Germany(24 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(24 armies)
+Order Issued : Deploy: 1 armies on Slovakia(14 armies)
+Order Issued : Deploy: 7 armies on Austria(75 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(16 armies)
+Order Issued : Deploy: 1 armies on Switzerland(14 armies)
+Order Issued : Deploy: 1 armies on Italy(15 armies)
+Order Issued : Deploy: 1 armies on France(16 armies)
+Order Issued : Deploy: 1 armies on Spain(16 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(21 armies)
+Order Issued : Deploy: 1 armies on England(25 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(10 armies)
+Order Issued : Deploy: 1 armies on Belgum(25 armies)
+Order Issued : Deploy: 1 armies on Germany(25 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(25 armies)
+Order Issued : Deploy: 1 armies on Slovakia(15 armies)
+Order Issued : Deploy: 7 armies on Austria(82 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(17 armies)
+Order Issued : Deploy: 1 armies on Switzerland(15 armies)
+Order Issued : Deploy: 1 armies on Italy(16 armies)
+Order Issued : Deploy: 1 armies on France(17 armies)
+Order Issued : Deploy: 1 armies on Spain(17 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(22 armies)
+Order Issued : Deploy: 1 armies on England(26 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(11 armies)
+Order Issued : Deploy: 1 armies on Belgum(26 armies)
+Order Issued : Deploy: 1 armies on Germany(26 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(26 armies)
+Order Issued : Deploy: 1 armies on Slovakia(16 armies)
+Order Issued : Deploy: 7 armies on Austria(89 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(18 armies)
+Order Issued : Deploy: 1 armies on Switzerland(16 armies)
+Order Issued : Deploy: 1 armies on Italy(17 armies)
+Order Issued : Deploy: 1 armies on France(18 armies)
+Order Issued : Deploy: 1 armies on Spain(18 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(23 armies)
+Order Issued : Deploy: 1 armies on England(27 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(12 armies)
+Order Issued : Deploy: 1 armies on Belgum(27 armies)
+Order Issued : Deploy: 1 armies on Germany(27 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(27 armies)
+Order Issued : Deploy: 1 armies on Slovakia(17 armies)
+Order Issued : Deploy: 7 armies on Austria(96 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(19 armies)
+Order Issued : Deploy: 1 armies on Switzerland(17 armies)
+Order Issued : Deploy: 1 armies on Italy(18 armies)
+Order Issued : Deploy: 1 armies on France(19 armies)
+Order Issued : Deploy: 1 armies on Spain(19 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(24 armies)
+Order Issued : Deploy: 1 armies on England(28 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(13 armies)
+Order Issued : Deploy: 1 armies on Belgum(28 armies)
+Order Issued : Deploy: 1 armies on Germany(28 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(28 armies)
+Order Issued : Deploy: 1 armies on Slovakia(18 armies)
+Order Issued : Deploy: 7 armies on Austria(103 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(20 armies)
+Order Issued : Deploy: 1 armies on Switzerland(18 armies)
+Order Issued : Deploy: 1 armies on Italy(19 armies)
+Order Issued : Deploy: 1 armies on France(20 armies)
+Order Issued : Deploy: 1 armies on Spain(20 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(25 armies)
+Order Issued : Deploy: 1 armies on England(29 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(14 armies)
+Order Issued : Deploy: 1 armies on Belgum(29 armies)
+Order Issued : Deploy: 1 armies on Germany(29 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(29 armies)
+Order Issued : Deploy: 1 armies on Slovakia(19 armies)
+Order Issued : Deploy: 7 armies on Austria(110 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(21 armies)
+Order Issued : Deploy: 1 armies on Switzerland(19 armies)
+Order Issued : Deploy: 1 armies on Italy(20 armies)
+Order Issued : Deploy: 1 armies on France(21 armies)
+Order Issued : Deploy: 1 armies on Spain(21 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(26 armies)
+Order Issued : Deploy: 1 armies on England(30 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(15 armies)
+Order Issued : Deploy: 1 armies on Belgum(30 armies)
+Order Issued : Deploy: 1 armies on Germany(30 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(30 armies)
+Order Issued : Deploy: 1 armies on Slovakia(20 armies)
+Order Issued : Deploy: 7 armies on Austria(117 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(22 armies)
+Order Issued : Deploy: 1 armies on Switzerland(20 armies)
+Order Issued : Deploy: 1 armies on Italy(21 armies)
+Order Issued : Deploy: 1 armies on France(22 armies)
+Order Issued : Deploy: 1 armies on Spain(22 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(27 armies)
+Order Issued : Deploy: 1 armies on England(31 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(16 armies)
+Order Issued : Deploy: 1 armies on Belgum(31 armies)
+Order Issued : Deploy: 1 armies on Germany(31 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(31 armies)
+Order Issued : Deploy: 1 armies on Slovakia(21 armies)
+Order Issued : Deploy: 7 armies on Austria(124 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(23 armies)
+Order Issued : Deploy: 1 armies on Switzerland(21 armies)
+Order Issued : Deploy: 1 armies on Italy(22 armies)
+Order Issued : Deploy: 1 armies on France(23 armies)
+Order Issued : Deploy: 1 armies on Spain(23 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(28 armies)
+Order Issued : Deploy: 1 armies on England(32 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(17 armies)
+Order Issued : Deploy: 1 armies on Belgum(32 armies)
+Order Issued : Deploy: 1 armies on Germany(32 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(32 armies)
+Order Issued : Deploy: 1 armies on Slovakia(22 armies)
+Order Issued : Deploy: 7 armies on Austria(131 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(24 armies)
+Order Issued : Deploy: 1 armies on Switzerland(22 armies)
+Order Issued : Deploy: 1 armies on Italy(23 armies)
+Order Issued : Deploy: 1 armies on France(24 armies)
+Order Issued : Deploy: 1 armies on Spain(24 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(29 armies)
+Order Issued : Deploy: 1 armies on England(33 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(18 armies)
+Order Issued : Deploy: 1 armies on Belgum(33 armies)
+Order Issued : Deploy: 1 armies on Germany(33 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(33 armies)
+Order Issued : Deploy: 1 armies on Slovakia(23 armies)
+Order Issued : Deploy: 7 armies on Austria(138 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(25 armies)
+Order Issued : Deploy: 1 armies on Switzerland(23 armies)
+Order Issued : Deploy: 1 armies on Italy(24 armies)
+Order Issued : Deploy: 1 armies on France(25 armies)
+Order Issued : Deploy: 1 armies on Spain(25 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(30 armies)
+Order Issued : Deploy: 1 armies on England(34 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(19 armies)
+Order Issued : Deploy: 1 armies on Belgum(34 armies)
+Order Issued : Deploy: 1 armies on Germany(34 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(34 armies)
+Order Issued : Deploy: 1 armies on Slovakia(24 armies)
+Order Issued : Deploy: 7 armies on Austria(145 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(26 armies)
+Order Issued : Deploy: 1 armies on Switzerland(24 armies)
+Order Issued : Deploy: 1 armies on Italy(25 armies)
+Order Issued : Deploy: 1 armies on France(26 armies)
+Order Issued : Deploy: 1 armies on Spain(26 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(31 armies)
+Order Issued : Deploy: 1 armies on England(35 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(20 armies)
+Order Issued : Deploy: 1 armies on Belgum(35 armies)
+Order Issued : Deploy: 1 armies on Germany(35 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(35 armies)
+Order Issued : Deploy: 1 armies on Slovakia(25 armies)
+Order Issued : Deploy: 7 armies on Austria(152 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(27 armies)
+Order Issued : Deploy: 1 armies on Switzerland(25 armies)
+Order Issued : Deploy: 1 armies on Italy(26 armies)
+Order Issued : Deploy: 1 armies on France(27 armies)
+Order Issued : Deploy: 1 armies on Spain(27 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(32 armies)
+Order Issued : Deploy: 1 armies on England(36 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(21 armies)
+Order Issued : Deploy: 1 armies on Belgum(36 armies)
+Order Issued : Deploy: 1 armies on Germany(36 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(36 armies)
+Order Issued : Deploy: 1 armies on Slovakia(26 armies)
+Order Issued : Deploy: 7 armies on Austria(159 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(28 armies)
+Order Issued : Deploy: 1 armies on Switzerland(26 armies)
+Order Issued : Deploy: 1 armies on Italy(27 armies)
+Order Issued : Deploy: 1 armies on France(28 armies)
+Order Issued : Deploy: 1 armies on Spain(28 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(33 armies)
+Order Issued : Deploy: 1 armies on England(37 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(22 armies)
+Order Issued : Deploy: 1 armies on Belgum(37 armies)
+Order Issued : Deploy: 1 armies on Germany(37 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(37 armies)
+Order Issued : Deploy: 1 armies on Slovakia(27 armies)
+Order Issued : Deploy: 7 armies on Austria(166 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(29 armies)
+Order Issued : Deploy: 1 armies on Switzerland(27 armies)
+Order Issued : Deploy: 1 armies on Italy(28 armies)
+Order Issued : Deploy: 1 armies on France(29 armies)
+Order Issued : Deploy: 1 armies on Spain(29 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(34 armies)
+Order Issued : Deploy: 1 armies on England(38 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(23 armies)
+Order Issued : Deploy: 1 armies on Belgum(38 armies)
+Order Issued : Deploy: 1 armies on Germany(38 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(38 armies)
+Order Issued : Deploy: 1 armies on Slovakia(28 armies)
+Order Issued : Deploy: 7 armies on Austria(173 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(30 armies)
+Order Issued : Deploy: 1 armies on Switzerland(28 armies)
+Order Issued : Deploy: 1 armies on Italy(29 armies)
+Order Issued : Deploy: 1 armies on France(30 armies)
+Order Issued : Deploy: 1 armies on Spain(30 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(35 armies)
+Order Issued : Deploy: 1 armies on England(39 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(24 armies)
+Order Issued : Deploy: 1 armies on Belgum(39 armies)
+Order Issued : Deploy: 1 armies on Germany(39 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(39 armies)
+Order Issued : Deploy: 1 armies on Slovakia(29 armies)
+Order Issued : Deploy: 7 armies on Austria(180 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(31 armies)
+Order Issued : Deploy: 1 armies on Switzerland(29 armies)
+Order Issued : Deploy: 1 armies on Italy(30 armies)
+Order Issued : Deploy: 1 armies on France(31 armies)
+Order Issued : Deploy: 1 armies on Spain(31 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(36 armies)
+Order Issued : Deploy: 1 armies on England(40 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(25 armies)
+Order Issued : Deploy: 1 armies on Belgum(40 armies)
+Order Issued : Deploy: 1 armies on Germany(40 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(40 armies)
+Order Issued : Deploy: 1 armies on Slovakia(30 armies)
+Order Issued : Deploy: 7 armies on Austria(187 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(32 armies)
+Order Issued : Deploy: 1 armies on Switzerland(30 armies)
+Order Issued : Deploy: 1 armies on Italy(31 armies)
+Order Issued : Deploy: 1 armies on France(32 armies)
+Order Issued : Deploy: 1 armies on Spain(32 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(37 armies)
+Order Issued : Deploy: 1 armies on England(41 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(26 armies)
+Order Issued : Deploy: 1 armies on Belgum(41 armies)
+Order Issued : Deploy: 1 armies on Germany(41 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(41 armies)
+Order Issued : Deploy: 1 armies on Slovakia(31 armies)
+Order Issued : Deploy: 7 armies on Austria(194 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(33 armies)
+Order Issued : Deploy: 1 armies on Switzerland(31 armies)
+Order Issued : Deploy: 1 armies on Italy(32 armies)
+Order Issued : Deploy: 1 armies on France(33 armies)
+Order Issued : Deploy: 1 armies on Spain(33 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(38 armies)
+Order Issued : Deploy: 1 armies on England(42 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(27 armies)
+Order Issued : Deploy: 1 armies on Belgum(42 armies)
+Order Issued : Deploy: 1 armies on Germany(42 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(42 armies)
+Order Issued : Deploy: 1 armies on Slovakia(32 armies)
+Order Issued : Deploy: 7 armies on Austria(201 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(34 armies)
+Order Issued : Deploy: 1 armies on Switzerland(32 armies)
+Order Issued : Deploy: 1 armies on Italy(33 armies)
+Order Issued : Deploy: 1 armies on France(34 armies)
+Order Issued : Deploy: 1 armies on Spain(34 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(39 armies)
+Order Issued : Deploy: 1 armies on England(43 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(28 armies)
+Order Issued : Deploy: 1 armies on Belgum(43 armies)
+Order Issued : Deploy: 1 armies on Germany(43 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(43 armies)
+Order Issued : Deploy: 1 armies on Slovakia(33 armies)
+Order Issued : Deploy: 7 armies on Austria(208 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(35 armies)
+Order Issued : Deploy: 1 armies on Switzerland(33 armies)
+Order Issued : Deploy: 1 armies on Italy(34 armies)
+Order Issued : Deploy: 1 armies on France(35 armies)
+Order Issued : Deploy: 1 armies on Spain(35 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(40 armies)
+Order Issued : Deploy: 1 armies on England(44 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(29 armies)
+Order Issued : Deploy: 1 armies on Belgum(44 armies)
+Order Issued : Deploy: 1 armies on Germany(44 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(44 armies)
+Order Issued : Deploy: 1 armies on Slovakia(34 armies)
+Order Issued : Deploy: 7 armies on Austria(215 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(36 armies)
+Order Issued : Deploy: 1 armies on Switzerland(34 armies)
+Order Issued : Deploy: 1 armies on Italy(35 armies)
+Order Issued : Deploy: 1 armies on France(36 armies)
+Order Issued : Deploy: 1 armies on Spain(36 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(41 armies)
+Order Issued : Deploy: 1 armies on England(45 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(30 armies)
+Order Issued : Deploy: 1 armies on Belgum(45 armies)
+Order Issued : Deploy: 1 armies on Germany(45 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(45 armies)
+Order Issued : Deploy: 1 armies on Slovakia(35 armies)
+Order Issued : Deploy: 7 armies on Austria(222 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(37 armies)
+Order Issued : Deploy: 1 armies on Switzerland(35 armies)
+Order Issued : Deploy: 1 armies on Italy(36 armies)
+Order Issued : Deploy: 1 armies on France(37 armies)
+Order Issued : Deploy: 1 armies on Spain(37 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(42 armies)
+Order Issued : Deploy: 1 armies on England(46 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(31 armies)
+Order Issued : Deploy: 1 armies on Belgum(46 armies)
+Order Issued : Deploy: 1 armies on Germany(46 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(46 armies)
+Order Issued : Deploy: 1 armies on Slovakia(36 armies)
+Order Issued : Deploy: 7 armies on Austria(229 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(38 armies)
+Order Issued : Deploy: 1 armies on Switzerland(36 armies)
+Order Issued : Deploy: 1 armies on Italy(37 armies)
+Order Issued : Deploy: 1 armies on France(38 armies)
+Order Issued : Deploy: 1 armies on Spain(38 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(43 armies)
+Order Issued : Deploy: 1 armies on England(47 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(32 armies)
+Order Issued : Deploy: 1 armies on Belgum(47 armies)
+Order Issued : Deploy: 1 armies on Germany(47 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(47 armies)
+Order Issued : Deploy: 1 armies on Slovakia(37 armies)
+Order Issued : Deploy: 7 armies on Austria(236 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(39 armies)
+Order Issued : Deploy: 1 armies on Switzerland(37 armies)
+Order Issued : Deploy: 1 armies on Italy(38 armies)
+Order Issued : Deploy: 1 armies on France(39 armies)
+Order Issued : Deploy: 1 armies on Spain(39 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(44 armies)
+Order Issued : Deploy: 1 armies on England(48 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(33 armies)
+Order Issued : Deploy: 1 armies on Belgum(48 armies)
+Order Issued : Deploy: 1 armies on Germany(48 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(48 armies)
+Order Issued : Deploy: 1 armies on Slovakia(38 armies)
+Order Issued : Deploy: 7 armies on Austria(243 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(40 armies)
+Order Issued : Deploy: 1 armies on Switzerland(38 armies)
+Order Issued : Deploy: 1 armies on Italy(39 armies)
+Order Issued : Deploy: 1 armies on France(40 armies)
+Order Issued : Deploy: 1 armies on Spain(40 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(45 armies)
+Order Issued : Deploy: 1 armies on England(49 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(34 armies)
+Order Issued : Deploy: 1 armies on Belgum(49 armies)
+Order Issued : Deploy: 1 armies on Germany(49 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(49 armies)
+Order Issued : Deploy: 1 armies on Slovakia(39 armies)
+Order Issued : Deploy: 7 armies on Austria(250 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(41 armies)
+Order Issued : Deploy: 1 armies on Switzerland(39 armies)
+Order Issued : Deploy: 1 armies on Italy(40 armies)
+Order Issued : Deploy: 1 armies on France(41 armies)
+Order Issued : Deploy: 1 armies on Spain(41 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(46 armies)
+Order Issued : Deploy: 1 armies on England(50 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(35 armies)
+Order Issued : Deploy: 1 armies on Belgum(50 armies)
+Order Issued : Deploy: 1 armies on Germany(50 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(50 armies)
+Order Issued : Deploy: 1 armies on Slovakia(40 armies)
+Order Issued : Deploy: 7 armies on Austria(257 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(42 armies)
+Order Issued : Deploy: 1 armies on Switzerland(40 armies)
+Order Issued : Deploy: 1 armies on Italy(41 armies)
+Order Issued : Deploy: 1 armies on France(42 armies)
+Order Issued : Deploy: 1 armies on Spain(42 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(47 armies)
+Order Issued : Deploy: 1 armies on England(51 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(36 armies)
+Order Issued : Deploy: 1 armies on Belgum(51 armies)
+Order Issued : Deploy: 1 armies on Germany(51 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(51 armies)
+Order Issued : Deploy: 1 armies on Slovakia(41 armies)
+Order Issued : Deploy: 7 armies on Austria(264 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(43 armies)
+Order Issued : Deploy: 1 armies on Switzerland(41 armies)
+Order Issued : Deploy: 1 armies on Italy(42 armies)
+Order Issued : Deploy: 1 armies on France(43 armies)
+Order Issued : Deploy: 1 armies on Spain(43 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(48 armies)
+Order Issued : Deploy: 1 armies on England(52 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(37 armies)
+Order Issued : Deploy: 1 armies on Belgum(52 armies)
+Order Issued : Deploy: 1 armies on Germany(52 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(52 armies)
+Order Issued : Deploy: 1 armies on Slovakia(42 armies)
+Order Issued : Deploy: 7 armies on Austria(271 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(44 armies)
+Order Issued : Deploy: 1 armies on Switzerland(42 armies)
+Order Issued : Deploy: 1 armies on Italy(43 armies)
+Order Issued : Deploy: 1 armies on France(44 armies)
+Order Issued : Deploy: 1 armies on Spain(44 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(49 armies)
+Order Issued : Deploy: 1 armies on England(53 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(38 armies)
+Order Issued : Deploy: 1 armies on Belgum(53 armies)
+Order Issued : Deploy: 1 armies on Germany(53 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(53 armies)
+Order Issued : Deploy: 1 armies on Slovakia(43 armies)
+Order Issued : Deploy: 7 armies on Austria(278 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(45 armies)
+Order Issued : Deploy: 1 armies on Switzerland(43 armies)
+Order Issued : Deploy: 1 armies on Italy(44 armies)
+Order Issued : Deploy: 1 armies on France(45 armies)
+Order Issued : Deploy: 1 armies on Spain(45 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(50 armies)
+Order Issued : Deploy: 1 armies on England(54 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(39 armies)
+Order Issued : Deploy: 1 armies on Belgum(54 armies)
+Order Issued : Deploy: 1 armies on Germany(54 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(54 armies)
+Order Issued : Deploy: 1 armies on Slovakia(44 armies)
+Order Issued : Deploy: 7 armies on Austria(285 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(46 armies)
+Order Issued : Deploy: 1 armies on Switzerland(44 armies)
+Order Issued : Deploy: 1 armies on Italy(45 armies)
+Order Issued : Deploy: 1 armies on France(46 armies)
+Order Issued : Deploy: 1 armies on Spain(46 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(51 armies)
+Order Issued : Deploy: 1 armies on England(55 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(40 armies)
+Order Issued : Deploy: 1 armies on Belgum(55 armies)
+Order Issued : Deploy: 1 armies on Germany(55 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(55 armies)
+Order Issued : Deploy: 1 armies on Slovakia(45 armies)
+Order Issued : Deploy: 7 armies on Austria(292 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(47 armies)
+Order Issued : Deploy: 1 armies on Switzerland(45 armies)
+Order Issued : Deploy: 1 armies on Italy(46 armies)
+Order Issued : Deploy: 1 armies on France(47 armies)
+Order Issued : Deploy: 1 armies on Spain(47 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(52 armies)
+Order Issued : Deploy: 1 armies on England(56 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(41 armies)
+Order Issued : Deploy: 1 armies on Belgum(56 armies)
+Order Issued : Deploy: 1 armies on Germany(56 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(56 armies)
+Order Issued : Deploy: 1 armies on Slovakia(46 armies)
+Order Issued : Deploy: 7 armies on Austria(299 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(48 armies)
+Order Issued : Deploy: 1 armies on Switzerland(46 armies)
+Order Issued : Deploy: 1 armies on Italy(47 armies)
+Order Issued : Deploy: 1 armies on France(48 armies)
+Order Issued : Deploy: 1 armies on Spain(48 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(53 armies)
+Order Issued : Deploy: 1 armies on England(57 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(42 armies)
+Order Issued : Deploy: 1 armies on Belgum(57 armies)
+Order Issued : Deploy: 1 armies on Germany(57 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(57 armies)
+Order Issued : Deploy: 1 armies on Slovakia(47 armies)
+Order Issued : Deploy: 7 armies on Austria(306 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(49 armies)
+Order Issued : Deploy: 1 armies on Switzerland(47 armies)
+Order Issued : Deploy: 1 armies on Italy(48 armies)
+Order Issued : Deploy: 1 armies on France(49 armies)
+Order Issued : Deploy: 1 armies on Spain(49 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(54 armies)
+Order Issued : Deploy: 1 armies on England(58 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(43 armies)
+Order Issued : Deploy: 1 armies on Belgum(58 armies)
+Order Issued : Deploy: 1 armies on Germany(58 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(58 armies)
+Order Issued : Deploy: 1 armies on Slovakia(48 armies)
+Order Issued : Deploy: 7 armies on Austria(313 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(50 armies)
+Order Issued : Deploy: 1 armies on Switzerland(48 armies)
+Order Issued : Deploy: 1 armies on Italy(49 armies)
+Order Issued : Deploy: 1 armies on France(50 armies)
+Order Issued : Deploy: 1 armies on Spain(50 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(55 armies)
+Order Issued : Deploy: 1 armies on England(59 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(44 armies)
+Order Issued : Deploy: 1 armies on Belgum(59 armies)
+Order Issued : Deploy: 1 armies on Germany(59 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(59 armies)
+Order Issued : Deploy: 1 armies on Slovakia(49 armies)
+Order Issued : Deploy: 7 armies on Austria(320 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(51 armies)
+Order Issued : Deploy: 1 armies on Switzerland(49 armies)
+Order Issued : Deploy: 1 armies on Italy(50 armies)
+Order Issued : Deploy: 1 armies on France(51 armies)
+Order Issued : Deploy: 1 armies on Spain(51 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(56 armies)
+Order Issued : Deploy: 1 armies on England(60 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(45 armies)
+Order Issued : Deploy: 1 armies on Belgum(60 armies)
+Order Issued : Deploy: 1 armies on Germany(60 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(60 armies)
+Order Issued : Deploy: 1 armies on Slovakia(50 armies)
+Order Issued : Deploy: 7 armies on Austria(327 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(52 armies)
+Order Issued : Deploy: 1 armies on Switzerland(50 armies)
+Order Issued : Deploy: 1 armies on Italy(51 armies)
+Order Issued : Deploy: 1 armies on France(52 armies)
+Order Issued : Deploy: 1 armies on Spain(52 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(57 armies)
+Order Issued : Deploy: 1 armies on England(61 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(46 armies)
+Order Issued : Deploy: 1 armies on Belgum(61 armies)
+Order Issued : Deploy: 1 armies on Germany(61 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(61 armies)
+Order Issued : Deploy: 1 armies on Slovakia(51 armies)
+Order Issued : Deploy: 7 armies on Austria(334 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(53 armies)
+Order Issued : Deploy: 1 armies on Switzerland(51 armies)
+Order Issued : Deploy: 1 armies on Italy(52 armies)
+Order Issued : Deploy: 1 armies on France(53 armies)
+Order Issued : Deploy: 1 armies on Spain(53 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(58 armies)
+Order Issued : Deploy: 1 armies on England(62 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(47 armies)
+Order Issued : Deploy: 1 armies on Belgum(62 armies)
+Order Issued : Deploy: 1 armies on Germany(62 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(62 armies)
+Order Issued : Deploy: 1 armies on Slovakia(52 armies)
+Order Issued : Deploy: 7 armies on Austria(341 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(54 armies)
+Order Issued : Deploy: 1 armies on Switzerland(52 armies)
+Order Issued : Deploy: 1 armies on Italy(53 armies)
+Order Issued : Deploy: 1 armies on France(54 armies)
+Order Issued : Deploy: 1 armies on Spain(54 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(59 armies)
+Order Issued : Deploy: 1 armies on England(63 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(48 armies)
+Order Issued : Deploy: 1 armies on Belgum(63 armies)
+Order Issued : Deploy: 1 armies on Germany(63 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(63 armies)
+Order Issued : Deploy: 1 armies on Slovakia(53 armies)
+Order Issued : Deploy: 7 armies on Austria(348 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(55 armies)
+Order Issued : Deploy: 1 armies on Switzerland(53 armies)
+Order Issued : Deploy: 1 armies on Italy(54 armies)
+Order Issued : Deploy: 1 armies on France(55 armies)
+Order Issued : Deploy: 1 armies on Spain(55 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(60 armies)
+Order Issued : Deploy: 1 armies on England(64 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(49 armies)
+Order Issued : Deploy: 1 armies on Belgum(64 armies)
+Order Issued : Deploy: 1 armies on Germany(64 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(64 armies)
+Order Issued : Deploy: 1 armies on Slovakia(54 armies)
+Order Issued : Deploy: 7 armies on Austria(355 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(56 armies)
+Order Issued : Deploy: 1 armies on Switzerland(54 armies)
+Order Issued : Deploy: 1 armies on Italy(55 armies)
+Order Issued : Deploy: 1 armies on France(56 armies)
+Order Issued : Deploy: 1 armies on Spain(56 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(61 armies)
+Order Issued : Deploy: 1 armies on England(65 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(50 armies)
+Order Issued : Deploy: 1 armies on Belgum(65 armies)
+Order Issued : Deploy: 1 armies on Germany(65 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(65 armies)
+Order Issued : Deploy: 1 armies on Slovakia(55 armies)
+Order Issued : Deploy: 7 armies on Austria(362 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(57 armies)
+Order Issued : Deploy: 1 armies on Switzerland(55 armies)
+Order Issued : Deploy: 1 armies on Italy(56 armies)
+Order Issued : Deploy: 1 armies on France(57 armies)
+Order Issued : Deploy: 1 armies on Spain(57 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(62 armies)
+Order Issued : Deploy: 1 armies on England(66 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(51 armies)
+Order Issued : Deploy: 1 armies on Belgum(66 armies)
+Order Issued : Deploy: 1 armies on Germany(66 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(66 armies)
+Order Issued : Deploy: 1 armies on Slovakia(56 armies)
+Order Issued : Deploy: 7 armies on Austria(369 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(58 armies)
+Order Issued : Deploy: 1 armies on Switzerland(56 armies)
+Order Issued : Deploy: 1 armies on Italy(57 armies)
+Order Issued : Deploy: 1 armies on France(58 armies)
+Order Issued : Deploy: 1 armies on Spain(58 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(63 armies)
+Order Issued : Deploy: 1 armies on England(67 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(52 armies)
+Order Issued : Deploy: 1 armies on Belgum(67 armies)
+Order Issued : Deploy: 1 armies on Germany(67 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(67 armies)
+Order Issued : Deploy: 1 armies on Slovakia(57 armies)
+Order Issued : Deploy: 7 armies on Austria(376 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(59 armies)
+Order Issued : Deploy: 1 armies on Switzerland(57 armies)
+Order Issued : Deploy: 1 armies on Italy(58 armies)
+Order Issued : Deploy: 1 armies on France(59 armies)
+Order Issued : Deploy: 1 armies on Spain(59 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(64 armies)
+Order Issued : Deploy: 1 armies on England(68 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(53 armies)
+Order Issued : Deploy: 1 armies on Belgum(68 armies)
+Order Issued : Deploy: 1 armies on Germany(68 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(68 armies)
+Order Issued : Deploy: 1 armies on Slovakia(58 armies)
+Order Issued : Deploy: 7 armies on Austria(383 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(60 armies)
+Order Issued : Deploy: 1 armies on Switzerland(58 armies)
+Order Issued : Deploy: 1 armies on Italy(59 armies)
+Order Issued : Deploy: 1 armies on France(60 armies)
+Order Issued : Deploy: 1 armies on Spain(60 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(65 armies)
+Order Issued : Deploy: 1 armies on England(69 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(54 armies)
+Order Issued : Deploy: 1 armies on Belgum(69 armies)
+Order Issued : Deploy: 1 armies on Germany(69 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(69 armies)
+Order Issued : Deploy: 1 armies on Slovakia(59 armies)
+Order Issued : Deploy: 7 armies on Austria(390 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(61 armies)
+Order Issued : Deploy: 1 armies on Switzerland(59 armies)
+Order Issued : Deploy: 1 armies on Italy(60 armies)
+Order Issued : Deploy: 1 armies on France(61 armies)
+Order Issued : Deploy: 1 armies on Spain(61 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(66 armies)
+Order Issued : Deploy: 1 armies on England(70 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(55 armies)
+Order Issued : Deploy: 1 armies on Belgum(70 armies)
+Order Issued : Deploy: 1 armies on Germany(70 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(70 armies)
+Order Issued : Deploy: 1 armies on Slovakia(60 armies)
+Order Issued : Deploy: 7 armies on Austria(397 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(62 armies)
+Order Issued : Deploy: 1 armies on Switzerland(60 armies)
+Order Issued : Deploy: 1 armies on Italy(61 armies)
+Order Issued : Deploy: 1 armies on France(62 armies)
+Order Issued : Deploy: 1 armies on Spain(62 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(67 armies)
+Order Issued : Deploy: 1 armies on England(71 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(56 armies)
+Order Issued : Deploy: 1 armies on Belgum(71 armies)
+Order Issued : Deploy: 1 armies on Germany(71 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(71 armies)
+Order Issued : Deploy: 1 armies on Slovakia(61 armies)
+Order Issued : Deploy: 7 armies on Austria(404 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(63 armies)
+Order Issued : Deploy: 1 armies on Switzerland(61 armies)
+Order Issued : Deploy: 1 armies on Italy(62 armies)
+Order Issued : Deploy: 1 armies on France(63 armies)
+Order Issued : Deploy: 1 armies on Spain(63 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(68 armies)
+Order Issued : Deploy: 1 armies on England(72 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(57 armies)
+Order Issued : Deploy: 1 armies on Belgum(72 armies)
+Order Issued : Deploy: 1 armies on Germany(72 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(72 armies)
+Order Issued : Deploy: 1 armies on Slovakia(62 armies)
+Order Issued : Deploy: 7 armies on Austria(411 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(64 armies)
+Order Issued : Deploy: 1 armies on Switzerland(62 armies)
+Order Issued : Deploy: 1 armies on Italy(63 armies)
+Order Issued : Deploy: 1 armies on France(64 armies)
+Order Issued : Deploy: 1 armies on Spain(64 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(69 armies)
+Order Issued : Deploy: 1 armies on England(73 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(58 armies)
+Order Issued : Deploy: 1 armies on Belgum(73 armies)
+Order Issued : Deploy: 1 armies on Germany(73 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(73 armies)
+Order Issued : Deploy: 1 armies on Slovakia(63 armies)
+Order Issued : Deploy: 7 armies on Austria(418 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(65 armies)
+Order Issued : Deploy: 1 armies on Switzerland(63 armies)
+Order Issued : Deploy: 1 armies on Italy(64 armies)
+Order Issued : Deploy: 1 armies on France(65 armies)
+Order Issued : Deploy: 1 armies on Spain(65 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(70 armies)
+Order Issued : Deploy: 1 armies on England(74 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(59 armies)
+Order Issued : Deploy: 1 armies on Belgum(74 armies)
+Order Issued : Deploy: 1 armies on Germany(74 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(74 armies)
+Order Issued : Deploy: 1 armies on Slovakia(64 armies)
+Order Issued : Deploy: 7 armies on Austria(425 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(66 armies)
+Order Issued : Deploy: 1 armies on Switzerland(64 armies)
+Order Issued : Deploy: 1 armies on Italy(65 armies)
+Order Issued : Deploy: 1 armies on France(66 armies)
+Order Issued : Deploy: 1 armies on Spain(66 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(71 armies)
+Order Issued : Deploy: 1 armies on England(75 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(60 armies)
+Order Issued : Deploy: 1 armies on Belgum(75 armies)
+Order Issued : Deploy: 1 armies on Germany(75 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(75 armies)
+Order Issued : Deploy: 1 armies on Slovakia(65 armies)
+Order Issued : Deploy: 7 armies on Austria(432 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(67 armies)
+Order Issued : Deploy: 1 armies on Switzerland(65 armies)
+Order Issued : Deploy: 1 armies on Italy(66 armies)
+Order Issued : Deploy: 1 armies on France(67 armies)
+Order Issued : Deploy: 1 armies on Spain(67 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(72 armies)
+Order Issued : Deploy: 1 armies on England(76 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(61 armies)
+Order Issued : Deploy: 1 armies on Belgum(76 armies)
+Order Issued : Deploy: 1 armies on Germany(76 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(76 armies)
+Order Issued : Deploy: 1 armies on Slovakia(66 armies)
+Order Issued : Deploy: 7 armies on Austria(439 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(68 armies)
+Order Issued : Deploy: 1 armies on Switzerland(66 armies)
+Order Issued : Deploy: 1 armies on Italy(67 armies)
+Order Issued : Deploy: 1 armies on France(68 armies)
+Order Issued : Deploy: 1 armies on Spain(68 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(73 armies)
+Order Issued : Deploy: 1 armies on England(77 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(62 armies)
+Order Issued : Deploy: 1 armies on Belgum(77 armies)
+Order Issued : Deploy: 1 armies on Germany(77 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(77 armies)
+Order Issued : Deploy: 1 armies on Slovakia(67 armies)
+Order Issued : Deploy: 7 armies on Austria(446 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(69 armies)
+Order Issued : Deploy: 1 armies on Switzerland(67 armies)
+Order Issued : Deploy: 1 armies on Italy(68 armies)
+Order Issued : Deploy: 1 armies on France(69 armies)
+Order Issued : Deploy: 1 armies on Spain(69 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(74 armies)
+Order Issued : Deploy: 1 armies on England(78 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(63 armies)
+Order Issued : Deploy: 1 armies on Belgum(78 armies)
+Order Issued : Deploy: 1 armies on Germany(78 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(78 armies)
+Order Issued : Deploy: 1 armies on Slovakia(68 armies)
+Order Issued : Deploy: 7 armies on Austria(453 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(70 armies)
+Order Issued : Deploy: 1 armies on Switzerland(68 armies)
+Order Issued : Deploy: 1 armies on Italy(69 armies)
+Order Issued : Deploy: 1 armies on France(70 armies)
+Order Issued : Deploy: 1 armies on Spain(70 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(75 armies)
+Order Issued : Deploy: 1 armies on England(79 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(64 armies)
+Order Issued : Deploy: 1 armies on Belgum(79 armies)
+Order Issued : Deploy: 1 armies on Germany(79 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(79 armies)
+Order Issued : Deploy: 1 armies on Slovakia(69 armies)
+Order Issued : Deploy: 7 armies on Austria(460 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(71 armies)
+Order Issued : Deploy: 1 armies on Switzerland(69 armies)
+Order Issued : Deploy: 1 armies on Italy(70 armies)
+Order Issued : Deploy: 1 armies on France(71 armies)
+Order Issued : Deploy: 1 armies on Spain(71 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(76 armies)
+Order Issued : Deploy: 1 armies on England(80 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(65 armies)
+Order Issued : Deploy: 1 armies on Belgum(80 armies)
+Order Issued : Deploy: 1 armies on Germany(80 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(80 armies)
+Order Issued : Deploy: 1 armies on Slovakia(70 armies)
+Order Issued : Deploy: 7 armies on Austria(467 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(72 armies)
+Order Issued : Deploy: 1 armies on Switzerland(70 armies)
+Order Issued : Deploy: 1 armies on Italy(71 armies)
+Order Issued : Deploy: 1 armies on France(72 armies)
+Order Issued : Deploy: 1 armies on Spain(72 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(77 armies)
+Order Issued : Deploy: 1 armies on England(81 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(66 armies)
+Order Issued : Deploy: 1 armies on Belgum(81 armies)
+Order Issued : Deploy: 1 armies on Germany(81 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(81 armies)
+Order Issued : Deploy: 1 armies on Slovakia(71 armies)
+Order Issued : Deploy: 7 armies on Austria(474 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(73 armies)
+Order Issued : Deploy: 1 armies on Switzerland(71 armies)
+Order Issued : Deploy: 1 armies on Italy(72 armies)
+Order Issued : Deploy: 1 armies on France(73 armies)
+Order Issued : Deploy: 1 armies on Spain(73 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(78 armies)
+Order Issued : Deploy: 1 armies on England(82 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(67 armies)
+Order Issued : Deploy: 1 armies on Belgum(82 armies)
+Order Issued : Deploy: 1 armies on Germany(82 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(82 armies)
+Order Issued : Deploy: 1 armies on Slovakia(72 armies)
+Order Issued : Deploy: 7 armies on Austria(481 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(74 armies)
+Order Issued : Deploy: 1 armies on Switzerland(72 armies)
+Order Issued : Deploy: 1 armies on Italy(73 armies)
+Order Issued : Deploy: 1 armies on France(74 armies)
+Order Issued : Deploy: 1 armies on Spain(74 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(79 armies)
+Order Issued : Deploy: 1 armies on England(83 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(68 armies)
+Order Issued : Deploy: 1 armies on Belgum(83 armies)
+Order Issued : Deploy: 1 armies on Germany(83 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(83 armies)
+Order Issued : Deploy: 1 armies on Slovakia(73 armies)
+Order Issued : Deploy: 7 armies on Austria(488 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(75 armies)
+Order Issued : Deploy: 1 armies on Switzerland(73 armies)
+Order Issued : Deploy: 1 armies on Italy(74 armies)
+Order Issued : Deploy: 1 armies on France(75 armies)
+Order Issued : Deploy: 1 armies on Spain(75 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(80 armies)
+Order Issued : Deploy: 1 armies on England(84 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(69 armies)
+Order Issued : Deploy: 1 armies on Belgum(84 armies)
+Order Issued : Deploy: 1 armies on Germany(84 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(84 armies)
+Order Issued : Deploy: 1 armies on Slovakia(74 armies)
+Order Issued : Deploy: 7 armies on Austria(495 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(76 armies)
+Order Issued : Deploy: 1 armies on Switzerland(74 armies)
+Order Issued : Deploy: 1 armies on Italy(75 armies)
+Order Issued : Deploy: 1 armies on France(76 armies)
+Order Issued : Deploy: 1 armies on Spain(76 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(81 armies)
+Order Issued : Deploy: 1 armies on England(85 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(70 armies)
+Order Issued : Deploy: 1 armies on Belgum(85 armies)
+Order Issued : Deploy: 1 armies on Germany(85 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(85 armies)
+Order Issued : Deploy: 1 armies on Slovakia(75 armies)
+Order Issued : Deploy: 7 armies on Austria(502 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(77 armies)
+Order Issued : Deploy: 1 armies on Switzerland(75 armies)
+Order Issued : Deploy: 1 armies on Italy(76 armies)
+Order Issued : Deploy: 1 armies on France(77 armies)
+Order Issued : Deploy: 1 armies on Spain(77 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(82 armies)
+Order Issued : Deploy: 1 armies on England(86 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(71 armies)
+Order Issued : Deploy: 1 armies on Belgum(86 armies)
+Order Issued : Deploy: 1 armies on Germany(86 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(86 armies)
+Order Issued : Deploy: 1 armies on Slovakia(76 armies)
+Order Issued : Deploy: 7 armies on Austria(509 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(78 armies)
+Order Issued : Deploy: 1 armies on Switzerland(76 armies)
+Order Issued : Deploy: 1 armies on Italy(77 armies)
+Order Issued : Deploy: 1 armies on France(78 armies)
+Order Issued : Deploy: 1 armies on Spain(78 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(83 armies)
+Order Issued : Deploy: 1 armies on England(87 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(72 armies)
+Order Issued : Deploy: 1 armies on Belgum(87 armies)
+Order Issued : Deploy: 1 armies on Germany(87 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(87 armies)
+Order Issued : Deploy: 1 armies on Slovakia(77 armies)
+Order Issued : Deploy: 7 armies on Austria(516 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(79 armies)
+Order Issued : Deploy: 1 armies on Switzerland(77 armies)
+Order Issued : Deploy: 1 armies on Italy(78 armies)
+Order Issued : Deploy: 1 armies on France(79 armies)
+Order Issued : Deploy: 1 armies on Spain(79 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(84 armies)
+Order Issued : Deploy: 1 armies on England(88 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(73 armies)
+Order Issued : Deploy: 1 armies on Belgum(88 armies)
+Order Issued : Deploy: 1 armies on Germany(88 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(88 armies)
+Order Issued : Deploy: 1 armies on Slovakia(78 armies)
+Order Issued : Deploy: 7 armies on Austria(523 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(80 armies)
+Order Issued : Deploy: 1 armies on Switzerland(78 armies)
+Order Issued : Deploy: 1 armies on Italy(79 armies)
+Order Issued : Deploy: 1 armies on France(80 armies)
+Order Issued : Deploy: 1 armies on Spain(80 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(85 armies)
+Order Issued : Deploy: 1 armies on England(89 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(74 armies)
+Order Issued : Deploy: 1 armies on Belgum(89 armies)
+Order Issued : Deploy: 1 armies on Germany(89 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(89 armies)
+Order Issued : Deploy: 1 armies on Slovakia(79 armies)
+Order Issued : Deploy: 7 armies on Austria(530 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(81 armies)
+Order Issued : Deploy: 1 armies on Switzerland(79 armies)
+Order Issued : Deploy: 1 armies on Italy(80 armies)
+Order Issued : Deploy: 1 armies on France(81 armies)
+Order Issued : Deploy: 1 armies on Spain(81 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(86 armies)
+Order Issued : Deploy: 1 armies on England(90 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(75 armies)
+Order Issued : Deploy: 1 armies on Belgum(90 armies)
+Order Issued : Deploy: 1 armies on Germany(90 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(90 armies)
+Order Issued : Deploy: 1 armies on Slovakia(80 armies)
+Order Issued : Deploy: 7 armies on Austria(537 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(82 armies)
+Order Issued : Deploy: 1 armies on Switzerland(80 armies)
+Order Issued : Deploy: 1 armies on Italy(81 armies)
+Order Issued : Deploy: 1 armies on France(82 armies)
+Order Issued : Deploy: 1 armies on Spain(82 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(87 armies)
+Order Issued : Deploy: 1 armies on England(91 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(76 armies)
+Order Issued : Deploy: 1 armies on Belgum(91 armies)
+Order Issued : Deploy: 1 armies on Germany(91 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(91 armies)
+Order Issued : Deploy: 1 armies on Slovakia(81 armies)
+Order Issued : Deploy: 7 armies on Austria(544 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(83 armies)
+Order Issued : Deploy: 1 armies on Switzerland(81 armies)
+Order Issued : Deploy: 1 armies on Italy(82 armies)
+Order Issued : Deploy: 1 armies on France(83 armies)
+Order Issued : Deploy: 1 armies on Spain(83 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(88 armies)
+Order Issued : Deploy: 1 armies on England(92 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(77 armies)
+Order Issued : Deploy: 1 armies on Belgum(92 armies)
+Order Issued : Deploy: 1 armies on Germany(92 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(92 armies)
+Order Issued : Deploy: 1 armies on Slovakia(82 armies)
+Order Issued : Deploy: 7 armies on Austria(551 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(84 armies)
+Order Issued : Deploy: 1 armies on Switzerland(82 armies)
+Order Issued : Deploy: 1 armies on Italy(83 armies)
+Order Issued : Deploy: 1 armies on France(84 armies)
+Order Issued : Deploy: 1 armies on Spain(84 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(89 armies)
+Order Issued : Deploy: 1 armies on England(93 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(78 armies)
+Order Issued : Deploy: 1 armies on Belgum(93 armies)
+Order Issued : Deploy: 1 armies on Germany(93 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(93 armies)
+Order Issued : Deploy: 1 armies on Slovakia(83 armies)
+Order Issued : Deploy: 7 armies on Austria(558 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(85 armies)
+Order Issued : Deploy: 1 armies on Switzerland(83 armies)
+Order Issued : Deploy: 1 armies on Italy(84 armies)
+Order Issued : Deploy: 1 armies on France(85 armies)
+Order Issued : Deploy: 1 armies on Spain(85 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(90 armies)
+Order Issued : Deploy: 1 armies on England(94 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(79 armies)
+Order Issued : Deploy: 1 armies on Belgum(94 armies)
+Order Issued : Deploy: 1 armies on Germany(94 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(94 armies)
+Order Issued : Deploy: 1 armies on Slovakia(84 armies)
+Order Issued : Deploy: 7 armies on Austria(565 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(86 armies)
+Order Issued : Deploy: 1 armies on Switzerland(84 armies)
+Order Issued : Deploy: 1 armies on Italy(85 armies)
+Order Issued : Deploy: 1 armies on France(86 armies)
+Order Issued : Deploy: 1 armies on Spain(86 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(91 armies)
+Order Issued : Deploy: 1 armies on England(95 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(80 armies)
+Order Issued : Deploy: 1 armies on Belgum(95 armies)
+Order Issued : Deploy: 1 armies on Germany(95 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(95 armies)
+Order Issued : Deploy: 1 armies on Slovakia(85 armies)
+Order Issued : Deploy: 7 armies on Austria(572 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(87 armies)
+Order Issued : Deploy: 1 armies on Switzerland(85 armies)
+Order Issued : Deploy: 1 armies on Italy(86 armies)
+Order Issued : Deploy: 1 armies on France(87 armies)
+Order Issued : Deploy: 1 armies on Spain(87 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(92 armies)
+Order Issued : Deploy: 1 armies on England(96 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(81 armies)
+Order Issued : Deploy: 1 armies on Belgum(96 armies)
+Order Issued : Deploy: 1 armies on Germany(96 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(96 armies)
+Order Issued : Deploy: 1 armies on Slovakia(86 armies)
+Order Issued : Deploy: 7 armies on Austria(579 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(88 armies)
+Order Issued : Deploy: 1 armies on Switzerland(86 armies)
+Order Issued : Deploy: 1 armies on Italy(87 armies)
+Order Issued : Deploy: 1 armies on France(88 armies)
+Order Issued : Deploy: 1 armies on Spain(88 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(93 armies)
+Order Issued : Deploy: 1 armies on England(97 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(82 armies)
+Order Issued : Deploy: 1 armies on Belgum(97 armies)
+Order Issued : Deploy: 1 armies on Germany(97 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(97 armies)
+Order Issued : Deploy: 1 armies on Slovakia(87 armies)
+Order Issued : Deploy: 7 armies on Austria(586 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(89 armies)
+Order Issued : Deploy: 1 armies on Switzerland(87 armies)
+Order Issued : Deploy: 1 armies on Italy(88 armies)
+Order Issued : Deploy: 1 armies on France(89 armies)
+Order Issued : Deploy: 1 armies on Spain(89 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(94 armies)
+Order Issued : Deploy: 1 armies on England(98 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(83 armies)
+Order Issued : Deploy: 1 armies on Belgum(98 armies)
+Order Issued : Deploy: 1 armies on Germany(98 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(98 armies)
+Order Issued : Deploy: 1 armies on Slovakia(88 armies)
+Order Issued : Deploy: 7 armies on Austria(593 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(90 armies)
+Order Issued : Deploy: 1 armies on Switzerland(88 armies)
+Order Issued : Deploy: 1 armies on Italy(89 armies)
+Order Issued : Deploy: 1 armies on France(90 armies)
+Order Issued : Deploy: 1 armies on Spain(90 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(95 armies)
+Order Issued : Deploy: 1 armies on England(99 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(84 armies)
+Order Issued : Deploy: 1 armies on Belgum(99 armies)
+Order Issued : Deploy: 1 armies on Germany(99 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(99 armies)
+Order Issued : Deploy: 1 armies on Slovakia(89 armies)
+Order Issued : Deploy: 7 armies on Austria(600 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(91 armies)
+Order Issued : Deploy: 1 armies on Switzerland(89 armies)
+Order Issued : Deploy: 1 armies on Italy(90 armies)
+Order Issued : Deploy: 1 armies on France(91 armies)
+Order Issued : Deploy: 1 armies on Spain(91 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(96 armies)
+Order Issued : Deploy: 1 armies on England(100 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(85 armies)
+Order Issued : Deploy: 1 armies on Belgum(100 armies)
+Order Issued : Deploy: 1 armies on Germany(100 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(100 armies)
+Order Issued : Deploy: 1 armies on Slovakia(90 armies)
+Order Issued : Deploy: 7 armies on Austria(607 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(92 armies)
+Order Issued : Deploy: 1 armies on Switzerland(90 armies)
+Order Issued : Deploy: 1 armies on Italy(91 armies)
+Order Issued : Deploy: 1 armies on France(92 armies)
+Order Issued : Deploy: 1 armies on Spain(92 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(97 armies)
+Order Issued : Deploy: 1 armies on England(101 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(86 armies)
+Order Issued : Deploy: 1 armies on Belgum(101 armies)
+Order Issued : Deploy: 1 armies on Germany(101 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(101 armies)
+Order Issued : Deploy: 1 armies on Slovakia(91 armies)
+Order Issued : Deploy: 7 armies on Austria(614 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(93 armies)
+Order Issued : Deploy: 1 armies on Switzerland(91 armies)
+Order Issued : Deploy: 1 armies on Italy(92 armies)
+Order Issued : Deploy: 1 armies on France(93 armies)
+Order Issued : Deploy: 1 armies on Spain(93 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(98 armies)
+Order Issued : Deploy: 1 armies on England(102 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(87 armies)
+Order Issued : Deploy: 1 armies on Belgum(102 armies)
+Order Issued : Deploy: 1 armies on Germany(102 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(102 armies)
+Order Issued : Deploy: 1 armies on Slovakia(92 armies)
+Order Issued : Deploy: 7 armies on Austria(621 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(94 armies)
+Order Issued : Deploy: 1 armies on Switzerland(92 armies)
+Order Issued : Deploy: 1 armies on Italy(93 armies)
+Order Issued : Deploy: 1 armies on France(94 armies)
+Order Issued : Deploy: 1 armies on Spain(94 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(99 armies)
+Order Issued : Deploy: 1 armies on England(103 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(88 armies)
+Order Issued : Deploy: 1 armies on Belgum(103 armies)
+Order Issued : Deploy: 1 armies on Germany(103 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(103 armies)
+Order Issued : Deploy: 1 armies on Slovakia(93 armies)
+Order Issued : Deploy: 7 armies on Austria(628 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(95 armies)
+Order Issued : Deploy: 1 armies on Switzerland(93 armies)
+Order Issued : Deploy: 1 armies on Italy(94 armies)
+Order Issued : Deploy: 1 armies on France(95 armies)
+Order Issued : Deploy: 1 armies on Spain(95 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(100 armies)
+Order Issued : Deploy: 1 armies on England(104 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(89 armies)
+Order Issued : Deploy: 1 armies on Belgum(104 armies)
+Order Issued : Deploy: 1 armies on Germany(104 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(104 armies)
+Order Issued : Deploy: 1 armies on Slovakia(94 armies)
+Order Issued : Deploy: 7 armies on Austria(635 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(96 armies)
+Order Issued : Deploy: 1 armies on Switzerland(94 armies)
+Order Issued : Deploy: 1 armies on Italy(95 armies)
+Order Issued : Deploy: 1 armies on France(96 armies)
+Order Issued : Deploy: 1 armies on Spain(96 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(101 armies)
+Order Issued : Deploy: 1 armies on England(105 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(90 armies)
+Order Issued : Deploy: 1 armies on Belgum(105 armies)
+Order Issued : Deploy: 1 armies on Germany(105 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(105 armies)
+Order Issued : Deploy: 1 armies on Slovakia(95 armies)
+Order Issued : Deploy: 7 armies on Austria(642 armies)
+Game Engine new state: executeorders
+Deploy Order Executed: 1 armies are added on the territory Luxembourg
+Deploy Order Executed: 1 armies are added on the territory Spain
+Deploy Order Executed: 1 armies are added on the territory France
+Deploy Order Executed: 1 armies are added on the territory Italy
+Deploy Order Executed: 1 armies are added on the territory Switzerland
+Deploy Order Executed: 1 armies are added on the territory Hungary
+Deploy Order Executed: 7 armies are added on the territory Austria
+Deploy Order Executed: 1 armies are added on the territory Slovakia
+Deploy Order Executed: 1 armies are added on the territory Czech_Rep
+Deploy Order Executed: 1 armies are added on the territory Germany
+Deploy Order Executed: 1 armies are added on the territory Belgum
+Deploy Order Executed: 1 armies are added on the territory Rep_Ireland
+Deploy Order Executed: 1 armies are added on the territory England
+Command: 
+Command's effect: no effect since this command is not valid in current state
+Game Engine new state: assignreinforcement
+Game Engine new state: issueorders
+Order Issued : Deploy: 1 armies on Hungary(97 armies)
+Order Issued : Deploy: 1 armies on Switzerland(95 armies)
+Order Issued : Deploy: 1 armies on Italy(96 armies)
+Order Issued : Deploy: 1 armies on France(97 armies)
+Order Issued : Deploy: 1 armies on Spain(97 armies)
+Order Issued : Deploy: 1 armies on Luxembourg(102 armies)
+Order Issued : Deploy: 1 armies on England(106 armies)
+Order Issued : Deploy: 1 armies on Rep_Ireland(91 armies)
+Order Issued : Deploy: 1 armies on Belgum(106 armies)
+Order Issued : Deploy: 1 armies on Germany(106 armies)
+Order Issued : Deploy: 1 armies on Czech_Rep(106 armies)
+Order Issued : Deploy: 1 armies on Slovakia(96 armies)
+Order Issued : Deploy: 7 armies on Austria(649 armies)

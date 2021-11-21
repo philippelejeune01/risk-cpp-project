@@ -235,7 +235,6 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
-        reinforcementPhase();
         cout<<"--------------------------"<<endl;
         return true;
     }
@@ -245,7 +244,6 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("Assign reinforcement phase");
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("issueorders");
-        issueOrdersPhase();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".\n";
         cout<<"--------------------------"<<endl;
         return true;
@@ -256,7 +254,6 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("Issue Order Phase");
         cout << "The entered command " << command << " is valid for state " << getState() << ", the game remains in the state "
             << getState() << ".\n";
-        executeOrderPhase();
         transition("executeorders");
         cout<<"--------------------------"<<endl;
         return true;
@@ -350,10 +347,9 @@ bool GameEngine::gameOver()
 }
 void GameEngine::removeLosingPlayers()
 {
-    //players.push_back(new Player("Ali"));
     int count = players.size();
     for (int i=0;i<count;i++)
-        if (players[i]->getTerritories().size()==0)
+        if (players[i]->getPointerToTerritories()->size()==0)
         {
             cout<<players[i]->name<<" has no more territories and is removed from the game\n Remaining players: "<< count-1<<endl;
             players.erase(players.begin()+i);
@@ -372,8 +368,12 @@ void GameEngine::mainGameLoop()
     do
     {
         removeLosingPlayers();
+        if (gameOver()) break;
+        transition("assignreinforcement");
         reinforcementPhase();
+        transition("issueorders");
         issueOrdersPhase();
+        transition("executeorders");
         executeOrderPhase();
         command = getCommandProcessor()->getCommand();
         if (!validate(command)) cout<<"Wrong Command, try a valid command\n";
@@ -566,17 +566,17 @@ void GameEngine::issueOrdersPhase()
          //if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
     {
         if (playerPairs[i][0]!=NULL)
-            if (playerPairs[i][0]->getFlagIssueOrder())
-            {
+            //if (playerPairs[i][0]->getFlagIssueOrder())
+            //{
                 playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
                 //players.at(i)->setOrderList(playerPairs[i][0]->getOrderList());
-            }
+           // }
         if (playerPairs[i][0]!=NULL)
-            if(playerPairs[i][1]->getFlagIssueOrder())
-            {
+            //if(playerPairs[i][1]->getFlagIssueOrder())
+            //{
                 playerPairs[i][1]->issueOrder(_deck, playerPairs[i][0]);
                 // players.at(i+(playerSize/2))->setOrderList(playerPairs[i][0]->getOrderList());
-            }
+           // }
     }
 
 }
@@ -594,13 +594,17 @@ void GameEngine::executeOrderPhase(){
     bool flag[playerSize]={true};
     for (int i=0;i<playerSize;i++)
     {
+        cout<<"player "<<i<<endl;
         if (players.at(i)!=NULL)
         {
             pOrd = players.at(i)->getOrderList();
             if (!pOrd->isEmpty())
             {
                 while (pOrd->getFirstOrderType()=="Deploy")
+                {
                     pOrd->executeFirstOrder();
+                    if (pOrd->isEmpty()) break;
+                }
             }
             else
                 continue;
@@ -626,7 +630,7 @@ void GameEngine::executeOrderPhase(){
         if(players.at(i)->getFlagConqTerr())
         {
             players.at(i)->getHand()->addCard(_deck->draw());
-            players.at(i)->getHand()->addCard(_deck->draw());
+            players.at(i)->setFlagConqTerr(false);
         }
     Order::clearPlayerCannotAttackList();
 }
