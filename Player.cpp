@@ -197,9 +197,10 @@ void Player::setPool(int numberOfArmies)
 
 //Mutators
 
-void Player::setTerritories(vector <Territory*> &terr)
+void Player::setTerritories(vector <Territory*> terr)
 {
-    territories = terr;
+    for (int i=0;i<terr.size();i++)
+        territories.push_back(new Territory(*terr[i]));
 }
 
 void Player::setOrderList(OrdersList* aOrdersList)
@@ -326,194 +327,20 @@ int Player::determineNArmiesForAttack(int randIndexSource)
 //Returns Territories which are adjacent and not the current player's territory
 vector <Territory*> Player::toAttack()
 {
-    set<Territory*> uniqueTerritoriesToAttack;
-    string adjTerritoryName;
-    bool attackTerr;
-
-    for(int i = 0; i < territories.size(); i++){
-        if(!territories[i]->adjacentTerritories.empty()){
-            for(int j = 0; j < territories[i]->adjacentTerritories.size(); j++){
-                attackTerr = true;
-                adjTerritoryName = territories[i]->adjacentTerritories[j]->getName();
-
-                for(int k = 0; k < territories.size(); k++){
-                    if(adjTerritoryName == territories[k]->getName()){
-                        attackTerr = false;
-                        break;
-                    }
-                }
-
-                if(attackTerr){
-                    //Set the target territory to be attacked
-                    territories[i]->adjacentTerritories[j]->setAttackStatus(attackTerr);
-                    uniqueTerritoriesToAttack.insert(territories[i]->adjacentTerritories[j]);
-                }
-            }
-        }
-    }
-    vector<Territory*> territoriesToAttack(uniqueTerritoriesToAttack.begin(), uniqueTerritoriesToAttack.end());
-    return territoriesToAttack;
+    return ps->toAttack();
 }
 
 //Returns territories owned by the player that are under attack.
 //If no territories are under attack, return all territories owned by the player.
 vector <Territory*> Player::toDefend()
 {
-    bool noTerritoriesUnderAttack = true;
-    vector <Territory*> territoriesToDefend;
-
-    for(int i = 0; i < territories.size(); i++)
-    {
-        if(territories.at(i)->isTerritoryUnderAttack())
-        {
-            noTerritoriesUnderAttack = false;
-            territoriesToDefend.push_back(territories.at(i));
-        }
-    }
-
-    if(!noTerritoriesUnderAttack)
-    {
-        return territoriesToDefend;
-    }else
-    {
-        return this->territories;
-    }
+    return ps->toDefend();
 }
 
 //Creates an order based on the armies in the player's reinforcement pool and the player's hand. Then places the order in the player's list of orders
-void Player::issueOrder(Deck* deck, Player* enemyPlayer)
+void Player::issueOrder()
 {
-    srand (time(NULL));
-    //Refers to the player having cards in their hand
-    bool isHandEmpty = getHand()->getCards()->empty();
-    bool* flagOrder;
-    vector <Territory*> territoriesToAttack = toAttack();
-    vector <Territory*> territoriesToDefend = toDefend();
-    Order* ord;
-    Order* defendAdvanceOrd;
-    Order* attackAdvanceOrd;
-    Card* card;
-    //Generate random number indicating the random index to choose in the list of territories to attack/defend
-    int randIndexAttack = rand() % territoriesToAttack.size();
-    int randIndexDefend = rand() % territoriesToDefend.size();
-    //Generate random number indicating the random index to choose in the player's territories
-    int randIndexSource = rand() % territories.size();
-
-    //Determine if player has more orders to issue.
-    if(getPool() != 0 || !isHandEmpty)
-    {
-        flagOrder = new bool(true);
-        setFlagIssueOrder(flagOrder);
-    }
-    else
-    {
-        flagOrder = new bool(false);
-        setFlagIssueOrder(flagOrder);
-    }
-
-    //Create deploy orders if player has armies in its reinforcement pool
-    if(getPool() != 0)
-    {
-        createDeployOrders(&territoriesToDefend, ord);
-        cout << "Created Deploy Orders" << endl;
-    }
-
-    //Number of armies to use in an attack/advance order
-    int randNOfArmies = determineNArmiesForAttack(randIndexSource);
-
-    //If player has cards in his hand, select the first card to create an order
-    //Then create Advance orders
-    if(!isHandEmpty)
-    {
-        //Get the first card in the player's hand
-        card = getHand()->getCards()->front();
-        //Using play() to create the appropriate order based on the card type
-        ord = card->play(deck, getHand(), territoriesToAttack.at(randIndexAttack), territoriesToDefend.at(randIndexDefend), randIndexSource, randNOfArmies, this, enemyPlayer);
-
-        if(ord != NULL)
-        {
-            ordersList->addOrder(ord);
-            //ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
-            cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
-        }
-        else
-            cout<<"Order is Null\n";
-        /*====Creating Advance orders====*/
-
-        //Find the index of one of the territories returned by toDefend() in the player's territories vector
-        string terrDefendName = territoriesToDefend.at(0)->getName();
-        for (vector<Territory*>::iterator it = territories.begin(); it != territories.end(); ++it)
-        {
-            if((*it)->getName() == terrDefendName)
-            {
-                auto index = distance(territories.begin(), it);
-                randIndexSource = index;
-            }
-        }
-
-        //Re-determine the number of armies to use in an attack/advance order
-        randNOfArmies = determineNArmiesForAttack(randIndexSource);
-
-        if(randNOfArmies != 0)
-        {
-            /*Create advance order to defend*/
-            //If the territory to defend and the source territory are the same, then generate another random index which is not the same as randIndexDefend
-            if(territoriesToDefend.at(randIndexDefend)->getName() == territories.at(randIndexSource)->getName())
-            {
-                int newRandIndex;
-
-                /*do
-                {
-                    newRandIndex = rand() % territoriesToDefend.size();
-                }
-                while(randIndexDefend == newRandIndex);
-
-                randIndexDefend = newRandIndex;*/
-                defendAdvanceOrd = new Advance(territoriesToDefend.at(randIndexDefend), &territories, randNOfArmies, territories.at(randIndexSource));
-            }
-            else
-            {
-                defendAdvanceOrd = new Advance(territoriesToDefend.at(randIndexDefend), &territories, randNOfArmies, territories.at(randIndexSource));
-            }
-            //Adding order to the end of the list
-            ordersList->addOrder(defendAdvanceOrd);
-            //ordersList->move(defendAdvanceOrd, ordersList->getOrdList().size());
-            cout << "Created a " << defendAdvanceOrd->getOrderType() << " order (to defend) and placed it in the player's OrderList" << endl;
-        }
-        else
-        {
-            defendAdvanceOrd = NULL;
-            cout << "Cannot create advance order (to defend) - No armies in source territory " << territories.at(randIndexSource)->getName() << "\n" << endl;
-        }
-
-        //Create a new random Index
-        randIndexSource = rand() % territories.size();
-        //Re-determine the number of armies to use in an attack/advance order
-        randNOfArmies = determineNArmiesForAttack(randIndexSource);
-        if(randNOfArmies != 0)
-        {
-            /*Create advance order to attack*/
-            attackAdvanceOrd = new Advance(territoriesToAttack.at(randIndexAttack), &territories, randNOfArmies, territoriesToDefend.at(randIndexDefend), territoriesToAttack.at(randIndexAttack)->getPlayer()->getPointerToTerritories(), flagConqTerr);
-            ordersList->addOrder(attackAdvanceOrd);
-            //ordersList->move(attackAdvanceOrd, ordersList->getOrdList().size());
-            //Set the attack status to false on the territory where an attack order has been created
-            territoriesToAttack.at(randIndexAttack)->setAttackStatus(false);
-            cout << "Created a " << attackAdvanceOrd->getOrderType() << " order (to attack) and placed it in the player's OrderList\n" << endl;
-
-        }
-        else
-        {
-            attackAdvanceOrd = NULL;
-            cout << "Cannot create advance order (to attack) - No armies in source territory " << territories.at(randIndexSource)->getName() << "\n" << endl;
-        }
-
-    }
-    else
-    {
-        cout << "No more orders to issue\n" << endl;
-    }
-
-    cout << *this << endl;
+    ps->issueOrder();
 }
 
 
