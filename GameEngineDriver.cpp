@@ -47,6 +47,10 @@ int main()
         //2) preventing dangling pointer errors:
         game = NULL;
     }
+    if (s.find("tournament") != string::npos)
+    {
+        tournamentMode();
+    }
     LogObserver::output.close();
     return 0;
 };

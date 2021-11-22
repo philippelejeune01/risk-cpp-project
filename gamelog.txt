@@ -1,18 +1,1 @@
-Command: loadmap <europe.map>
-Command's effect: map europe.map successfully loaded
-Game Engine new state: maploaded
-Command: validatemap
-Command's effect: map is successfully validated
-Game Engine new state: mapvalidated
-Command: sdgdgsdgdsg
-Command's effect: no effect since this command is not valid in current state
-Command: addplayer <a1>
-Command's effect: player a1 successfully added
-Game Engine new state: playersadded
-Command: addplayer <a2>
-Command's effect: player a2 successfully added
-Command: gamestart
-Command's effect: main loop of the game is successfully entered
 Game Engine new state: assignreinforcement
-Game Engine new state: assignreinforcement
-Game Engine new state: issueorders

@@ -21,7 +21,6 @@ GameEngine::GameEngine()
     Attach(lo);
 }
 
-
 /**
 *Parameterized constructor that creates a GameEngine object, which state is initialized to the passed state as a parameter
 *and CommandProcessor object is initialized to the passed command processor object as a parameter.
@@ -159,6 +158,73 @@ string GameEngine::stringToLog()
 *@param command is a string that corresponds to the command passed.
 *@return a boolean depending whether the command is valid or not in the current game state.
 */
+void tournamentMode()
+{
+    int numberOfMaps,numberOfPlayers,numberOfGames,t;
+    vector<Map*> maps;
+    vector<Player*> players;
+    cout<<"Enter the number of maps:\n";
+    cin>>numberOfMaps;
+    for (int i=0;i<numberOfMaps;i++)
+    {
+        string fileName="";
+        cout<<"Enter Map "<<i+1<<"'s filename:\n";
+        cin>>fileName;
+        MapLoader* maploader = new MapLoader(fileName);
+        Map* maptemp = new Map(*maploader->Load());
+        maps.push_back(new Map(*maptemp));
+
+        delete maploader;
+        delete maptemp;
+    }
+    cout<<"Enter Number of players:\n";
+    cin>>numberOfPlayers;
+    for (int i=0;i<numberOfPlayers;i++)
+    {
+        string strategy;
+        cout<<"Enter Player"<<i+1<<"s strategy:\n";
+        cin>>strategy;
+        Player* temp = new Player("p"+to_string(i+1),strategy);
+        players.push_back(new Player(*temp));
+        cout<<*players[i];
+        delete temp;
+    }
+    cout<<"Enter Number of games:\n";
+    cin>>numberOfGames;
+    cout<<"Enter Number of turns:\n";
+    cin>>t;
+
+    cout<<"\n------------Tournament Mode:-----------\n";
+    cout<<"          ";
+    for (int i = 0;i<numberOfGames;i++)
+        cout<<"  Game "<<i+1<< "   ";
+    cout<<endl;
+    for (int i = 0 ; i < numberOfMaps; i++)
+    {
+        cout<<"Map "<<i<<"     ";
+        for (int j = 0 ; j < numberOfGames; j++)
+        {
+            GameEngine* game = new GameEngine();
+            game->turnsPerGame=t;
+            game->_map = new Map(*maps[i]);
+            for (int k=0;k<players.size();k++)
+                game->players.push_back(new Player(*players[k]));
+            game->setPlayersTerritories();
+            game->randomizePlayOrder();
+            game->initializeDeck(); //Creating the Deck
+            for(int l = 0; l < players.size(); l++)
+            {
+                game->players.at(i)->setPool(50);
+                game->players.at(i)->getHand()->addCard(game->_deck->draw());
+                game->players.at(i)->getHand()->addCard(game->_deck->draw());
+            }
+            game->mainGameLoop();
+            cout<<game->strategyname<<"  ";
+        }
+        cout<<endl;
+    }
+
+}
 bool GameEngine::validate(string command)
 {
     if (command=="reset")
@@ -340,6 +406,11 @@ void GameEngine::setPlayersTerritories()
     }
 
 }
+void GameEngine::winner(string name,string strategy)
+{
+    winnername = name;
+    strategyname= strategy;
+}
 bool GameEngine::gameOver()
 {
     if (players.size()==1)
@@ -347,6 +418,7 @@ bool GameEngine::gameOver()
         cout<<"Player "<<players[0]->name<<" has won the game!";
         transition("win");
         Order::deletePlayerCannotAttackList();
+        winner(players[0]->name,players[0]->getStrategy());
         return true;
     }
     return false;
@@ -371,8 +443,14 @@ void GameEngine::mainGameLoop()
         playerPairs[i][0] = players.at(i);
         playerPairs[i][1] = players.at((playerSize/2)+i);
     }
+    int turns = 0;
     do
     {
+        if (turns == turnsPerGame)
+        {
+            winner("nobody","Draw");
+            break;
+        }
         removeLosingPlayers();
         if (gameOver()) break;
         transition("assignreinforcement");
@@ -381,6 +459,7 @@ void GameEngine::mainGameLoop()
         issueOrdersPhase();
         transition("executeorders");
         executeOrderPhase();
+        turns++;
     }
     while (!(getState() == "win") && !gameOver());
 }

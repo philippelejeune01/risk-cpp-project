@@ -57,12 +57,13 @@ public:
     void removeLosingPlayers();
     bool doesPlayerOwnContinent(int cnum,Player* player);
     string stringToLog();
-
+    void winner(string name,string strategy);
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)
     friend std::ostream & operator << (std::ostream &out, const GameEngine &ge);
     friend std::istream & operator >> (std::istream &in,  GameEngine &ge);
     const int DECK_SIZE = 20;
     Deck* _deck;
+    string winnername,strategyname;
     vector<Player*> players;
     MapLoader* maploader;
     Map* _map;
@@ -70,5 +71,7 @@ public:
     string state;
     CommandProcessor* cp;
     Player *playerPairs[3][2];
+    int turnsPerGame;
 };
+void tournamentMode();
 #endif // GAMEENGINE_H

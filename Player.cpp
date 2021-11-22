@@ -29,7 +29,24 @@ Player::Player(string newName)
     flagConqTerr = new bool(false);
     flagIssueOrder = new bool(true);
 }
+Player::Player(string newName,string strategy)
+{
+    name = newName;
+    if (strategy=="Human")      ps = new HumanPlayerStrategy();
+    if (strategy=="Aggressive") ps = new AggressivePlayerStrategy();
+    if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy();
+    if (strategy=="Neutral")    ps = new NeutralPlayerStrategy();
+     if (strategy=="Cheater") ps= new CheaterPlayerStrategy();
+    hand = new Hand();
+    ordersList = new OrdersList();
+    flagConqTerr = new bool(false);
+    flagIssueOrder = new bool(true);
+}
 //2 arg Constructors
+string Player::getStrategy() const
+{
+    return strategy;
+}
 Player::Player(string newName, OrdersList* ordList)
 {
     name = newName;
@@ -93,6 +110,7 @@ Player::Player(const Player& pl)
     this->ordersList = pl.ordersList;
     this->flagConqTerr = pl.flagConqTerr;
     this->flagIssueOrder = pl.flagIssueOrder;
+    this->strategy= pl.strategy;
 }
 
 //Destructor

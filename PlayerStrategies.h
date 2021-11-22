@@ -43,4 +43,11 @@ class NeutralPlayerStrategy:public PlayerStrategy
         vector<Territory*> toAttack();
         vector<Territory*> toDefend();
 };
+class CheaterPlayerStrategy:public PlayerStrategy
+{
+    public:
+        void issueOrder();
+        vector<Territory*> toAttack();
+        vector<Territory*> toDefend();
+};
 #endif

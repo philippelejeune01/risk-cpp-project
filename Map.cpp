@@ -46,8 +46,8 @@ Map::Map(const Map& m)
 {
     this->adjacencyList=m.adjacencyList;
 
-    for(vector<Territory*>::const_iterator it = m.territories.begin(); it != m.territories.end(); ++it)
-        this->territories.push_back(*it);
+    for(int i=0;i<m.territories.size();i++)
+        this->territories.push_back(new Territory(*m.territories.at(i)));
 
     this->numOfContinents = m.numOfContinents;
 
@@ -55,8 +55,8 @@ Map::Map(const Map& m)
 
     for (int i = 1; i<=numOfContinents;i++)
         this->endofContinents[i]=m.endofContinents[i];
-    for(vector<int>::const_iterator it = m.continentPoints.begin(); it != m.continentPoints.end(); it++)
-        this->continentPoints.push_back(*it);
+    for(int i=0;i<m.continentPoints.size();i++)
+        this->continentPoints.push_back(m.continentPoints[i]);
 }
 Map::Map()
 {
@@ -346,7 +346,8 @@ Map* MapLoader::Load()
             Territory* t= new Territory(numOfTerritories,x,y,cnumber,0,NULL,name);
             //t.setCoordinates(x,y);
             //t.setTerritoryNum(numOfTerritories);
-            territories.push_back(t);
+            territories.push_back(new Territory(*t));
+            delete t;
         }
         round = (round+1)%5;
     }
@@ -355,6 +356,8 @@ Map* MapLoader::Load()
     numOfTerritories--; //exclude [borders]
 
     static vector<int> adjacency[200];
+
+
 
     while (!inputstream.eof())
     {
