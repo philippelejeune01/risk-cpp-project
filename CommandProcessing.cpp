@@ -172,6 +172,8 @@ void CommandProcessor::setCommandList(list<Command*> lc)
 {
     lc = lc;
 }
+
+
 /**
 *saveCommand stores the Command objects in a list.
 */

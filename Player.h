@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Orders.h"
+#include "PlayerStrategies.h"
 #include "Card.h"
 #include "Map.h"
 #include <iostream>
@@ -30,12 +31,12 @@ class Player
         //Required Methods
         vector <Territory*> toDefend();
         vector <Territory*> toAttack();
-        void issueOrder(Deck* deck, Player* enemyPlayer);
+        void issueOrder();
         //Accesors and Mutators
         string getName();
         void setName(string newName);
         vector <Territory*> getTerritories() const;
-        void setTerritories(vector <Territory*> &terr);
+        void setTerritories(vector <Territory*> terr);
         Hand* getHand() const;
         void setHand(Hand* h);
         OrdersList* getOrderList() const;
@@ -52,6 +53,7 @@ class Player
         bool removeFromPool(int numberOfArmies);
 
     //protected:
+        PlayerStrategy* ps;
         string name;
         //Determines if the player has more orders to issue
         bool* flagIssueOrder;

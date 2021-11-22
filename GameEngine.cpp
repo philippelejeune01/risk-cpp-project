@@ -179,6 +179,12 @@ bool GameEngine::validate(string command)
         cout<<"--------------------------"<<endl;
         return true;
     }
+    if((getState() == "start") && (command.find("tournament") !=string::npos))
+    {
+        getCommandProcessor()->getCommandList().back()->saveEffect("tournament mode successfully ");
+        cout<<"--------------------------"<<endl;
+        return true;
+    }
     if((getState() == "maploaded") && (command.find("loadmap") !=string::npos))
     {
         string filename = command.substr(command.find("loadmap")+9);
@@ -321,7 +327,7 @@ void GameEngine::setPlayersTerritories()
 
         for (int j=startIndex;j<=endIndex;j++)
         {
-            subTerritories.push_back(_map->territories[j]);
+            subTerritories.push_back(new Territory(*_map->territories[j]));
             //cout<<_map->territories[j]->name<<endl;
         }
         for (int j=startIndex;j<=endIndex;j++)
@@ -375,11 +381,8 @@ void GameEngine::mainGameLoop()
         issueOrdersPhase();
         transition("executeorders");
         executeOrderPhase();
-        command = getCommandProcessor()->getCommand();
-        if (!validate(command)) cout<<"Wrong Command, try a valid command\n";
-        if (command=="replay") startupPhase();
     }
-    while (!(command == "quit") && !(getState() == "win") && !gameOver());
+    while (!(getState() == "win") && !gameOver());
 }
 void GameEngine::startupPhase()
 {
@@ -566,17 +569,17 @@ void GameEngine::issueOrdersPhase()
          //if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
     {
         if (playerPairs[i][0]!=NULL)
-            //if (playerPairs[i][0]->getFlagIssueOrder())
-            //{
-                playerPairs[i][0]->issueOrder(_deck, playerPairs[i][1]);
+            if (playerPairs[i][0]->getFlagIssueOrder())
+            {
+                playerPairs[i][0]->issueOrder();
                 //players.at(i)->setOrderList(playerPairs[i][0]->getOrderList());
-           // }
+            }
         if (playerPairs[i][0]!=NULL)
-            //if(playerPairs[i][1]->getFlagIssueOrder())
-            //{
-                playerPairs[i][1]->issueOrder(_deck, playerPairs[i][0]);
+            if(playerPairs[i][1]->getFlagIssueOrder())
+            {
+                playerPairs[i][1]->issueOrder();
                 // players.at(i+(playerSize/2))->setOrderList(playerPairs[i][0]->getOrderList());
-           // }
+            }
     }
 
 }

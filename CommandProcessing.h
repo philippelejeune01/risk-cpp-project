@@ -1,6 +1,5 @@
 #ifndef COMMANDPROCESSING_H
 #define COMMANDPROCESSING_H
-
 #include "LoggingObserver.h"
 #include <string>
 #include <list>
@@ -13,7 +12,7 @@ class CommandProcessor;
 class Command;
 class FileCommandProcessorAdapter;
 class FileLineReader;
-
+class GameEngine;
 
 //Command class declaration.
 class Command : public Subject, ILoggable
@@ -60,6 +59,7 @@ public:
     CommandProcessor& operator = (const CommandProcessor& cp);
     //Getters declaration:
     list<Command*> getCommandList();
+    bool validate(GameEngine* game);
     //Setters declaration:
     void setCommandList(list<Command*> lc);
     //Other methods declarations:
