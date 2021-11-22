@@ -59,3 +59,18 @@ vector<Territory*> NeutralPlayerStrategy::toDefend()
 {
 
 }
+
+void CheaterPlayerStrategy::issueOrder()
+{
+
+}
+
+vector<Territory*> CheaterPlayerStrategy::toAttack()
+{
+
+}
+
+vector<Territory*> CheaterPlayerStrategy::toDefend()
+{
+
+}

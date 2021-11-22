@@ -16,6 +16,7 @@ class Player
     public:
         Player();
         Player(string newName);
+        Player(string newName, string strategy);
         Player(string newName, OrdersList* ordList);
         Player(string newName, Hand* aHand);
         Player(string newName, vector <Territory*> &terr);
@@ -44,6 +45,7 @@ class Player
         bool getFlagConqTerr() const;
         void setFlagConqTerr(bool flag);
         bool getFlagIssueOrder() const;
+        string getStrategy() const;
         void setFlagIssueOrder(bool flag);
         //This method is for testing purposes.
         vector<Territory*>* getPointerToTerritories();
@@ -54,7 +56,7 @@ class Player
 
     //protected:
         PlayerStrategy* ps;
-        string name;
+        string name,strategy;
         //Determines if the player has more orders to issue
         bool* flagIssueOrder;
         //The player's reinforcement pool
