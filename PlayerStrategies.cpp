@@ -2,7 +2,7 @@
 
 void HumanPlayerStrategy::issueOrder()
 {
-
+    cout<<"Hi";
 }
 
 vector<Territory*> HumanPlayerStrategy::toAttack()

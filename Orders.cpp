@@ -564,7 +564,7 @@ bool Advance:: validate()
         cout << "Some values are NULL" << endl;
         return false;
     }
-    if (!sourceTerritory->isAdjacentTo(*targetTerritory))
+    if (!sourceTerritory->isAdjacentTo(targetTerritory))
     {
         cout << "Target territory and source territory are not adjacent."<< endl;
         return false;
@@ -779,7 +779,7 @@ bool Bomb::validate()
     //Checking if the targetted territory is adjacent to any of the player owned territories
     for (vector<Territory*>::iterator it = ownedTerritories->begin(); it != ownedTerritories->end();++it)
     {
-        if (targetTerritory->isAdjacentTo(**(it)))
+        if (targetTerritory->isAdjacentTo(*(it)))
         {
             return true;
         }

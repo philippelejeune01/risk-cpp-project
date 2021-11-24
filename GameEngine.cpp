@@ -172,10 +172,11 @@ void tournamentMode()
         cin>>fileName;
         MapLoader* maploader = new MapLoader(fileName);
         Map* maptemp = new Map(*maploader->Load());
-        maps.push_back(new Map(*maptemp));
+        cout<<*maptemp<<endl;
+        maptemp->validate();
+        maps.push_back(maptemp);
 
         delete maploader;
-        delete maptemp;
     }
     cout<<"Enter Number of players:\n";
     cin>>numberOfPlayers;
@@ -187,7 +188,6 @@ void tournamentMode()
         Player* temp = new Player("p"+to_string(i+1),strategy);
         players.push_back(new Player(*temp));
         cout<<*players[i];
-        delete temp;
     }
     cout<<"Enter Number of games:\n";
     cin>>numberOfGames;
@@ -201,22 +201,25 @@ void tournamentMode()
     cout<<endl;
     for (int i = 0 ; i < numberOfMaps; i++)
     {
-        cout<<"Map "<<i<<"     ";
+        cout<<"Map "<<i+1<<"     ";
         for (int j = 0 ; j < numberOfGames; j++)
         {
             GameEngine* game = new GameEngine();
             game->turnsPerGame=t;
-            game->_map = new Map(*maps[i]);
+            game->_map = maps[i];
             for (int k=0;k<players.size();k++)
                 game->players.push_back(new Player(*players[k]));
             game->setPlayersTerritories();
+
+            for (int k=0;k<game->players.size();k++)
+                cout<<*game->players.at(k);
             game->randomizePlayOrder();
             game->initializeDeck(); //Creating the Deck
             for(int l = 0; l < players.size(); l++)
             {
-                game->players.at(i)->setPool(50);
-                game->players.at(i)->getHand()->addCard(game->_deck->draw());
-                game->players.at(i)->getHand()->addCard(game->_deck->draw());
+                game->players.at(l)->setPool(50);
+                game->players.at(l)->getHand()->addCard(game->_deck->draw());
+                game->players.at(l)->getHand()->addCard(game->_deck->draw());
             }
             game->mainGameLoop();
             cout<<game->strategyname<<"  ";
@@ -389,16 +392,16 @@ void GameEngine::setPlayersTerritories()
     for(int i = 0; i < limit; ++i) {
         endIndex += (remainder > 0) ? (subLength + !!(remainder--)) : subLength;
         //cout<<"start index: "<<startIndex<<"end index: "<<endIndex<<endl;
-        vector <Territory*> subTerritories;
+        vector <Territory*>* subTerritories = new vector<Territory*>();
 
         for (int j=startIndex;j<=endIndex;j++)
         {
-            subTerritories.push_back(new Territory(*_map->territories[j]));
+            subTerritories->push_back(_map->territories->at(j));
             //cout<<_map->territories[j]->name<<endl;
         }
         for (int j=startIndex;j<=endIndex;j++)
         {
-            _map->territories[j]->setPlayer(players.at(i));
+            _map->territories->at(j)->setPlayer(players.at(i));
             //cout<<_map->territories[j]->name<<"is given to: "<<_map->territories[j]->ownedplayer->name<<endl;
         }
         players.at(i)->setTerritories(subTerritories);
@@ -569,7 +572,7 @@ bool GameEngine::doesPlayerOwnContinent(int cnum,Player* player)
     for (i; i<= _map->endofContinents[cnum];i++)
     {
         //cout<<"checking territory "<<i<<endl;
-        if (_map->territories.at(i)->ownedplayer != player)
+        if (_map->territories->at(i)->ownedplayer != player)
             return false;
     }
     return true;
@@ -582,7 +585,7 @@ void GameEngine::reinforcementPhase(){
     int nCont = _map->getNumberOfContinents();
     for (int p=0;p<players.size();p++)
     {
-        int numberOfArmies = (players[p]->getTerritories().size())/3;
+        int numberOfArmies = (players[p]->getTerritories()->size())/3;
 
         for(int i = 1;i <= nCont;i++)
             if(doesPlayerOwnContinent(i, players[p]))

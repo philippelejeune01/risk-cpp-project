@@ -19,11 +19,11 @@ class Player
         Player(string newName, string strategy);
         Player(string newName, OrdersList* ordList);
         Player(string newName, Hand* aHand);
-        Player(string newName, vector <Territory*> &terr);
+        Player(string newName, vector <Territory*> *terr);
 
         Player(string newName, Hand* aHand, OrdersList* ordList);
-        Player(string newName, vector <Territory*> &terr, OrdersList* ordList);
-        Player(string newName, vector <Territory*> &terr, Hand* aHand);
+        Player(string newName, vector <Territory*> *terr, OrdersList* ordList);
+        Player(string newName, vector <Territory*> *terr, Hand* aHand);
 
         Player(const Player& pl);
         Player& operator = (const Player& pl);
@@ -36,8 +36,8 @@ class Player
         //Accesors and Mutators
         string getName();
         void setName(string newName);
-        vector <Territory*> getTerritories() const;
-        void setTerritories(vector <Territory*> terr);
+        vector <Territory*>* getTerritories() const;
+        void setTerritories(vector <Territory*> * terr);
         Hand* getHand() const;
         void setHand(Hand* h);
         OrdersList* getOrderList() const;
@@ -60,9 +60,9 @@ class Player
         //Determines if the player has more orders to issue
         bool* flagIssueOrder;
         //The player's reinforcement pool
-        int rPool;
+        int rPool = 0;
         //The player's territories
-        vector <Territory*> territories;
+        vector <Territory*>* territories;
         Hand* hand;
         OrdersList* ordersList;
         //bool pointer that determines if the player instance has conquered at least one territory
@@ -71,6 +71,7 @@ class Player
         void createDeployOrders(vector <Territory*>* territoriesToDefend, Order* ord);
         //Determines the number of armies to use in an attack order.
         int determineNArmiesForAttack(int randIndexSource);
+        friend class PlayerStrategy;
 };
 //Global function to assign territories to player's
 
