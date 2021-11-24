@@ -14,6 +14,7 @@ using namespace std;
 //Default Constructor
 Player::Player()
 {
+    territories = new vector<Territory*>();
     name = "Player Default";
     hand = new Hand();
     ordersList = new OrdersList();
@@ -23,6 +24,7 @@ Player::Player()
 //1 arg Constructor
 Player::Player(string newName)
 {
+    territories = new vector<Territory*>();
     name = newName;
     hand = new Hand();
     ordersList = new OrdersList();
@@ -32,6 +34,7 @@ Player::Player(string newName)
 Player::Player(string newName,string strategy)
 {
     name = newName;
+    territories = new vector<Territory*>();
     if (strategy=="Human")      ps = new HumanPlayerStrategy();
     if (strategy=="Aggressive") ps = new AggressivePlayerStrategy();
     if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy();
@@ -49,6 +52,8 @@ string Player::getStrategy() const
 }
 Player::Player(string newName, OrdersList* ordList)
 {
+
+    territories = new vector<Territory*>();
     name = newName;
     hand = new Hand();
     ordersList = ordList;
@@ -57,13 +62,15 @@ Player::Player(string newName, OrdersList* ordList)
 }
 Player::Player(string newName, Hand* aHand)
 {
+
+    territories = new vector<Territory*>();
     name = newName;
     hand = aHand;
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
     flagIssueOrder = new bool(true);
 }
-Player::Player(string newName, vector <Territory*> &terr)
+Player::Player(string newName, vector <Territory*>* terr)
 {
     name = newName;
     territories = terr;
@@ -79,21 +86,25 @@ Player::Player(string newName, Hand* aHand, OrdersList* ordList)
     name = newName;
     hand = aHand;
     ordersList = ordList;
+
+    territories = new vector<Territory*>();
     flagConqTerr = new bool(false);
     flagIssueOrder = new bool(true);
 }
-Player::Player(string newName, vector <Territory*> &terr, OrdersList* ordList)
+Player::Player(string newName, vector <Territory*>* terr, OrdersList* ordList)
 {
     name = newName;
     territories = terr;
     hand = new Hand();
     ordersList = ordList;
+    territories = new vector<Territory*>();
     flagConqTerr = new bool(false);
     flagIssueOrder = new bool(true);
 }
-Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
+Player::Player(string newName, vector <Territory*> * terr, Hand* aHand)
 {
     name = newName;
+    territories = new vector<Territory*>();
     territories = terr;
     hand = aHand;
     ordersList = new OrdersList();
@@ -105,6 +116,7 @@ Player::Player(string newName, vector <Territory*> &terr, Hand* aHand)
 Player::Player(const Player& pl)
 {
     this->name = pl.name;
+    territories = new vector<Territory*>();
     this->territories = pl.territories;
     this->hand = pl.hand;
     this->ordersList = pl.ordersList;
@@ -117,7 +129,7 @@ Player::Player(const Player& pl)
 Player::~Player()
 {
     //This erases all the pointers stored in the vector
-    territories.clear();
+    territories->clear();
 
     delete hand;
     hand = NULL;
@@ -132,6 +144,7 @@ Player::~Player()
 Player& Player :: operator = (const Player& pl)
 {
     this->name = pl.name;
+    territories = new vector<Territory*>();
     this->territories = pl.territories;
     this->hand = pl.hand;
     this->ordersList = pl.ordersList;
@@ -145,10 +158,10 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
 {
     strm << "Player named \"" << aPlayer.name << "\"";
 
-    if(!aPlayer.getTerritories().empty()){
+    if(!aPlayer.getTerritories()->empty()){
         strm << "\nTerritories: ";
 
-        for(auto x: aPlayer.getTerritories())
+        for(auto x: *aPlayer.getTerritories())
         {
             strm << x->getName() << " ";
         }
@@ -174,7 +187,7 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
 
 //Accessors
 
-vector <Territory*> Player::getTerritories() const
+vector <Territory*>* Player::getTerritories() const
 {
     return territories;
 }
@@ -205,7 +218,7 @@ bool Player::getFlagIssueOrder() const
 //This is a method for testing purposes.
 vector<Territory*>* Player::getPointerToTerritories()
 {
-     return &territories;
+     return territories;
 }
 
 void Player::setPool(int numberOfArmies)
@@ -215,10 +228,11 @@ void Player::setPool(int numberOfArmies)
 
 //Mutators
 
-void Player::setTerritories(vector <Territory*> terr)
+void Player::setTerritories(vector <Territory*>* terr)
 {
-    for (int i=0;i<terr.size();i++)
-        territories.push_back(new Territory(*terr[i]));
+    territories->clear();
+    for (int i=0;i<terr->size();i++)
+        territories->push_back(terr->at(i));
 }
 
 void Player::setOrderList(OrdersList* aOrdersList)
@@ -278,13 +292,13 @@ void Player::createDeployOrders(vector <Territory*>* territoriesToDefend, Order*
             if(getPool() == nArmiesToDeployLastTerritory)
             {
                 removeFromPool(nArmiesToDeployLastTerritory);
-                ord = new Deploy(territoriesToDefend->at(i), &territories, nArmiesToDeployLastTerritory);
+                ord = new Deploy(territoriesToDefend->at(i), territories, nArmiesToDeployLastTerritory);
                 ordersList->addOrder(ord);
                 //ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
             }else
             {
                 removeFromPool(numberArmiesToDeploy);
-                ord = new Deploy(territoriesToDefend->at(i), &territories, numberArmiesToDeploy);
+                ord = new Deploy(territoriesToDefend->at(i), territories, numberArmiesToDeploy);
                 ordersList->addOrder(ord);
                 //ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
             }
@@ -299,7 +313,7 @@ int Player::determineNArmiesForAttack(int randIndexSource)
     int randNOfArmies;
     //If deploy orders have not been executed yet, that means there are no armies in the territories right now.
     //To get the right number of armies we get it from the appropriate Deploy order if there is one.
-    if(territories.at(randIndexSource)->getAmountOfArmies() == 0)
+    if(territories->at(randIndexSource)->getAmountOfArmies() == 0)
     {
         if(ordersList->getOrdList().size() > randIndexSource)
         {
@@ -334,7 +348,7 @@ int Player::determineNArmiesForAttack(int randIndexSource)
     }
     else
     {
-        randNOfArmies = rand() % territories.at(randIndexSource)->getAmountOfArmies() + 1;
+        randNOfArmies = rand() % territories->at(randIndexSource)->getAmountOfArmies() + 1;
     }
     return randNOfArmies;
 }

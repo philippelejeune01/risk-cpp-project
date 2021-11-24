@@ -14,10 +14,10 @@ class Territory
         int xCoordinate,yCoordinate,continentNumber;
         int TerritoryNumber;
         bool isUnderAttack;
-        vector<Territory*> adjacentTerritories;
+        vector<Territory*>* adjacentTerritories;
         void setTerritoryNum(int t);
         int getTerritoryNum();
-        bool isAdjacentTo(Territory &t2);
+        bool isAdjacentTo(Territory *t2);
         Territory(int tnum,int x,int y,int c,int num,Player* ownedP, string n);
         Territory(const Territory& t);
         Territory();
@@ -42,18 +42,18 @@ class Territory
 class Map
 {
     public:
-        Map(vector<int>* adjacency,vector<Territory*> listOfTerritories,int nOfContinents,int nOfTerritories,int endOf[],vector<int> contPoints);
+        Map(vector<Territory*>* listOfTerritories,int nOfContinents,int nOfTerritories,int endOf[],vector<int> contPoints);
         Map(const Map& m);
         Map();
 
         void setAdjacency(vector<int>* adjacency);
-        void setTerritories(vector<Territory*> territories);
-        vector <Territory*> getTerritories() const;
+        void setTerritories(vector<Territory*>* territories);
+        vector <Territory*>* getTerritories() const;
         void setNumberOfContinents(int n);
         void setNumberOfTerritories(int n);
         void setContinentPoints(vector<int> contPoints);
         void setEndOfContinents(const int *arr);
-        bool isAdjacentto(Territory t1, Territory t2);
+        bool isAdjacentto(Territory* t1, Territory* t2);
         bool validate();
         int* getEndOfContinents();
         int getNumberOfContinents();
@@ -62,8 +62,7 @@ class Map
         ~Map();
 
         int numOfTerritories, numOfContinents;
-        vector<int>* adjacencyList;
-        vector<Territory*> territories;
+        vector<Territory*>* territories;
         int endofContinents[100];
         vector<int> continentPoints;
 

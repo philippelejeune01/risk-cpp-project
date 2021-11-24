@@ -20,13 +20,11 @@ void PrintList(vector<int>* adjacency,int total) //represent the graph for test 
     cout<<endl;
 }
 //constructors and destructor:
-Map::Map(vector<int>* adjacency,vector<Territory*> listOfTerritories,int nOfContinents,int nOfTerritories,int endOf[],vector<int> contPoints)
+Map::Map(vector<Territory*>* listOfTerritories,int nOfContinents,int nOfTerritories,int endOf[],vector<int> contPoints)
 {
-    this->adjacencyList=adjacency;
-
-    for(vector<Territory*>::iterator it = listOfTerritories.begin(); it != listOfTerritories.end(); ++it)
-        this->territories.push_back(*it);
-
+    territories = new vector<Territory*>();
+    for(int i=0;i<listOfTerritories->size();i++)
+        territories->push_back(new Territory(*listOfTerritories->at(i)));
     this->numOfContinents = nOfContinents;
 
     this->numOfTerritories = nOfTerritories;
@@ -39,15 +37,15 @@ Map::Map(vector<int>* adjacency,vector<Territory*> listOfTerritories,int nOfCont
 }
 Map::~Map()
 {
-    territories.clear();
-    adjacencyList = NULL;
+    territories->clear();
+    //delete territories;
+    //delete adjacencyList;
 }
 Map::Map(const Map& m)
 {
-    this->adjacencyList=m.adjacencyList;
-
-    for(int i=0;i<m.territories.size();i++)
-        this->territories.push_back(new Territory(*m.territories.at(i)));
+    territories = new vector<Territory*>();
+    for(int i=0;i<m.territories->size();i++)
+        this->territories->push_back(new Territory(*m.territories->at(i)));
 
     this->numOfContinents = m.numOfContinents;
 
@@ -66,27 +64,35 @@ Map::Map()
 //assignment operator
 Map& Map::operator=(const Map& m)
 {
-    this->adjacencyList = m.adjacencyList;
-    this->territories = m.territories;
+    territories = new vector<Territory*>();
+    for(int i=0;i<m.territories->size();i++)
+        this->territories->push_back(m.territories->at(i));
+
     this->numOfContinents = m.numOfContinents;
+
     this->numOfTerritories = m.numOfTerritories;
+
+    for (int i = 1; i<=numOfContinents;i++)
+        this->endofContinents[i]=m.endofContinents[i];
+    for(int i=0;i<m.continentPoints.size();i++)
+        this->continentPoints.push_back(m.continentPoints[i]);
     return *this;
 }
 
 
 
-bool Map::isAdjacentto(Territory t1, Territory t2)
+bool Map::isAdjacentto(Territory* t1, Territory* t2)
 {
     int index1=0,index2;
-    for (int i = 1; i<= numOfTerritories;i++)
-        if (territories[i]->getName() == t1.getName())
+    /*for (int i = 1; i<= numOfTerritories;i++)
+        if (territories->at(i)->getName() == t1.getName())
                 index1= i;
     for (int i = 1; i<= numOfTerritories;i++)
-        if (territories[i]->getName() == t2.getName())
+        if (territories->at(i)->getName() == t2.getName())
                 index2= i;
-    cout<<index1<<" "<<index2<<endl;
-    for (auto x: adjacencyList[index1])
-        if (x == index2)
+    cout<<index1<<" "<<index2<<endl;*/
+    for (auto x: *t1->adjacentTerritories)
+        if (x == t2)
             return true;
     return false;
 
@@ -121,10 +127,10 @@ bool Map::validate() //checks if a given map is valid
     for (int i = 1; i<=numOfTerritories; i++) //checks that each country belongs to only one continent
     {
         for (int j = i+1; j<=numOfTerritories;j++)
-            if (territories[i]->getName() == territories[j]->getName()
-                && territories[i]->getContinent()!=territories[j]->getContinent())
+            if (territories->at(i)->getName() == territories->at(j)->getName()
+                && territories->at(i)->getContinent()!=territories->at(j)->getContinent())
             {
-                cout<<"Territory "<<territories[i]->getName()<<" is defined in more than one continent! Map is invalid.";
+                cout<<"Territory "<<territories->at(i)->getName()<<" is defined in more than one continent! Map is invalid.";
                 return false;
             }
     }
@@ -133,14 +139,14 @@ bool Map::validate() //checks if a given map is valid
         for (int j = startOf; j<=endofContinents[i];j++)
         {
             t = false;
-            for (auto x: adjacencyList[j])
+            for (auto x: *territories->at(j)->adjacentTerritories)//adjacencyList[j])
             {
-                if (x<=endofContinents[i] &&x>=startOf) //checks if this territory is connected to at least one other territory in this continent
+                if (x->continentNumber == territories->at(j)->continentNumber) //checks if this territory is connected to at least one other territory in this continent
                     t= true;
-                if (territories[x]->continentNumber!=territories[j]->continentNumber)
+                if (x->continentNumber!=territories->at(j)->continentNumber)
                 {
-                    AllContinents[territories[x]->continentNumber] = true; //this two continents connect
-                    AllContinents[territories[j]->continentNumber] = true;
+                    AllContinents[x->continentNumber] = true; //this two continents connect
+                    AllContinents[territories->at(j)->continentNumber] = true;
                 }
             }
             if (!t) //continent is not interconnected
@@ -165,13 +171,13 @@ bool Map::validate() //checks if a given map is valid
 
 void Map::setAdjacency(vector<int>* adjacency)
 {
-    adjacencyList = adjacency;
+    //adjacencyList = adjacency;
 }
-void Map::setTerritories(vector<Territory*> t)
+void Map::setTerritories(vector<Territory*>* t)
 {
     territories = t;
 }
-vector <Territory*> Map::getTerritories() const
+vector <Territory*>* Map::getTerritories() const
 {
     return territories;
 }
@@ -204,6 +210,7 @@ Territory::Territory(int tnum,int x,int y,int c,int num,Player* ownedP, string n
     amountOfArmies = num;
     ownedplayer = ownedP;
     name = n;
+    adjacentTerritories = new vector<Territory*>();
     isUnderAttack = false;
 }
 Territory::Territory(const Territory& t)
@@ -215,16 +222,18 @@ Territory::Territory(const Territory& t)
     this->amountOfArmies = t.amountOfArmies;
     this->ownedplayer = t.ownedplayer;
     this->name = t.name;
+    adjacentTerritories = new vector<Territory*>();
+    this->adjacentTerritories = t.adjacentTerritories;
     isUnderAttack = false;
 }
 Territory::Territory()
 {
-
+    adjacentTerritories = new vector<Territory*>();
 }
 Territory::~Territory()
 {
-    adjacentTerritories.clear();
-    ownedplayer = NULL;
+    //adjacentTerritories->clear();
+    //ownedplayer = NULL;
 }
 void Territory::setContinent(int c)
 {
@@ -280,10 +289,10 @@ void Territory::setAttackStatus(bool attack)
 {
     isUnderAttack = attack;
 }
-bool Territory::isAdjacentTo(Territory &t2)
+bool Territory::isAdjacentTo(Territory* t2)
 {
-    for (auto x: adjacentTerritories)
-        if (x->getTerritoryNum() == t2.getTerritoryNum())
+    for (auto x: *t2->adjacentTerritories)
+        if (x->getTerritoryNum() == t2->getTerritoryNum())
             return true;
     return false;
 }
@@ -297,10 +306,10 @@ MapLoader::MapLoader(string fpath)
 }
 Map* MapLoader::Load()
 {
-    Map* m;
     string s;
     int endOf[100];
     ifstream inputstream(filepath);
+    vector<Territory*>* territories = new vector<Territory*>;
     int u, v;
     Territory* f;
     int numOfTerritories=0,numOfContinents=0,i;
@@ -323,10 +332,11 @@ Map* MapLoader::Load()
     //    cout<<*it<<endl;
 
     numOfContinents/=3;
-    vector<Territory*> territories;
-    Territory t;
+
+
     cnumber = 1;
-    territories.push_back(&t); //add a null, so our territory number starts with 1 not 0
+    Territory *t= new Territory();
+    territories->push_back(t);
     while (s!="[borders]" )
     {
         inputstream>>s;
@@ -346,18 +356,14 @@ Map* MapLoader::Load()
             Territory* t= new Territory(numOfTerritories,x,y,cnumber,0,NULL,name);
             //t.setCoordinates(x,y);
             //t.setTerritoryNum(numOfTerritories);
-            territories.push_back(new Territory(*t));
-            delete t;
+            territories->push_back(t);
         }
         round = (round+1)%5;
     }
+
     endOf[numOfContinents] = numOfTerritories-1;
 
     numOfTerritories--; //exclude [borders]
-
-    static vector<int> adjacency[200];
-
-
 
     while (!inputstream.eof())
     {
@@ -372,23 +378,14 @@ Map* MapLoader::Load()
             if(s!="[borders]")
                 v=stoi(s);//if we're reading a number,this is where the head is connecting to.
             if (u!=0)
-                adjacency[u].push_back(v);
-            territories[u]->adjacentTerritories.push_back(territories[v]);
+                territories->at(u)->adjacentTerritories->push_back(territories->at(v));
         }
         if (inputstream.peek()=='\n')
             flag=true;
         inputstream>>s;
     }
     inputstream.close();
-    m = new Map(adjacency,territories,numOfContinents,numOfTerritories,endOf,contPoints);
-   /* m.setNumberOfContinents(numOfContinents);
-    m.setNumberOfTerritories(numOfTerritories);
-    m.setEndOfContinents(endOf);
-    m.setTerritories(territories);
-    m.setAdjacency(adjacency);
-    m.setContinentPoints(contPoints);*/
-    //PrintList(m.adjacencyList,numOfTerritories); //test of adjacency list
-
+    Map* m=new Map(territories,numOfContinents,numOfTerritories,endOf,contPoints);
     return m;
 }
 int Map::getNumberOfContinents() {
