@@ -196,7 +196,10 @@ Hand* Player::getHand() const
 {
     return this->hand;
 }
-
+string Player::getName() const
+{
+    return name;
+}
 OrdersList* Player::getOrderList() const
 {
     return ordersList;

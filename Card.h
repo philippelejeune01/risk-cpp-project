@@ -3,10 +3,13 @@
 #include <stdlib.h>
 #include <string>
 #include "Orders.h"
+#include "Player.h"
 #include <iostream>
 #include <vector>
 using namespace std;
 
+class Order;
+class Player;
 //prototypes
 class Deck;
 class Card;

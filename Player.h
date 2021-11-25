@@ -11,6 +11,10 @@
 
 using namespace std;
 
+class Hand;
+class Order;
+class OrdersList;
+
 class Player
 {
     public:
@@ -34,7 +38,7 @@ class Player
         vector <Territory*> toAttack();
         void issueOrder();
         //Accesors and Mutators
-        string getName();
+        string getName() const;
         void setName(string newName);
         vector <Territory*>* getTerritories() const;
         void setTerritories(vector <Territory*> * terr);

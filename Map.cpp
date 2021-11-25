@@ -291,9 +291,14 @@ void Territory::setAttackStatus(bool attack)
 }
 bool Territory::isAdjacentTo(Territory* t2)
 {
-    for (auto x: *t2->adjacentTerritories)
+    for (auto x: *this->adjacentTerritories)
+    {
         if (x->getTerritoryNum() == t2->getTerritoryNum())
+        {
             return true;
+        }
+
+    }
     return false;
 }
 ostream& operator <<(ostream &strm, const Territory &terr)
