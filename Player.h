@@ -11,6 +11,10 @@
 
 using namespace std;
 
+class Hand;
+class Order;
+class OrdersList;
+
 class Player
 {
     public:
@@ -30,11 +34,11 @@ class Player
         ~Player();
         friend ostream& operator <<(ostream &strm, const Player &aPlayer);
         //Required Methods
-        vector <Territory*> toDefend();
-        vector <Territory*> toAttack();
+        vector <Territory*>* toDefend();
+        vector <Territory*>* toAttack();
         void issueOrder();
         //Accesors and Mutators
-        string getName();
+        string getName() const;
         void setName(string newName);
         vector <Territory*>* getTerritories() const;
         void setTerritories(vector <Territory*> * terr);
@@ -45,6 +49,7 @@ class Player
         bool getFlagConqTerr() const;
         void setFlagConqTerr(bool flag);
         bool getFlagIssueOrder() const;
+        int doesOwn(string name);
         string getStrategy() const;
         void setFlagIssueOrder(bool flag);
         //This method is for testing purposes.
@@ -53,8 +58,9 @@ class Player
         void setPool(int numberOfArmies);
         void addToPool(int numberOfArmies);
         bool removeFromPool(int numberOfArmies);
-
-    //protected:
+        friend class HumanPlayerStrategy;
+        friend class PlayerStrategy;
+    private:
         PlayerStrategy* ps;
         string name,strategy;
         //Determines if the player has more orders to issue
@@ -71,7 +77,7 @@ class Player
         void createDeployOrders(vector <Territory*>* territoriesToDefend, Order* ord);
         //Determines the number of armies to use in an attack order.
         int determineNArmiesForAttack(int randIndexSource);
-        friend class PlayerStrategy;
+
 };
 //Global function to assign territories to player's
 

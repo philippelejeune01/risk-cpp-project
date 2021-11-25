@@ -3,10 +3,13 @@
 #include <stdlib.h>
 #include <string>
 #include "Orders.h"
+#include "Player.h"
 #include <iostream>
 #include <vector>
 using namespace std;
 
+class Order;
+class Player;
 //prototypes
 class Deck;
 class Card;
@@ -41,6 +44,7 @@ class Hand
         Hand& operator = (const Hand& h);
         vector<Card*>* getCards();
         void setCards(vector<Card*> &cards);
+        void removeCard(int index);
         void addCard(Card* card);
         friend ostream & operator << (ostream &out, const Hand &h);
 

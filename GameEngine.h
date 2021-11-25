@@ -61,12 +61,13 @@ public:
     //Overloaded stream insertion operators declarations: (using friend for having access to private variables)
     friend std::ostream & operator << (std::ostream &out, const GameEngine &ge);
     friend std::istream & operator >> (std::istream &in,  GameEngine &ge);
+    friend class PlayerStrategy;
     const int DECK_SIZE = 20;
     Deck* _deck;
     string winnername,strategyname;
-    vector<Player*> players;
+    static vector<Player*>* players;
     MapLoader* maploader;
-    Map* _map;
+    static Map* _map;
     LogObserver* lo;
     string state;
     CommandProcessor* cp;
