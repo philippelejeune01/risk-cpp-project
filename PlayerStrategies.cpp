@@ -190,33 +190,32 @@ void HumanPlayerStrategy::issueOrder()
 
 vector<Territory*>* HumanPlayerStrategy::toAttack()
 {
-        set<Territory*> uniqueTerritoriesToAttack;
-        string adjTerritoryName;
-        bool attackTerr;
+    set<Territory*> uniqueTerritoriesToAttack;
+    string adjTerritoryName;
+    bool attackTerr;
 
-        for(int i = 0; i < player->territories->size(); i++){
-            if(!player->territories->at(i)->adjacentTerritories->empty()){
-                for(int j = 0; j < player->territories->at(i)->adjacentTerritories->size(); j++){
-                    attackTerr = true;
+    for(int i = 0; i < player->territories->size(); i++)
+    {
+        if(!player->territories->at(i)->adjacentTerritories->empty())
+        {
+            for(int j = 0; j < player->territories->at(i)->adjacentTerritories->size(); j++)
+            {
+                attackTerr = true;
                 adjTerritoryName = player->territories->at(i)->adjacentTerritories->at(j)->getName();
 
-                for(int k = 0; k < player->territories->size(); k++){
-                    if(adjTerritoryName == player->territories->at(k)->getName()){
-                        attackTerr = false;
-                        break;
-                    }
-                }
+                if (player->doesOwn(adjTerritoryName)!=-1)
+                    attackTerr = false;
 
                 if(attackTerr){
-                    //Set the target territory to be attacked
+                        //Set the target territory to be attacked
                     player->territories->at(i)->adjacentTerritories->at(j)->setAttackStatus(attackTerr);
                     uniqueTerritoriesToAttack.insert(player->territories->at(i)->adjacentTerritories->at(j));
                 }
             }
         }
     }
-    vector<Territory*> territoriesToAttack(uniqueTerritoriesToAttack.begin(), uniqueTerritoriesToAttack.end());
-    return &territoriesToAttack;
+    vector<Territory*>* territoriesToAttack=new vector<Territory*>(uniqueTerritoriesToAttack.begin(), uniqueTerritoriesToAttack.end());
+    return territoriesToAttack;
 }
 
 vector<Territory*>* HumanPlayerStrategy::toDefend()
