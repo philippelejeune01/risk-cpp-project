@@ -59,6 +59,10 @@ class Player
         void addToPool(int numberOfArmies);
         bool removeFromPool(int numberOfArmies);
         friend class HumanPlayerStrategy;
+        friend class AggressivePlayerStrategy;
+        friend class BenevolentPlayerStrategy;
+        friend class CheaterPlayerStrategy;
+        friend class NeutralPlayerStrategy;
         friend class PlayerStrategy;
     private:
         PlayerStrategy* ps;
