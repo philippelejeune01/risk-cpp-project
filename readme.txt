@@ -1,4 +1,10 @@
-Changed IssueOrder(this method will have to be implemented from scratch in assignment 3,just made sure both players of the pair issue orders)
-Added bool isEmpty to Class OrdersList to facilitate execution of orders.
-Implemented exceuteorderphase, loops on each players orderlist till its empty,
-however some of the orders(blockade for example) causes the program to crash, please investigate.
+GameEngine's Map and Player vectors are now declared static so they can be used in PlayerStrategyies for
+orders such as Advance and Negotiate.
+
+Added int doesOwn(string name) to class Player which returns the index of the territory if found or -1 if not.
+
+Added removeCard(int index) to class Hand to remove the card played from the player's pool.
+
+Changed a bunch of variables that are declared to pointer type.
+
+Implemented HumanPlayerStrategy.

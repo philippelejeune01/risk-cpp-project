@@ -2,6 +2,7 @@
 #include "Card.h"
 #include "Orders.h"
 #include "Map.h"
+#include "PlayerStrategies.h"
 #include <time.h>
 #include <iostream>
 #include <set>
@@ -31,19 +32,20 @@ Player::Player(string newName)
     flagConqTerr = new bool(false);
     flagIssueOrder = new bool(true);
 }
-Player::Player(string newName,string strategy)
+Player::Player(string newName,string strat)
 {
     name = newName;
     territories = new vector<Territory*>();
-    if (strategy=="Human")      ps = new HumanPlayerStrategy();
-    if (strategy=="Aggressive") ps = new AggressivePlayerStrategy();
-    if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy();
-    if (strategy=="Neutral")    ps = new NeutralPlayerStrategy();
-     if (strategy=="Cheater") ps= new CheaterPlayerStrategy();
     hand = new Hand();
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
     flagIssueOrder = new bool(true);
+    strategy = strat;
+    if (strategy=="Human")      ps = new HumanPlayerStrategy(this);
+    if (strategy=="Aggressive") ps = new AggressivePlayerStrategy(this);
+    if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy(this);
+    if (strategy=="Neutral")    ps = new NeutralPlayerStrategy(this);
+    if (strategy=="Cheater")    ps= new CheaterPlayerStrategy(this);
 }
 //2 arg Constructors
 string Player::getStrategy() const
@@ -52,7 +54,6 @@ string Player::getStrategy() const
 }
 Player::Player(string newName, OrdersList* ordList)
 {
-
     territories = new vector<Territory*>();
     name = newName;
     hand = new Hand();
@@ -73,11 +74,24 @@ Player::Player(string newName, Hand* aHand)
 Player::Player(string newName, vector <Territory*>* terr)
 {
     name = newName;
+    territories = new vector<Territory*>();
     territories = terr;
     hand = new Hand();
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
     flagIssueOrder = new bool(true);
+}
+
+int Player::doesOwn(string name)
+{
+    int index = -1;
+    for (int i = 0 ;i<territories->size();i++)
+        if (territories->at(i)->getName()==name)
+        {
+            index = i;
+            break;
+        }
+    return index;
 }
 
 //3 arg Constructors
@@ -86,7 +100,6 @@ Player::Player(string newName, Hand* aHand, OrdersList* ordList)
     name = newName;
     hand = aHand;
     ordersList = ordList;
-
     territories = new vector<Territory*>();
     flagConqTerr = new bool(false);
     flagIssueOrder = new bool(true);
@@ -117,12 +130,18 @@ Player::Player(const Player& pl)
 {
     this->name = pl.name;
     territories = new vector<Territory*>();
+    this->strategy = pl.strategy;
     this->territories = pl.territories;
-    this->hand = pl.hand;
-    this->ordersList = pl.ordersList;
+
+    this->hand =new Hand(*pl.hand);
+    this->ordersList =new OrdersList(*pl.ordersList);
     this->flagConqTerr = pl.flagConqTerr;
     this->flagIssueOrder = pl.flagIssueOrder;
-    this->strategy= pl.strategy;
+    if (strategy=="Human")      ps = new HumanPlayerStrategy(this);
+    if (strategy=="Aggressive") ps = new AggressivePlayerStrategy(this);
+    if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy(this);
+    if (strategy=="Neutral")    ps = new NeutralPlayerStrategy(this);
+    if (strategy=="Cheater")    ps=  new CheaterPlayerStrategy(this);
 }
 
 //Destructor
@@ -145,12 +164,18 @@ Player& Player :: operator = (const Player& pl)
 {
     this->name = pl.name;
     territories = new vector<Territory*>();
+    this->strategy = pl.strategy;
     this->territories = pl.territories;
-    this->hand = pl.hand;
-    this->ordersList = pl.ordersList;
+
+    this->hand =new Hand(*pl.hand);
+    this->ordersList =new OrdersList(*pl.ordersList);
     this->flagConqTerr = pl.flagConqTerr;
     this->flagIssueOrder = pl.flagIssueOrder;
-    return *this;
+    if (strategy=="Human")      ps = new HumanPlayerStrategy(this);
+    if (strategy=="Aggressive") ps = new AggressivePlayerStrategy(this);
+    if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy(this);
+    if (strategy=="Neutral")    ps = new NeutralPlayerStrategy(this);
+    if (strategy=="Cheater")    ps=  new CheaterPlayerStrategy(this);
 }
 
 //Stream Insertion Operator
@@ -196,7 +221,10 @@ Hand* Player::getHand() const
 {
     return this->hand;
 }
-
+string Player::getName() const
+{
+    return name;
+}
 OrdersList* Player::getOrderList() const
 {
     return ordersList;
@@ -357,14 +385,14 @@ int Player::determineNArmiesForAttack(int randIndexSource)
 //Required Methods
 
 //Returns Territories which are adjacent and not the current player's territory
-vector <Territory*> Player::toAttack()
+vector <Territory*>* Player::toAttack()
 {
     return ps->toAttack();
 }
 
 //Returns territories owned by the player that are under attack.
 //If no territories are under attack, return all territories owned by the player.
-vector <Territory*> Player::toDefend()
+vector <Territory*>* Player::toDefend()
 {
     return ps->toDefend();
 }

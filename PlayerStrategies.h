@@ -6,48 +6,53 @@ class Player;
 class PlayerStrategy
 {
     public:
-        Player* ps;
+        Player* player;
         virtual void issueOrder()=0;
-        virtual vector<Territory*> toAttack()=0;
-        virtual vector<Territory*> toDefend()=0;
+        virtual vector<Territory*>* toAttack()=0;
+        virtual vector<Territory*>* toDefend()=0;
 };
 
-class HumanPlayerStrategy:public PlayerStrategy
+class HumanPlayerStrategy: public PlayerStrategy
 {
     public:
+        HumanPlayerStrategy(Player *p);
         void issueOrder();
-        vector<Territory*> toAttack();
-        vector<Territory*> toDefend();
+        vector<Territory*>* toAttack();
+        vector<Territory*>* toDefend();
 };
 
 class AggressivePlayerStrategy:public PlayerStrategy
 {
     public:
         void issueOrder();
-        vector<Territory*> toAttack();
-        vector<Territory*> toDefend();
+        AggressivePlayerStrategy(Player* p);
+        vector<Territory*>* toAttack();
+        vector<Territory*>* toDefend();
 };
 
 class BenevolentPlayerStrategy:public PlayerStrategy
 {
     public:
         void issueOrder();
-        vector<Territory*> toAttack();
-        vector<Territory*> toDefend();
+        BenevolentPlayerStrategy(Player* p);
+        vector<Territory*>* toAttack();
+        vector<Territory*>* toDefend();
 };
 
 class NeutralPlayerStrategy:public PlayerStrategy
 {
     public:
         void issueOrder();
-        vector<Territory*> toAttack();
-        vector<Territory*> toDefend();
+        NeutralPlayerStrategy(Player* p);
+        vector<Territory*>* toAttack();
+        vector<Territory*>* toDefend();
 };
 class CheaterPlayerStrategy:public PlayerStrategy
 {
     public:
         void issueOrder();
-        vector<Territory*> toAttack();
-        vector<Territory*> toDefend();
+        CheaterPlayerStrategy(Player* p);
+        vector<Territory*>* toAttack();
+        vector<Territory*>* toDefend();
 };
 #endif

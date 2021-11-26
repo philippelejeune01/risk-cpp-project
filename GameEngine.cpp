@@ -16,6 +16,7 @@ using namespace std;
 GameEngine::GameEngine()
 {
     state = "start";
+    players = new vector<Player*>();
     cp = new CommandProcessor();
     lo = new LogObserver();
     Attach(lo);
@@ -31,27 +32,34 @@ GameEngine::GameEngine(string state, CommandProcessor* cp)
 {
     this->state = state;
     this->cp = new CommandProcessor(*cp);
-
+    players = new vector<Player*>();
 }
 /**
 *Destructor that deletes the CommandProcessor object of the GameEngine object and then initializes it to NULL.
 */
 GameEngine::~GameEngine()
 {
+    if (cp)
     delete cp;
     cp = NULL;
+    if (_deck)
     delete _deck;
     _deck = NULL;
     //This deletes all the Player objects stored in the vector
     //cout << players.size()<<endl;
 
     //This erases all the pointers stored in the vector
-    players.clear();
+    if (players)
+        delete players;
+    players->clear();
 
+    if (maploader)
     delete maploader;
     maploader = NULL;
+    if (_map)
     delete _map;
     _map = NULL;
+    if (lo)
     delete lo;
     lo = NULL;
 }
@@ -137,7 +145,7 @@ void GameEngine::initializeDeck()
 void GameEngine::randomizePlayOrder()
 {
     default_random_engine randEngine{random_device{}()};
-    shuffle(begin(players), end(players), randEngine);
+    shuffle(begin(*players), end(*players), randEngine);
 }
 /**
 *stringToLog method that creates a string that stores the new state of the GameEngine.
@@ -158,6 +166,8 @@ string GameEngine::stringToLog()
 *@param command is a string that corresponds to the command passed.
 *@return a boolean depending whether the command is valid or not in the current game state.
 */
+Map* GameEngine::_map=NULL;
+vector<Player*>* GameEngine::players=NULL;
 void tournamentMode()
 {
     int numberOfMaps,numberOfPlayers,numberOfGames,t;
@@ -180,6 +190,7 @@ void tournamentMode()
     }
     cout<<"Enter Number of players:\n";
     cin>>numberOfPlayers;
+    GameEngine::players = new vector<Player*>();
     for (int i=0;i<numberOfPlayers;i++)
     {
         string strategy;
@@ -187,7 +198,6 @@ void tournamentMode()
         cin>>strategy;
         Player* temp = new Player("p"+to_string(i+1),strategy);
         players.push_back(new Player(*temp));
-        cout<<*players[i];
     }
     cout<<"Enter Number of games:\n";
     cin>>numberOfGames;
@@ -206,23 +216,23 @@ void tournamentMode()
         {
             GameEngine* game = new GameEngine();
             game->turnsPerGame=t;
-            game->_map = maps[i];
+            GameEngine::_map = new Map(*maps[i]);
             for (int k=0;k<players.size();k++)
-                game->players.push_back(new Player(*players[k]));
+                game->players->push_back(new Player(*players[k]));
             game->setPlayersTerritories();
-
-            for (int k=0;k<game->players.size();k++)
-                cout<<*game->players.at(k);
             game->randomizePlayOrder();
             game->initializeDeck(); //Creating the Deck
             for(int l = 0; l < players.size(); l++)
             {
-                game->players.at(l)->setPool(50);
-                game->players.at(l)->getHand()->addCard(game->_deck->draw());
-                game->players.at(l)->getHand()->addCard(game->_deck->draw());
+                game->players->at(l)->setPool(50);
+                game->players->at(l)->getHand()->addCard(game->_deck->draw());
+                game->players->at(l)->getHand()->addCard(game->_deck->draw());
             }
             game->mainGameLoop();
             cout<<game->strategyname<<"  ";
+            GameEngine::_map=NULL;
+            GameEngine::players->clear();
+            GameEngine::players=NULL;
         }
         cout<<endl;
     }
@@ -349,7 +359,7 @@ bool GameEngine::validate(string command)
         getCommandProcessor()->getCommandList().back()->saveEffect("the game will restart");
         cout << "The entered command " << command << " is valid for state " << getState();
         transition("start");
-        players.clear();
+        players->clear();
         cout << ", therefore the game is successfully transited to the next state " << getState() << ".";
         cout << "\nThe game starts again!" << endl;
         cout<<"--------------------------"<<endl;
@@ -361,6 +371,7 @@ bool GameEngine::validate(string command)
         cout << "The entered command " << command << " is valid for state " << getState() << ", therefore the game is "
             << "successfully terminated.\n";
         cout<<"--------------------------"<<endl;
+        exit(0);
         return true;
     }
 
@@ -381,7 +392,7 @@ bool GameEngine::validate(string command)
 void GameEngine::setPlayersTerritories()
 {
     int territoryCount = _map->numOfTerritories;
-    int playerCount = players.size();
+    int playerCount = players->size();
     int subLength = territoryCount / playerCount;
     int remainder = territoryCount % playerCount;
     int limit = min(playerCount, territoryCount);
@@ -401,10 +412,10 @@ void GameEngine::setPlayersTerritories()
         }
         for (int j=startIndex;j<=endIndex;j++)
         {
-            _map->territories->at(j)->setPlayer(players.at(i));
+            _map->territories->at(j)->setPlayer(players->at(i));
             //cout<<_map->territories[j]->name<<"is given to: "<<_map->territories[j]->ownedplayer->name<<endl;
         }
-        players.at(i)->setTerritories(subTerritories);
+        players->at(i)->setTerritories(subTerritories);
         startIndex = endIndex+1;
     }
 
@@ -416,24 +427,24 @@ void GameEngine::winner(string name,string strategy)
 }
 bool GameEngine::gameOver()
 {
-    if (players.size()==1)
+    if (players->size()==1)
     {
-        cout<<"Player "<<players[0]->name<<" has won the game!";
+        cout<<"Player "<<players->at(0)->getName()<<" has won the game!";
         transition("win");
         Order::deletePlayerCannotAttackList();
-        winner(players[0]->name,players[0]->getStrategy());
+        winner(players->at(0)->getName(),players->at(0)->getStrategy());
         return true;
     }
     return false;
 }
 void GameEngine::removeLosingPlayers()
 {
-    int count = players.size();
+    int count = players->size();
     for (int i=0;i<count;i++)
-        if (players[i]->getPointerToTerritories()->size()==0)
+        if (players->at(i)->getPointerToTerritories()->size()==0)
         {
-            cout<<players[i]->name<<" has no more territories and is removed from the game\n Remaining players: "<< count-1<<endl;
-            players.erase(players.begin()+i);
+            cout<<players->at(i)->getName()<<" has no more territories and is removed from the game\n Remaining players: "<< count-1<<endl;
+            players->erase(players->begin()+i);
             count--;
         }
 }
@@ -441,11 +452,6 @@ void GameEngine::mainGameLoop()
 {
     string command;
     Order::setUpPlayerCannotAttackList();
-    int playerSize=players.size();
-    for(int i=0;i<playerSize/2;i++){
-        playerPairs[i][0] = players.at(i);
-        playerPairs[i][1] = players.at((playerSize/2)+i);
-    }
     int turns = 0;
     do
     {
@@ -494,7 +500,7 @@ void GameEngine::startupPhase()
             }
             if (command.find("addplayer") !=string::npos)
             {
-                if (players.size()+1>MAXPLAYERS)
+                if (players->size()+1>MAXPLAYERS)
                 {
                     getCommandProcessor()->getCommandList().back()->saveEffect("max number of players reached, failed to add this player");
                     cout<<"Maxiumum number of players reached, failed to add this player"<<endl;
@@ -503,11 +509,11 @@ void GameEngine::startupPhase()
                 string playername=command.substr(command.find("addplayer")+11);
                 playername = playername.substr(0,playername.size()-1);
                 tempPlayer = new Player(playername);
-                players.push_back(tempPlayer);
+                players->push_back(tempPlayer);
             }
             if (command =="gamestart")
             {
-                if (players.size()<MINPLAYERS)
+                if (players->size()<MINPLAYERS)
                 {
                     cout<<"Not enough players! please enter at least one more player"<<endl;
                     getCommandProcessor()->getCommandList().back()->saveEffect("Not enough players! At least one more player is needed");
@@ -522,15 +528,15 @@ void GameEngine::startupPhase()
                     randomizePlayOrder();
 
                     initializeDeck(); //Creating the Deck
-                    for(int i = 0; i < players.size(); i++)
+                    for(int i = 0; i < players->size(); i++)
                     {
                         //Give 50 initial armies to each player's respective reinforcement pool
-                        players.at(i)->setPool(50);
+                        players->at(i)->setPool(50);
                         //Each player draws 2 initial cards from the deck
-                        players.at(i)->getHand()->addCard(_deck->draw());
-                        players.at(i)->getHand()->addCard(_deck->draw());
+                        players->at(i)->getHand()->addCard(_deck->draw());
+                        players->at(i)->getHand()->addCard(_deck->draw());
 
-                        cout << *players.at(i) << endl;
+                        cout << *players->at(i) << endl;
                     }
                 }
             }
@@ -583,12 +589,12 @@ void GameEngine::reinforcementPhase(){
     cout << "\n--------------------------" << endl;
     cout << "Reinforcement Phase\n" << endl;
     int nCont = _map->getNumberOfContinents();
-    for (int p=0;p<players.size();p++)
+    for (int p=0;p<players->size();p++)
     {
-        int numberOfArmies = (players[p]->getTerritories()->size())/3;
+        int numberOfArmies = (players->at(p)->getTerritories()->size())/3;
 
         for(int i = 1;i <= nCont;i++)
-            if(doesPlayerOwnContinent(i, players[p]))
+            if(doesPlayerOwnContinent(i, players->at(p)))
             {
                 //cout<<" owns continent " <<i<<endl;
                 numberOfArmies += _map->continentPoints[i-1];
@@ -596,10 +602,10 @@ void GameEngine::reinforcementPhase(){
         if(numberOfArmies<3)
             numberOfArmies = 3;
 
-        players[p]->addToPool(numberOfArmies);
+        players->at(p)->addToPool(numberOfArmies);
 
         cout << "- Number of armies added to player's pool: " << numberOfArmies << "\n" << endl;
-        cout << *players[p] << endl;
+        cout << *players->at(p) << endl;
     }
 }
 
@@ -607,7 +613,7 @@ void GameEngine::reinforcementPhase(){
 bool GameEngine::shift()
 {
     Player *tempPairs[3][2];
-    int pairs = players.size()/2 +players.size()%2;
+    int pairs = players->size()/2 +players->size()%2;
 
     if (pairs==1) return false;
 
@@ -634,33 +640,18 @@ void GameEngine::issueOrdersPhase()
     cout << "\n--------------------------" << endl;
     cout << "Issue Order Phase\n" << endl;
 
-    //add dummy player if number of players is odd
-    if(players.size() % 2 == 1){
-        players.push_back(NULL);
-    }
+    int playerSize = players->size();
+    //shift(); //round-robin fashion
 
-    int playerSize = players.size();
-    //create a pair of player from players
+    /*for (int i=0;i<playerSize;i++)
+        cout<<*players->at(i);*/
 
-
-    shift(); //round-robin fashion
-
-    int pairs=playerSize/2+playerSize%2;
-
-    for(int i=0;i<pairs;i++)
-         //if(playerPairs[i][0]->getFlagIssueOrder() || playerPairs[i][1]->getFlagIssueOrder())
+    for(int i=0;i<playerSize;i++)
     {
-        if (playerPairs[i][0]!=NULL)
-            if (playerPairs[i][0]->getFlagIssueOrder())
+        if (players->at(i)!=NULL)
             {
-                playerPairs[i][0]->issueOrder();
+                players->at(i)->issueOrder();
                 //players.at(i)->setOrderList(playerPairs[i][0]->getOrderList());
-            }
-        if (playerPairs[i][0]!=NULL)
-            if(playerPairs[i][1]->getFlagIssueOrder())
-            {
-                playerPairs[i][1]->issueOrder();
-                // players.at(i+(playerSize/2))->setOrderList(playerPairs[i][0]->getOrderList());
             }
     }
 
@@ -669,20 +660,17 @@ void GameEngine::issueOrdersPhase()
 void GameEngine::executeOrderPhase(){
     cout << "--------------------------" << endl;
     cout << "Execute Order Phase\n" << endl;
-    /*if(players.size() % 2 == 1){
-        players.push_back(NULL);
-    }*/
-    int playerSize = players.size();
+
+    int playerSize = players->size();
     int pairs=playerSize/2+playerSize%2;
     OrdersList* pOrd;
     int counter=0;
     bool flag[playerSize]={true};
     for (int i=0;i<playerSize;i++)
     {
-        cout<<"player "<<i<<endl;
-        if (players.at(i)!=NULL)
+        if (players->at(i)!=NULL)
         {
-            pOrd = players.at(i)->getOrderList();
+            pOrd = players->at(i)->getOrderList();
             if (!pOrd->isEmpty())
             {
                 while (pOrd->getFirstOrderType()=="Deploy")
@@ -699,7 +687,7 @@ void GameEngine::executeOrderPhase(){
     bool flag2;
     while (true)
     {
-        pOrd = players.at(counter)->getOrderList();
+        pOrd = players->at(counter)->getOrderList();
         if (pOrd->isEmpty()) flag[counter]=false;
         else
             pOrd->executeFirstOrder();
@@ -712,10 +700,10 @@ void GameEngine::executeOrderPhase(){
         counter=(counter+1)%playerSize;
     }
     for (int i=0;i<playerSize;i++)
-        if(players.at(i)->getFlagConqTerr())
+        if(players->at(i)->getFlagConqTerr())
         {
-            players.at(i)->getHand()->addCard(_deck->draw());
-            players.at(i)->setFlagConqTerr(false);
+            players->at(i)->getHand()->addCard(_deck->draw());
+            players->at(i)->setFlagConqTerr(false);
         }
     Order::clearPlayerCannotAttackList();
 }

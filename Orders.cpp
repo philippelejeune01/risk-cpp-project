@@ -6,6 +6,8 @@
 #include <time.h>
 #include "Map.h"
 #include "LoggingObserver.h"
+#include "Player.h"
+
 using std::string;
 //For storing elements
 using std::list;
@@ -468,6 +470,7 @@ Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr,
     nMovedArmies = nOfArmies;
     sourceTerritory = sourceTerr;
 }
+/*
 Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies,
          Territory* sourceTerr, vector<Territory*>* enemyTerrs, bool* flag):
              Order(targetTerritory, ownedTerr, "Advance")
@@ -477,6 +480,7 @@ Advance::Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int 
     enemyTerritories = enemyTerrs;
     flagConq = flag;
 }
+*/
 //Copy Constructor
 Advance::Advance(const Advance& adv):Order(adv.targetTerritory, adv.ownedTerritories, "Advance")
 {
@@ -499,8 +503,8 @@ Advance::~Advance()
     ownedTerritories = NULL;
     nMovedArmies = 0;
     sourceTerritory = NULL;
-    flagConq = NULL;
-    enemyTerritories = NULL;
+    //flagConq = NULL;
+    //enemyTerritories = NULL;
 }
 //Stream Insertion Operator
 ostream& operator <<(ostream &strm, const Advance &adv)
@@ -523,6 +527,7 @@ void Advance::setSourceTerritory(Territory* sourceTerr)
 {
     sourceTerritory = sourceTerr;
 }
+/*
 void Advance::setFlagConqTerr(bool* flag)
 {
     flagConq = flag;
@@ -531,6 +536,7 @@ void Advance::setEnemyTerritories(vector<Territory*>* enmyTerrs)
 {
     enemyTerritories = enmyTerrs;
 }
+*/
 int Advance:: getNOfArmies()
 {
     return nMovedArmies;
@@ -658,10 +664,11 @@ void Advance::execute()
             //If there are remaining attacking armies and no more defending armies, then the territory is conquered
             if (nAttArmies > 0 && nDefArmies == 0)
             {
+                vector<Territory*>* enemyTerritories = targetTerritory->getPlayer()->getPointerToTerritories();
                 //Switches ownership of the territory
                 targetTerritory->setPlayer(sourceTerritory->getPlayer());
                 targetTerritory->setAmountOfArmies(nAttArmies);
-                if (enemyTerritories != NULL)
+                if (enemyTerritories != NULL && !enemyTerritories->empty())
                 {
                     for (vector<Territory*>::const_iterator it = enemyTerritories->begin(); it != enemyTerritories->end(); ++it)
                     {
@@ -675,8 +682,9 @@ void Advance::execute()
 
                 ownedTerritories->push_back(targetTerritory);
                 sourceTerritory->setAmountOfArmies(sourceTerritory->getAmountOfArmies()-nMovedArmies);
-                *flagConq = true;
+                sourceTerritory->getPlayer()->setFlagConqTerr(true);
             }
+
             //Otherwise, the remaining respective armies returns back to their respective territory.
             else
             {
@@ -809,28 +817,30 @@ void Bomb::execute()
 //Default Constructor
 Blockade::Blockade():Order(NULL, NULL, "Blockade")
 {
-    neutralPlayer = NULL;
+    //neutralPlayer = NULL;
 }
 //2 arg Constructor
 Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr):Order(targetTerritory, ownedTerr, "Blockade")
 {
-    neutralPlayer = NULL;
+    //neutralPlayer = NULL;
 }
 //3 arg Constructor
+/*
 Blockade::Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr, Player* neutralPl):Order(targetTerritory, ownedTerr, "Blockade")
 {
     neutralPlayer = neutralPl;
 }
+*/
 //Copy Constructor
 Blockade::Blockade(const Blockade& block):Order(block.targetTerritory,block.ownedTerritories, "Blockade")
 {
-    neutralPlayer = block.neutralPlayer;
+    //neutralPlayer = block.neutralPlayer;
 }
 //Overload the assignment operator
 Blockade& Blockade::operator = (const Blockade& block)
 {
     Order::operator=(block);
-    this->neutralPlayer = block.neutralPlayer;
+    //this->neutralPlayer = block.neutralPlayer;
     this->orderType = "Blockade";
     return *this;
 }
@@ -858,6 +868,7 @@ Order* Blockade::duplicate()
     return new Blockade(targetTerritory,ownedTerritories);
 }
 //Setter and Getter
+/*
 Player* Blockade::getNeutralPlayer()
 {
     return neutralPlayer;
@@ -866,6 +877,7 @@ void Blockade::setNeutralPlayer(Player* nPl)
 {
     neutralPlayer = nPl;
 }
+*/
 string Blockade::stringToLog()
 {
     return "Blockade Order executed: the targetted territory is " + targetTerritory->getName();
@@ -908,7 +920,7 @@ void Blockade::execute()
         cout << "Blockade the targetted territory " << *(targetTerritory) << ". It has now 3 times the amount of armies and is neutral" << endl;
         //Executes the order
         targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()*3);
-        targetTerritory->setPlayer(neutralPlayer);
+        targetTerritory->setPlayer(new Player("NEUTRAL TERRITORY"));
         for (vector<Territory*>::const_iterator it = ownedTerritories->begin(); it != ownedTerritories->end(); ++it)
         {
             if (targetTerritory == *it)
@@ -1180,7 +1192,7 @@ void Negotiate::execute()
         playersCannotAttackList[indexOfEnd][0] = callingPlayer;
         playersCannotAttackList[indexOfEnd][1] = targetPlayer;
         indexOfEnd++;
-        cout << "Negotiation have been settled between the two players" << endl;
+        cout << "Negotiation have been settled between the two players " << callingPlayer->getName() << " and " << targetPlayer->getName() << endl;
         /*
         set<Player*> setPl{};
         setPl.insert(targetPlayer);

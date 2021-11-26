@@ -6,6 +6,7 @@
 #include <set>
 #include "Map.h"
 #include "LoggingObserver.h"
+#include "Player.h"
 using std::string;
 //For storing elements
 using std::list;
@@ -14,7 +15,7 @@ using std::cout;
 using std::ostream;
 
 class Player;
-
+class Territory;
 //Declarations of Order class and its subclasses
 //Declarations of Order class and its subclasses
 class Order: public Subject, public ILoggable {
@@ -124,8 +125,10 @@ public:
     //Constructors, Destructors, operator overload
     Advance();
     Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies, Territory* sourceTerr);
+    /*
     Advance(Territory* targetTerritory, vector<Territory*>* ownedTerr, int nOfArmies,
              Territory* sourceTerr,vector<Territory*>* enemyTerrs, bool* flagConq);
+    */
     Advance(const Advance& adv);
     Advance& operator = (const Advance& adv);
     ~Advance();
@@ -133,8 +136,8 @@ public:
     //Setters and Getters
     void setNOfArmies(int nOA);
     void setSourceTerritory(Territory* sourceTerr);
-    void setFlagConqTerr(bool* flag);
-    void setEnemyTerritories(vector<Territory*>* enmyTerrs);
+    //void setFlagConqTerr(bool* flag);
+    //void setEnemyTerritories(vector<Territory*>* enmyTerrs);
     int getNOfArmies();
     Territory* getSourceTerritory();
     //duplicate method
@@ -150,8 +153,9 @@ private:
     Territory* sourceTerritory;
     //enemyTerritories refers to the vector of territories of which the targetTerritory belongs to
     //enemyTerritories can point to the same memory location of ownedTerritories
-    vector<Territory*>* enemyTerritories;
-    bool* flagConq;
+
+    //vector<Territory*>* enemyTerritories;
+    //bool* flagConq;
     string doPrint() const;
 
 };
@@ -180,7 +184,7 @@ class Blockade: public Order{
 public:
     Blockade();
     Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr);
-    Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr, Player* neutralPl);
+    //Blockade(Territory* targetTerritory, vector<Territory*>* ownedTerr, Player* neutralPl);
     Blockade(const Blockade& block);
     Blockade& operator = (const Blockade& block);
     ~Blockade();
@@ -190,12 +194,14 @@ public:
     bool validate();
     void execute();
     friend ostream& operator <<(ostream &strm, const Blockade &block);
+    /*
     Player* getNeutralPlayer();
     void setNeutralPlayer(Player* nPl);
+    */
     string stringToLog();
 private:
     string doPrint() const;
-    Player* neutralPlayer;
+    //Player* neutralPlayer;
 
 };
 

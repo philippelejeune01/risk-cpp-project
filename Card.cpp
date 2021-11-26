@@ -58,8 +58,8 @@ Order* Card::play(Deck* d, Hand* h, Territory* territoryToAttack, Territory* ter
     else if (type.compare("blockade") == 0)
     {
         //Create a neutral player
-        Player* neutralPlayer = new Player("neutral");
-        o = new Blockade(territoryToDefend, playerTerritories, neutralPlayer);
+        //Player* neutralPlayer = new Player("neutral");
+        o = new Blockade(territoryToDefend, playerTerritories);
 
     }
     else if (type.compare("airlift") == 0)
@@ -219,6 +219,10 @@ vector<Card*>* Hand::getCards(){
 }
 void Hand::setCards(vector<Card*> &c){
     cards = c;
+}
+void Hand::removeCard(int index)
+{
+    cards.erase(cards.begin()+index);
 }
 void Hand::addCard(Card* card)
 {
