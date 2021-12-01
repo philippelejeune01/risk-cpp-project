@@ -24,7 +24,7 @@ Map::Map(vector<Territory*>* listOfTerritories,int nOfContinents,int nOfTerritor
 {
     territories = new vector<Territory*>();
     for(int i=0;i<listOfTerritories->size();i++)
-        territories->push_back(new Territory(*listOfTerritories->at(i)));
+        territories->push_back(listOfTerritories->at(i));
     this->numOfContinents = nOfContinents;
 
     this->numOfTerritories = nOfTerritories;
@@ -45,7 +45,7 @@ Map::Map(const Map& m)
 {
     territories = new vector<Territory*>();
     for(int i=0;i<m.territories->size();i++)
-        this->territories->push_back(new Territory(*m.territories->at(i)));
+        this->territories->push_back(m.territories->at(i));
 
     this->numOfContinents = m.numOfContinents;
 
@@ -188,8 +188,7 @@ void Map::setNumberOfContinents(int n)
 void Map::setContinentPoints(vector<int> contPoints)
 {
     for(vector<int>::iterator it = contPoints.begin(); it != contPoints.end(); ++it)
-        cout<<*it;
-        //continentPoints.push_back(*it);
+        continentPoints.push_back(*it);
 }
 void Map::setEndOfContinents(const int* arr)
 {
@@ -384,7 +383,26 @@ Map* MapLoader::Load()
             if(s!="[borders]")
                 v=stoi(s);//if we're reading a number,this is where the head is connecting to.
             if (u!=0)
+            {
+                bool f = false; //Checking to make sure there are no duplicates
+                 for (int i=0;i<territories->at(u)->adjacentTerritories->size();i++)
+                    if (territories->at(u)->adjacentTerritories->at(i)==territories->at(v))
+                    {
+                        f = true;
+                        break;
+                    }
+                if (!f)
                 territories->at(u)->adjacentTerritories->push_back(territories->at(v));
+                f = false;
+                for (int i=0;i<territories->at(v)->adjacentTerritories->size();i++)
+                    if (territories->at(v)->adjacentTerritories->at(i)==territories->at(u))
+                    {
+                        f = true;
+                        break;
+                    }
+                if (!f)
+                    territories->at(v)->adjacentTerritories->push_back(territories->at(u));
+            }
         }
         if (inputstream.peek()=='\n')
             flag=true;

@@ -413,12 +413,11 @@ void GameEngine::setPlayersTerritories()
         for (int j=startIndex;j<=endIndex;j++)
         {
             _map->territories->at(j)->setPlayer(players->at(i));
-            //cout<<_map->territories[j]->name<<"is given to: "<<_map->territories[j]->ownedplayer->name<<endl;
+            //cout<<_map->territories->at(j)->name<<"is given to: "<<_map->territories->at(j)->ownedplayer->getName()<<endl;
         }
         players->at(i)->setTerritories(subTerritories);
         startIndex = endIndex+1;
     }
-
 }
 void GameEngine::winner(string name,string strategy)
 {

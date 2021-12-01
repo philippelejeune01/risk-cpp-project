@@ -1,6 +1,7 @@
 #ifndef PLAYERSTRATEGIES_H
 #define PLAYERSTRATEGIES_H
 #include <vector>
+#include <set>
 #include "Map.h"
 class Player;
 class PlayerStrategy
@@ -11,6 +12,8 @@ class PlayerStrategy
         virtual vector<Territory*>* toAttack()=0;
         virtual vector<Territory*>* toDefend()=0;
         virtual ~PlayerStrategy();
+        set<Territory*> uniqueTerritoriesToAttack;
+        vector<Territory*>* territoriesToAttack;
 };
 
 class HumanPlayerStrategy: public PlayerStrategy
@@ -60,5 +63,7 @@ class CheaterPlayerStrategy:public PlayerStrategy
         vector<Territory*>* toAttack();
         vector<Territory*>* toDefend();
         ~CheaterPlayerStrategy();
+        set<Territory*> uniqueTerritoriesToAttack;
+        vector<Territory*>* territoriesToAttack;
 };
 #endif
