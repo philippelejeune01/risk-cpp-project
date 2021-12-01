@@ -253,11 +253,7 @@ void BenevolentPlayerStrategy::issueOrder()
     srand (time(NULL));
     //Refers to the player having cards in their hand
     bool isHandEmpty = player->getHand()->getCards()->empty();
-    bool* flagOrder;
     vector <Territory*>* territoriesToDefend = toDefend();
-    Order* ord;
-    Order* defendAdvanceOrd;
-    Card* card;
     //Generate random number indicating the random index to choose in the list of territories to defend
     int randIndexDefend = rand() % territoriesToDefend->size();
     //Generate random number indicating the random index to choose in the player's territories
@@ -269,39 +265,41 @@ void BenevolentPlayerStrategy::issueOrder()
     //If player has cards in his hand, select the first card to create an order (non-attacking orders)
     if(!isHandEmpty)
     {
-        flagOrder = new bool(true);
-        player->setFlagIssueOrder(flagOrder);
+        player->setFlagIssueOrder(true);
 
-        //Get the first card in the player's hand
-        card = player->getHand()->getCards()->front();
-
-        if (card->getType().compare("airlift") == 0)
+        if (player->getHand()->getCards()->front()->getType().compare("airlift") == 0)
         {
             Order* ord = new Airlift(territoriesToDefend->at(randIndexDefend),player->territories,randNOfArmies,player->territories->at(randIndexSource));
             player->ordersList->addOrder(ord);
+            cout << "Created an " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
         }
-        if (card->getType().compare("reinforcement") == 0)
+        if (player->getHand()->getCards()->front()->getType().compare("reinforcement") == 0)
         {
             int n = 5;
-            Order*  ord = new Deploy(territoriesToDefend->at(randIndexDefend), player->territories, n);
+            Order* ord = new Deploy(territoriesToDefend->at(randIndexDefend), player->territories, n);
             player->ordersList->addOrder(ord);
+            cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
         }
-        if (card->getType().compare("diplomacy") == 0)
+        if (player->getHand()->getCards()->front()->getType().compare("diplomacy") == 0)
         {
             //Generate random number indicating the random index to choose in the list of Players
-            int randIndexPlayer = rand() % GameEngine::players->size();
-
-            Order* ord = new Negotiate(player , GameEngine::players->at(randIndexPlayer));
-            player->ordersList->addOrder(ord);
+//            int numberPlayers = GameEngine::players->size();
+//            int randIndexPlayer = rand() % numberPlayers;
+//            cout << "randIndexPlayer: " << randIndexPlayer << endl;
+//
+//            Order* ord = new Negotiate(player , GameEngine::players->at(randIndexPlayer));
+//            player->ordersList->addOrder(ord);
+//            cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
         }
-        if (card->getType().compare("blockade") == 0)
+        if (player->getHand()->getCards()->front()->getType().compare("blockade") == 0)
         {
             Order* ord = new Blockade(territoriesToDefend->at(randIndexDefend),player->territories);
             player->ordersList->addOrder(ord);
+            cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
         }
-        if (card->getType().compare("bomb") == 0)
+        if (player->getHand()->getCards()->front()->getType().compare("bomb") == 0)
         {
-            cout << "Cannot an attacking order when the player is a Benevolent Player" << endl;
+            cout << "Cannot issue an attacking order when the player is a Benevolent Player" << endl;
         }
         //Remove first card in Hand
         player->getHand()->removeCard(0);
@@ -326,34 +324,44 @@ void BenevolentPlayerStrategy::issueOrder()
         if(randNOfArmies != 0)
         {
             /*Create advance order to defend*/
+            //If the territory to defend and the source territory are the same, then generate another random index which is not the same as randIndexDefend
             if(territoriesToDefend->at(randIndexDefend)->getName() == player->territories->at(randIndexSource)->getName())
             {
-                defendAdvanceOrd = new Advance(territoriesToDefend->at(randIndexDefend), player->territories, randNOfArmies, player->territories->at(randIndexSource));
+                 int newRandIndex;
+
+                do
+                {
+                    newRandIndex = rand() % territoriesToDefend->size();
+                }
+                while(randIndexDefend == newRandIndex);
+                randIndexDefend = newRandIndex;
+                Order* defendAdvanceOrd = new Advance(territoriesToDefend->at(randIndexDefend), player->territories, randNOfArmies, player->territories->at(randIndexSource));
+                //Adding order to the end of the list
+                player->ordersList->addOrder(defendAdvanceOrd);
+                cout << "Created an " << defendAdvanceOrd->getOrderType() << " order (to defend) and placed it in the player's OrderList\n" << endl;
             }
             else
             {
-                defendAdvanceOrd = new Advance(territoriesToDefend->at(randIndexDefend), player->territories, randNOfArmies, player->territories->at(randIndexSource));
+                Order* defendAdvanceOrd = new Advance(territoriesToDefend->at(randIndexDefend), player->territories, randNOfArmies, player->territories->at(randIndexSource));
+                //Adding order to the end of the list
+                player->ordersList->addOrder(defendAdvanceOrd);
+                cout << "Created an " << defendAdvanceOrd->getOrderType() << " order (to defend) and placed it in the player's OrderList\n" << endl;
             }
-            //Adding order to the end of the list
-            player->ordersList->addOrder(defendAdvanceOrd);
-            //ordersList->move(defendAdvanceOrd, ordersList->getOrdList().size());
-            cout << "Created a " << defendAdvanceOrd->getOrderType() << " order (to defend) and placed it in the player's OrderList" << endl;
         }
         else
         {
-            defendAdvanceOrd = NULL;
             cout << "Cannot create advance order (to defend) - No armies in source territory " << player->territories->at(randIndexSource)->getName() << "\n" << endl;
         }
 
     }
     else
     {
-        flagOrder = new bool(false);
-        player->setFlagIssueOrder(flagOrder);
+        player->setFlagIssueOrder(false);
         cout << "No more orders to issue\n" << endl;
     }
-
-    cout << this << endl;
+    cout << *player << endl;
+    delete territoriesToDefend;
+    territoriesToDefend = NULL;
 }
 
 //Returns Territories which are adjacent and not the current player's territory
@@ -391,7 +399,7 @@ vector<Territory*>* BenevolentPlayerStrategy::toAttack()
 vector<Territory*>* BenevolentPlayerStrategy::toDefend()
 {
     vector <Territory*>* weakestTerritories;
-    vector <Territory*>* territoriesToDefend(player->territories);
+    vector <Territory*>* territoriesToDefend = player->territories;
 
     //sort vector by the number of armies in a territory (ascending)
     sort(territoriesToDefend->begin(), territoriesToDefend->end(), [](Territory* a, Territory* b){ return a->getAmountOfArmies() < b->getAmountOfArmies(); });

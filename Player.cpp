@@ -156,6 +156,7 @@ Player::~Player()
     ordersList = NULL;
     delete flagConqTerr;
     flagConqTerr = NULL;
+    delete flagIssueOrder;
     flagIssueOrder = NULL;
 }
 
