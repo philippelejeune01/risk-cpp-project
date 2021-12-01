@@ -45,7 +45,7 @@ Player::Player(string newName,string strat)
     if (strategy=="Aggressive") ps = new AggressivePlayerStrategy(this);
     if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy(this);
     if (strategy=="Neutral")    ps = new NeutralPlayerStrategy(this);
-    if (strategy=="Cheater")    ps = new CheaterPlayerStrategy(this);
+    if (strategy=="Cheater")    ps=  new CheaterPlayerStrategy(this);
 }
 //2 arg Constructors
 string Player::getStrategy() const
@@ -132,7 +132,6 @@ Player::Player(const Player& pl)
     territories = new vector<Territory*>();
     this->strategy = pl.strategy;
     this->territories = pl.territories;
-
     this->hand =new Hand(*pl.hand);
     this->ordersList =new OrdersList(*pl.ordersList);
     this->flagConqTerr = pl.flagConqTerr;
