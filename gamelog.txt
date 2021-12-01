@@ -1,12 +1,11 @@
 Game Engine new state: assignreinforcement
 Game Engine new state: issueorders
+Order Issued : Deploy: 20 armies on Hungary(0 armies)
+Order Issued : Deploy: 20 armies on Austria(0 armies)
+Order Issued : Deploy: 22 armies on Switzerland(0 armies)
+Order Issued : Advance: 18 armies: From Hungary(0 armies) to Switzerland(0 armies)
 Game Engine new state: executeorders
-Game Engine new state: assignreinforcement
-Game Engine new state: issueorders
-Game Engine new state: executeorders
-Game Engine new state: assignreinforcement
-Game Engine new state: issueorders
-Game Engine new state: executeorders
-Game Engine new state: assignreinforcement
-Game Engine new state: issueorders
-Game Engine new state: executeorders
+Deploy Order Executed: 22 armies are added on the territory Switzerland
+Deploy Order Executed: 20 armies are added on the territory Austria
+Deploy Order Executed: 20 armies are added on the territory Hungary
+Advance Order executed: 18 armies are moved from the territory Hungary to the territory Switzerland

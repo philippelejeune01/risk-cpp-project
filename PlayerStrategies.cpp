@@ -115,7 +115,7 @@ void HumanPlayerStrategy::issueOrder()
                     cout<<"You cannot bomb your own territory\n";
                     continue;
                 }
-                Order* ord = new Bomb(GameEngine::_map->territories->at(index),player->territories);
+                Order* ord = new Bomb(GameEngine::_map->territories->at(index),player->getPointerToTerritories());
                 player->ordersList->addOrder(ord);
             }
             if (card=="airlift")
@@ -135,7 +135,7 @@ void HumanPlayerStrategy::issueOrder()
                 }
                 cout<<"How many armies?\n";
                 cin>>n;
-                Order* ord = new Airlift(player->territories->at(index2),player->territories,n,player->territories->at(index1));
+                Order* ord = new Airlift(player->getPointerToTerritories()->at(index2),player->getPointerToTerritories(),n,player->getPointerToTerritories()->at(index1));
                 player->ordersList->addOrder(ord);
             }
             if (card=="reinforcement")
@@ -150,10 +150,10 @@ void HumanPlayerStrategy::issueOrder()
                     cout<<"invalid order\n";
                     continue;
                 }
-                Order*  ord = new Deploy(player->territories->at(index), player->territories, n);
+                Order*  ord = new Deploy(player->getPointerToTerritories()->at(index), player->getPointerToTerritories(), n);
                 player->ordersList->addOrder(ord);
             }
-            if (card=="deplomacy")
+            if (card=="diplomacy")
             {
                 Player* target;
                 string pname;
@@ -185,7 +185,7 @@ void HumanPlayerStrategy::issueOrder()
                     cout<<"Not owned territory,invalid order\n";
                     continue;
                 }
-                Order* ord = new Blockade(player->territories->at(index),player->territories);
+                Order* ord = new Blockade(player->getPointerToTerritories()->at(index),player->getPointerToTerritories());
                 player->ordersList->addOrder(ord);
             }
             player->getHand()->removeCard(found);
@@ -201,22 +201,22 @@ vector<Territory*>* HumanPlayerStrategy::toAttack()
     string adjTerritoryName;
     bool attackTerr;
 
-    for(int i = 0; i < player->territories->size(); i++)
+    for(int i = 0; i < player->getPointerToTerritories()->size(); i++)
     {
-        if(!player->territories->at(i)->adjacentTerritories->empty())
+        if(!player->getPointerToTerritories()->at(i)->adjacentTerritories->empty())
         {
-            for(int j = 0; j < player->territories->at(i)->adjacentTerritories->size(); j++)
+            for(int j = 0; j < player->getPointerToTerritories()->at(i)->adjacentTerritories->size(); j++)
             {
                 attackTerr = true;
-                adjTerritoryName = player->territories->at(i)->adjacentTerritories->at(j)->getName();
+                adjTerritoryName = player->getPointerToTerritories()->at(i)->adjacentTerritories->at(j)->getName();
 
                 if (player->doesOwn(adjTerritoryName)!=-1)
                     attackTerr = false;
 
                 if(attackTerr){
                         //Set the target territory to be attacked
-                    player->territories->at(i)->adjacentTerritories->at(j)->setAttackStatus(attackTerr);
-                    uniqueTerritoriesToAttack.insert(player->territories->at(i)->adjacentTerritories->at(j));
+                    player->getPointerToTerritories()->at(i)->adjacentTerritories->at(j)->setAttackStatus(attackTerr);
+                    uniqueTerritoriesToAttack.insert(player->getPointerToTerritories()->at(i)->adjacentTerritories->at(j));
                 }
             }
         }
@@ -227,7 +227,7 @@ vector<Territory*>* HumanPlayerStrategy::toAttack()
 
 vector<Territory*>* HumanPlayerStrategy::toDefend()
 {
-    return player->territories;
+    return player->getPointerToTerritories();
 }
 
 HumanPlayerStrategy::~HumanPlayerStrategy()
@@ -272,17 +272,175 @@ BenevolentPlayerStrategy::~BenevolentPlayerStrategy()
 
 void BenevolentPlayerStrategy::issueOrder()
 {
+    srand (time(NULL));
+    int numberPlayers = GameEngine::players->size();
+    //Refers to the player having cards in their hand
+    bool isHandEmpty = player->getHand()->getCards()->empty();
+    vector <Territory*>* territoriesToDefend = toDefend();
+    //Generate random number indicating the random index to choose in the list of territories to defend
+    int randIndexDefend = rand() % territoriesToDefend->size();
+    //Generate random number indicating the random index to choose in the player's territories
+    int randIndexSource = rand() % player->getPointerToTerritories()->size();
 
+    //Determine if player has more orders to issue.
+    if(player->getPool() != 0 || !isHandEmpty)
+    {
+        player->setFlagIssueOrder(true);
+    }
+    else
+    {
+        player->setFlagIssueOrder(false);
+    }
+
+    //Create deploy orders if player has armies in its reinforcement pool
+    if(player->getPool() != 0)
+    {
+        player->createDeployOrders(territoriesToDefend);
+        cout << "Created Deploy Orders" << endl;
+    }
+
+    //Number of armies to use in an advance order
+    int randNOfArmies = player->determineNArmiesForAttack(randIndexSource);
+
+    //If player has cards in his hand, select the first card to create an order (non-attacking orders)
+    if(!isHandEmpty)
+    {
+        if (player->getHand()->getCards()->front()->getType().compare("airlift") == 0)
+        {
+            Order* ord = new Airlift(territoriesToDefend->at(randIndexDefend),player->getPointerToTerritories(),randNOfArmies,player->getPointerToTerritories()->at(randIndexSource));
+            player->ordersList->addOrder(ord);
+            cout << "Created an " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
+        }
+        if (player->getHand()->getCards()->front()->getType().compare("reinforcement") == 0)
+        {
+            int n = 5;
+            Order* ord = new Deploy(territoriesToDefend->at(randIndexDefend), player->getPointerToTerritories(), n);
+            player->ordersList->addOrder(ord);
+            cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
+        }
+        if (player->getHand()->getCards()->front()->getType().compare("diplomacy") == 0)
+        {
+            //Generate random number indicating the random index to choose in the list of Players
+            int randIndexPlayer = rand() % numberPlayers;
+
+            Order* ord = new Negotiate(player , GameEngine::players->at(randIndexPlayer));
+            player->ordersList->addOrder(ord);
+            cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
+        }
+        if (player->getHand()->getCards()->front()->getType().compare("blockade") == 0)
+        {
+            Order* ord = new Blockade(territoriesToDefend->at(randIndexDefend),player->getPointerToTerritories());
+            player->ordersList->addOrder(ord);
+            cout << "Created a " << ord->getOrderType() << " order and placed it in the player's OrderList" << endl;
+        }
+        if (player->getHand()->getCards()->front()->getType().compare("bomb") == 0)
+        {
+            cout << "Cannot issue an attacking order when the player is a Benevolent Player" << endl;
+        }
+        //Remove first card in Hand
+        player->getHand()->removeCard(0);
+
+
+        /*====Creating Advance orders====*/
+
+        //Find the index of one of the territories returned by toDefend() in the player's territories vector
+        string terrDefendName = territoriesToDefend->at(0)->getName();
+        for (vector<Territory*>::iterator it = player->getPointerToTerritories()->begin(); it != player->getPointerToTerritories()->end(); ++it)
+        {
+            if((*it)->getName() == terrDefendName)
+            {
+                auto index = distance(player->getPointerToTerritories()->begin(), it);
+                randIndexSource = index;
+            }
+        }
+
+        //Re-determine the number of armies to use in an advance order
+        randNOfArmies = player->determineNArmiesForAttack(randIndexSource);
+
+        if(randNOfArmies != 0)
+        {
+            /*Create advance order to defend*/
+            //If the territory to defend and the source territory are the same, then generate another random index which is not the same as randIndexDefend
+            if(territoriesToDefend->at(randIndexDefend)->getName() == player->getPointerToTerritories()->at(randIndexSource)->getName())
+            {
+                 int newRandIndex;
+
+                do
+                {
+                    newRandIndex = rand() % territoriesToDefend->size();
+                }
+                while(randIndexDefend == newRandIndex);
+                randIndexDefend = newRandIndex;
+                Order* defendAdvanceOrd = new Advance(territoriesToDefend->at(randIndexDefend), player->getPointerToTerritories(), randNOfArmies, player->getPointerToTerritories()->at(randIndexSource));
+                //Adding order to the end of the list
+                player->ordersList->addOrder(defendAdvanceOrd);
+                cout << "Created an " << defendAdvanceOrd->getOrderType() << " order (to defend) and placed it in the player's OrderList\n" << endl;
+            }
+            else
+            {
+                Order* defendAdvanceOrd = new Advance(territoriesToDefend->at(randIndexDefend), player->getPointerToTerritories(), randNOfArmies, player->getPointerToTerritories()->at(randIndexSource));
+                //Adding order to the end of the list
+                player->ordersList->addOrder(defendAdvanceOrd);
+                cout << "Created an " << defendAdvanceOrd->getOrderType() << " order (to defend) and placed it in the player's OrderList\n" << endl;
+            }
+        }
+        else
+        {
+            cout << "Cannot create advance order (to defend) - No armies in source territory " << player->getPointerToTerritories()->at(randIndexSource)->getName() << "\n" << endl;
+        }
+
+    }
+    else
+    {
+        cout << "No more orders to issue\n" << endl;
+    }
+    cout << *player << endl;
 }
 
+//Returns Territories which are adjacent and not the current player's territory
 vector<Territory*>* BenevolentPlayerStrategy::toAttack()
 {
+    set<Territory*> uniqueTerritoriesToAttack;
+    string adjTerritoryName;
+    bool attackTerr;
 
+    for(int i = 0; i < player->getPointerToTerritories()->size(); i++)
+    {
+        if(!player->getPointerToTerritories()->at(i)->adjacentTerritories->empty())
+        {
+            for(int j = 0; j < player->getPointerToTerritories()->at(i)->adjacentTerritories->size(); j++)
+            {
+                attackTerr = true;
+                adjTerritoryName = player->getPointerToTerritories()->at(i)->adjacentTerritories->at(j)->getName();
+
+                if (player->doesOwn(adjTerritoryName)!=-1)
+                    attackTerr = false;
+
+                if(attackTerr){
+                        //Set the target territory to be attacked
+                    player->getPointerToTerritories()->at(i)->adjacentTerritories->at(j)->setAttackStatus(attackTerr);
+                    uniqueTerritoriesToAttack.insert(player->getPointerToTerritories()->at(i)->adjacentTerritories->at(j));
+                }
+            }
+        }
+    }
+    vector<Territory*>* territoriesToAttack=new vector<Territory*>(uniqueTerritoriesToAttack.begin(), uniqueTerritoriesToAttack.end());
+    return territoriesToAttack;
 }
 
+//Returns territories owned by the player that are the top 3 weakest.
 vector<Territory*>* BenevolentPlayerStrategy::toDefend()
 {
+    vector <Territory*>* weakestTerritories = new vector<Territory*>();
+    //sort vector by the number of armies in a territory (ascending)
+    sort(player->getPointerToTerritories()->begin(), player->getPointerToTerritories()->end(), [](Territory* a, Territory* b){ return a->getAmountOfArmies() < b->getAmountOfArmies(); });
 
+    for(int i = 0; i < 3; i++)
+    {
+        weakestTerritories->push_back(player->getPointerToTerritories()->at(i));
+    }
+
+    return weakestTerritories;
 }
 
 NeutralPlayerStrategy::NeutralPlayerStrategy(Player *p)
@@ -348,7 +506,7 @@ void CheaterPlayerStrategy::issueOrder()
         }
         //Adds the territory to the cheater player's territory.
         terrToConquer->setPlayer(this->player);
-        player->territories->push_back(terrToConquer);
+        player->getPointerToTerritories()->push_back(terrToConquer);
     }
     cout<<"Issued Orders"<<endl;
     //Deallocates the memory taken by the vector
@@ -361,22 +519,22 @@ vector<Territory*>* CheaterPlayerStrategy::toAttack()
 {
     string adjTerritoryName;
     bool attackTerr;
-    for(int i = 0; i < player->territories->size(); i++)
+    for(int i = 0; i < player->getPointerToTerritories()->size(); i++)
     {
-        if(!player->territories->at(i)->adjacentTerritories->empty())
+        if(!player->getPointerToTerritories()->at(i)->adjacentTerritories->empty())
         {
-            for(int j = 0; j < player->territories->at(i)->adjacentTerritories->size(); j++)
+            for(int j = 0; j < player->getPointerToTerritories()->at(i)->adjacentTerritories->size(); j++)
             {
                 attackTerr = true;
-                adjTerritoryName = player->territories->at(i)->adjacentTerritories->at(j)->getName();
+                adjTerritoryName = player->getPointerToTerritories()->at(i)->adjacentTerritories->at(j)->getName();
 
                 if (player->doesOwn(adjTerritoryName)!=-1)
                     attackTerr = false;
 
                 if(attackTerr){
                         //Set the target territory to be attacked
-                    player->territories->at(i)->adjacentTerritories->at(j)->setAttackStatus(attackTerr);
-                    uniqueTerritoriesToAttack.insert(player->territories->at(i)->adjacentTerritories->at(j));
+                    player->getPointerToTerritories()->at(i)->adjacentTerritories->at(j)->setAttackStatus(attackTerr);
+                    uniqueTerritoriesToAttack.insert(player->getPointerToTerritories()->at(i)->adjacentTerritories->at(j));
                 }
             }
         }

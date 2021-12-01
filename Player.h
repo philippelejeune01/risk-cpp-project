@@ -78,7 +78,7 @@ class Player
         //bool pointer that determines if the player instance has conquered at least one territory
         bool* flagConqTerr;
         //Creates Deploy orders as long as the reinforcement pool is not empty
-        void createDeployOrders(vector <Territory*>* territoriesToDefend, Order* ord);
+        void createDeployOrders(vector <Territory*>* territoriesToDefend);
         //Determines the number of armies to use in an attack order.
         int determineNArmiesForAttack(int randIndexSource);
 

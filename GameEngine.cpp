@@ -261,6 +261,7 @@ bool GameEngine::validate(string command)
     if((getState() == "start") && (command.find("tournament") !=string::npos))
     {
         getCommandProcessor()->getCommandList().back()->saveEffect("tournament mode successfully ");
+        cout << "Tournament Mode initiated" << endl;
         cout<<"--------------------------"<<endl;
         return true;
     }
