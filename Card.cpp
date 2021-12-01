@@ -48,7 +48,7 @@ Order* Card::play(Deck* d, Hand* h, Territory* territoryToAttack, Territory* ter
     {
         o = new Bomb(territoryToAttack, playerTerritories);
         //Set the attack status to false on the territory where an attack order has been created
-        //territoryToAttack->setAttackStatus(false);
+        territoryToAttack->setAttackStatus(false);
     }
     else if (type.compare("reinforcement") == 0)
     {

@@ -1,12 +1,2 @@
 Game Engine new state: assignreinforcement
 Game Engine new state: issueorders
-Game Engine new state: executeorders
-Game Engine new state: assignreinforcement
-Game Engine new state: issueorders
-Game Engine new state: executeorders
-Game Engine new state: assignreinforcement
-Game Engine new state: issueorders
-Game Engine new state: executeorders
-Game Engine new state: assignreinforcement
-Game Engine new state: issueorders
-Game Engine new state: executeorders
