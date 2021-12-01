@@ -146,7 +146,7 @@ void HumanPlayerStrategy::issueOrder()
                 Order*  ord = new Deploy(player->territories->at(index), player->territories, n);
                 player->ordersList->addOrder(ord);
             }
-            if (card=="deplomacy")
+            if (card=="diplomacy")
             {
                 Player* target;
                 string pname;
@@ -250,17 +250,158 @@ BenevolentPlayerStrategy::BenevolentPlayerStrategy(Player* p)
 
 void BenevolentPlayerStrategy::issueOrder()
 {
+    srand (time(NULL));
+    //Refers to the player having cards in their hand
+    bool isHandEmpty = player->getHand()->getCards()->empty();
+    bool* flagOrder;
+    vector <Territory*>* territoriesToDefend = toDefend();
+    Order* ord;
+    Order* defendAdvanceOrd;
+    Card* card;
+    //Generate random number indicating the random index to choose in the list of territories to defend
+    int randIndexDefend = rand() % territoriesToDefend->size();
+    //Generate random number indicating the random index to choose in the player's territories
+    int randIndexSource = rand() % player->territories->size();
 
+    //Number of armies to use in an advance order
+    int randNOfArmies = player->determineNArmiesForAttack(randIndexSource);
+
+    //If player has cards in his hand, select the first card to create an order (non-attacking orders)
+    if(!isHandEmpty)
+    {
+        flagOrder = new bool(true);
+        player->setFlagIssueOrder(flagOrder);
+
+        //Get the first card in the player's hand
+        card = player->getHand()->getCards()->front();
+
+        if (card->getType().compare("airlift") == 0)
+        {
+            Order* ord = new Airlift(territoriesToDefend->at(randIndexDefend),player->territories,randNOfArmies,player->territories->at(randIndexSource));
+            player->ordersList->addOrder(ord);
+        }
+        if (card->getType().compare("reinforcement") == 0)
+        {
+            int n = 5;
+            Order*  ord = new Deploy(territoriesToDefend->at(randIndexDefend), player->territories, n);
+            player->ordersList->addOrder(ord);
+        }
+        if (card->getType().compare("diplomacy") == 0)
+        {
+            //Generate random number indicating the random index to choose in the list of Players
+            int randIndexPlayer = rand() % GameEngine::players->size();
+
+            Order* ord = new Negotiate(player , GameEngine::players->at(randIndexPlayer));
+            player->ordersList->addOrder(ord);
+        }
+        if (card->getType().compare("blockade") == 0)
+        {
+            Order* ord = new Blockade(territoriesToDefend->at(randIndexDefend),player->territories);
+            player->ordersList->addOrder(ord);
+        }
+        if (card->getType().compare("bomb") == 0)
+        {
+            cout << "Cannot an attacking order when the player is a Benevolent Player" << endl;
+        }
+        //Remove first card in Hand
+        player->getHand()->removeCard(0);
+
+
+        /*====Creating Advance orders====*/
+
+        //Find the index of one of the territories returned by toDefend() in the player's territories vector
+        string terrDefendName = territoriesToDefend->at(0)->getName();
+        for (vector<Territory*>::iterator it = player->territories->begin(); it != player->territories->end(); ++it)
+        {
+            if((*it)->getName() == terrDefendName)
+            {
+                auto index = distance(player->territories->begin(), it);
+                randIndexSource = index;
+            }
+        }
+
+        //Re-determine the number of armies to use in an advance order
+        randNOfArmies = player->determineNArmiesForAttack(randIndexSource);
+
+        if(randNOfArmies != 0)
+        {
+            /*Create advance order to defend*/
+            if(territoriesToDefend->at(randIndexDefend)->getName() == player->territories->at(randIndexSource)->getName())
+            {
+                defendAdvanceOrd = new Advance(territoriesToDefend->at(randIndexDefend), player->territories, randNOfArmies, player->territories->at(randIndexSource));
+            }
+            else
+            {
+                defendAdvanceOrd = new Advance(territoriesToDefend->at(randIndexDefend), player->territories, randNOfArmies, player->territories->at(randIndexSource));
+            }
+            //Adding order to the end of the list
+            player->ordersList->addOrder(defendAdvanceOrd);
+            //ordersList->move(defendAdvanceOrd, ordersList->getOrdList().size());
+            cout << "Created a " << defendAdvanceOrd->getOrderType() << " order (to defend) and placed it in the player's OrderList" << endl;
+        }
+        else
+        {
+            defendAdvanceOrd = NULL;
+            cout << "Cannot create advance order (to defend) - No armies in source territory " << player->territories->at(randIndexSource)->getName() << "\n" << endl;
+        }
+
+    }
+    else
+    {
+        flagOrder = new bool(false);
+        player->setFlagIssueOrder(flagOrder);
+        cout << "No more orders to issue\n" << endl;
+    }
+
+    cout << this << endl;
 }
 
+//Returns Territories which are adjacent and not the current player's territory
 vector<Territory*>* BenevolentPlayerStrategy::toAttack()
 {
+    set<Territory*> uniqueTerritoriesToAttack;
+    string adjTerritoryName;
+    bool attackTerr;
 
+    for(int i = 0; i < player->territories->size(); i++)
+    {
+        if(!player->territories->at(i)->adjacentTerritories->empty())
+        {
+            for(int j = 0; j < player->territories->at(i)->adjacentTerritories->size(); j++)
+            {
+                attackTerr = true;
+                adjTerritoryName = player->territories->at(i)->adjacentTerritories->at(j)->getName();
+
+                if (player->doesOwn(adjTerritoryName)!=-1)
+                    attackTerr = false;
+
+                if(attackTerr){
+                        //Set the target territory to be attacked
+                    player->territories->at(i)->adjacentTerritories->at(j)->setAttackStatus(attackTerr);
+                    uniqueTerritoriesToAttack.insert(player->territories->at(i)->adjacentTerritories->at(j));
+                }
+            }
+        }
+    }
+    vector<Territory*>* territoriesToAttack=new vector<Territory*>(uniqueTerritoriesToAttack.begin(), uniqueTerritoriesToAttack.end());
+    return territoriesToAttack;
 }
 
+//Returns territories owned by the player that are the top 3 weakest.
 vector<Territory*>* BenevolentPlayerStrategy::toDefend()
 {
+    vector <Territory*>* weakestTerritories;
+    vector <Territory*>* territoriesToDefend(player->territories);
 
+    //sort vector by the number of armies in a territory (ascending)
+    sort(territoriesToDefend->begin(), territoriesToDefend->end(), [](Territory* a, Territory* b){ return a->getAmountOfArmies() < b->getAmountOfArmies(); });
+
+    for(int i = 0; i < 3; i++)
+    {
+        weakestTerritories->push_back(territoriesToDefend->at(i));
+    }
+
+    return territoriesToDefend;
 }
 
 NeutralPlayerStrategy::NeutralPlayerStrategy(Player *p)
