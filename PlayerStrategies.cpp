@@ -2,6 +2,9 @@
 #include "Player.h"
 #include "Orders.h"
 #include "GameEngine.h"
+#include "Map.h"
+#include <set>
+#include <vector>
 PlayerStrategy::~PlayerStrategy()
 {
     player = NULL;
@@ -262,6 +265,11 @@ BenevolentPlayerStrategy::BenevolentPlayerStrategy(Player* p)
     player = p;
 }
 
+BenevolentPlayerStrategy::~BenevolentPlayerStrategy()
+{
+    player = NULL;
+}
+
 void BenevolentPlayerStrategy::issueOrder()
 {
 
@@ -280,6 +288,11 @@ vector<Territory*>* BenevolentPlayerStrategy::toDefend()
 NeutralPlayerStrategy::NeutralPlayerStrategy(Player *p)
 {
     player = p;
+}
+
+NeutralPlayerStrategy::~NeutralPlayerStrategy()
+{
+    player = NULL;
 }
 
 void NeutralPlayerStrategy::issueOrder()
@@ -303,27 +316,30 @@ CheaterPlayerStrategy::CheaterPlayerStrategy(Player* p)
     player = p;
 }
 
+CheaterPlayerStrategy::~CheaterPlayerStrategy()
+{
+    player = NULL;
+}
+
 void CheaterPlayerStrategy::issueOrder()
 {
     //using the toAttack method, we get all the territories adjacent to the cheater player's territories
     vector<Territory*>* territoriesToAssimilate;
     territoriesToAssimilate = this->toAttack();
-
     //This loop iterates through the territoriesToAssimilate to add all the Territory objects
-    for (unsigned i = 0; i < territoriesToAssimilate->size(); i++)
+    for (int i = 0; i < territoriesToAssimilate->size(); i++)
     {
         //Gets a pointer to an adjacent enemy territory
         Territory* terrToConquer = territoriesToAssimilate->at(i);
         //Gets a pointer to the list of oldEnemyTerritory
         vector<Territory*>* oldEnemyTerritories;
         oldEnemyTerritories = terrToConquer->getPlayer()->getPointerToTerritories();
-
         //Removes the territory from its old owner
         if (oldEnemyTerritories != NULL && !oldEnemyTerritories->empty())
         {
             for (vector<Territory*>::iterator it = oldEnemyTerritories->begin();it != oldEnemyTerritories->end();++it)
             {
-                if (*it = terrToConquer)
+                if (*it == terrToConquer)
                 {
                     oldEnemyTerritories->erase(it);
                     break;
@@ -334,18 +350,17 @@ void CheaterPlayerStrategy::issueOrder()
         terrToConquer->setPlayer(this->player);
         player->territories->push_back(terrToConquer);
     }
+    cout<<"Issued Orders"<<endl;
     //Deallocates the memory taken by the vector
-    territoriesToAssimilate->clear();
-    delete territoriesToAssimilate;
+    //territoriesToAssimilate->clear();
+    //delete territoriesToAssimilate;
 }
 
 //To attack will get all the adjacent enemy territories
 vector<Territory*>* CheaterPlayerStrategy::toAttack()
 {
-    set<Territory*> uniqueTerritoriesToAttack;
     string adjTerritoryName;
     bool attackTerr;
-
     for(int i = 0; i < player->territories->size(); i++)
     {
         if(!player->territories->at(i)->adjacentTerritories->empty())
@@ -366,7 +381,7 @@ vector<Territory*>* CheaterPlayerStrategy::toAttack()
             }
         }
     }
-    vector<Territory*>* territoriesToAttack=new vector<Territory*>(uniqueTerritoriesToAttack.begin(), uniqueTerritoriesToAttack.end());
+    territoriesToAttack=new vector<Territory*>(uniqueTerritoriesToAttack.begin(), uniqueTerritoriesToAttack.end());
     return territoriesToAttack;
 }
 
