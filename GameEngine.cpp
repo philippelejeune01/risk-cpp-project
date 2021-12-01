@@ -648,13 +648,9 @@ void GameEngine::issueOrdersPhase()
 
     for(int i=0;i<playerSize;i++)
     {
-        cout << "playerSize: " << playerSize << endl;
-        cout << "loop index: " << i << endl;
         if (players->at(i)!=NULL)
-            cout << "player: " << *players->at(i) << endl;
             {
                 players->at(i)->issueOrder();
-                cout << "After IssueOrder" << endl;
                 //players.at(i)->setOrderList(playerPairs[i][0]->getOrderList());
             }
     }

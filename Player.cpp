@@ -302,8 +302,9 @@ bool Player::removeFromPool(int numberOfArmies)
 }
 
 //Creates Deploy orders on territories to defend as long as the reinforcement pool is not empty
-void Player::createDeployOrders(vector <Territory*>* territoriesToDefend, Order* ord)
+void Player::createDeployOrders(vector <Territory*>* territoriesToDefend)
 {
+    Order* ord;
     int numberTerritoriesOwned = territoriesToDefend->size();
     //Number of armies to deploy for each territory
     int numberArmiesToDeploy = getPool() / numberTerritoriesOwned;
@@ -322,13 +323,11 @@ void Player::createDeployOrders(vector <Territory*>* territoriesToDefend, Order*
                 removeFromPool(nArmiesToDeployLastTerritory);
                 ord = new Deploy(territoriesToDefend->at(i), territories, nArmiesToDeployLastTerritory);
                 ordersList->addOrder(ord);
-                //ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
             }else
             {
                 removeFromPool(numberArmiesToDeploy);
                 ord = new Deploy(territoriesToDefend->at(i), territories, numberArmiesToDeploy);
                 ordersList->addOrder(ord);
-                //ordersList->move(ord, ordersList->getOrdList().size()); //Adding order to the end of the list
             }
         }
     }
