@@ -281,7 +281,6 @@ void BenevolentPlayerStrategy::issueOrder()
     int randIndexDefend = rand() % territoriesToDefend->size();
     //Generate random number indicating the random index to choose in the player's territories
     int randIndexSource = rand() % player->getPointerToTerritories()->size();
-
     //Determine if player has more orders to issue.
     if(player->getPool() != 0 || !isHandEmpty)
     {
@@ -394,7 +393,6 @@ void BenevolentPlayerStrategy::issueOrder()
     {
         cout << "No more orders to issue\n" << endl;
     }
-    cout << *player << endl;
 }
 
 //Returns Territories which are adjacent and not the current player's territory
@@ -434,12 +432,11 @@ vector<Territory*>* BenevolentPlayerStrategy::toDefend()
     vector <Territory*>* weakestTerritories = new vector<Territory*>();
     //sort vector by the number of armies in a territory (ascending)
     sort(player->getPointerToTerritories()->begin(), player->getPointerToTerritories()->end(), [](Territory* a, Territory* b){ return a->getAmountOfArmies() < b->getAmountOfArmies(); });
-
     for(int i = 0; i < 3; i++)
     {
-        weakestTerritories->push_back(player->getPointerToTerritories()->at(i));
+        if (player->getPointerToTerritories()->size()>=(i+1))
+            weakestTerritories->push_back(player->getPointerToTerritories()->at(i));
     }
-
     return weakestTerritories;
 }
 
@@ -510,8 +507,7 @@ void CheaterPlayerStrategy::issueOrder()
     }
     cout<<"Issued Orders"<<endl;
     //Deallocates the memory taken by the vector
-    //territoriesToAssimilate->clear();
-    //delete territoriesToAssimilate;
+    territoriesToAssimilate->clear();
 }
 
 //To attack will get all the adjacent enemy territories

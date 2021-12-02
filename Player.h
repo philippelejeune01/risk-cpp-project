@@ -58,6 +58,7 @@ class Player
         void setPool(int numberOfArmies);
         void addToPool(int numberOfArmies);
         bool removeFromPool(int numberOfArmies);
+        void NeutralChangeStrategy();
         friend class HumanPlayerStrategy;
         friend class AggressivePlayerStrategy;
         friend class BenevolentPlayerStrategy;

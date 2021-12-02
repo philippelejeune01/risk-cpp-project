@@ -45,7 +45,7 @@ Player::Player(string newName,string strat)
     if (strategy=="Aggressive") ps = new AggressivePlayerStrategy(this);
     if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy(this);
     if (strategy=="Neutral")    ps = new NeutralPlayerStrategy(this);
-    if (strategy=="Cheater")    ps=  new CheaterPlayerStrategy(this);
+    if (strategy=="Cheater")    ps = new CheaterPlayerStrategy(this);
 }
 //2 arg Constructors
 string Player::getStrategy() const
@@ -332,7 +332,16 @@ void Player::createDeployOrders(vector <Territory*>* territoriesToDefend)
         }
     }
 }
-
+//This method changes the strategy type from a Neutral Player to an Aggressive player.
+void Player::NeutralChangeStrategy()
+{
+    if (strategy == "Neutral")
+    {
+        cout << name << " has become an aggressive player." << endl;
+        delete ps;
+        ps = new AggressivePlayerStrategy(this);
+    }
+}
 //Determines the number of armies to use in an attack/advance order.
 //The number is a random number generated between 0 and the number of armies in a specific source territory
 int Player::determineNArmiesForAttack(int randIndexSource)

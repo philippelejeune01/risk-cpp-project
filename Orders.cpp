@@ -628,6 +628,10 @@ void Advance::execute()
         {
             cout << "Initiating an attack! Advancing " << nMovedArmies << " armies to the targetted enemy territory." << endl;
             //Fields for the amount of attacking armies and of defending armies
+
+            //Signals to the player owning the targetTerritory that it is being attacked
+            targetTerritory->getPlayer()->NeutralChangeStrategy();
+
             int nDefArmies = targetTerritory->getAmountOfArmies();
             int nAttArmies = nMovedArmies;
             //Records how many armies were killed.
@@ -803,6 +807,10 @@ void Bomb::execute()
     if(validate())
     {
         cout << "Bomb the targetted Territory " << *targetTerritory << endl;
+        //Signals the owner of the targetTerritory it is being attacked
+        targetTerritory->getPlayer()->NeutralChangeStrategy();
+
+        //Removes half the amount of armies stored in the targetTerritory
         targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()/2);
     }
     //Otherwise, it sends an error message

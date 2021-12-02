@@ -639,20 +639,18 @@ void GameEngine::issueOrdersPhase()
 {
     cout << "\n--------------------------" << endl;
     cout << "Issue Order Phase\n" << endl;
-
     int playerSize = players->size();
     //shift(); //round-robin fashion
 
     /*for (int i=0;i<playerSize;i++)
         cout<<*players->at(i);*/
-
     for(int i=0;i<playerSize;i++)
     {
         if (players->at(i)!=NULL)
-            {
+        {
+            if (players->at(i)->getStrategy()!="Cheater")
                 players->at(i)->issueOrder();
-                //players.at(i)->setOrderList(playerPairs[i][0]->getOrderList());
-            }
+        }
     }
 
 }
@@ -684,6 +682,9 @@ void GameEngine::executeOrderPhase(){
         }
         pOrd=NULL;
     }
+    for (int i=0;i<playerSize;i++)
+       if (players->at(i)->getStrategy()=="Cheater")
+           players->at(i)->issueOrder();
     bool flag2;
     while (true)
     {
