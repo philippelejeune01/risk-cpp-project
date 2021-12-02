@@ -230,17 +230,58 @@ AggressivePlayerStrategy::AggressivePlayerStrategy(Player* p)
 
 void AggressivePlayerStrategy::issueOrder()
 {
+    //get strongest territory on border
+    int maxAmountOfArmies = 0;
+    Territory* strongestTerritory;
+    for(int i=0; player->getTerritories()->size(); i++){
+        if(player->getTerritories()->at(i)->getAmountOfArmies() > maxAmountOfArmies ){
+            maxAmountOfArmies = player->getTerritories()->at(i)->getAmountOfArmies();
+            strongestTerritory = player->getTerritories()->at(i);
+        }
+    }
+
+    //reinforce with all the pool there
+    Order* deployOrder = new Deploy(strongestTerritory, player->getTerritories(), player->getPool());
+    player->setPool(0);
+    player->getOrderList()->addOrder(deployOrder);
+
+    //advance all territory to strongest
+    for(int i=0; player->getTerritories()->size(); i++){
+        if(player->getTerritories()->at(i) != strongestTerritory){
+            int armies = player->getTerritories()->at(i)->getAmountOfArmies();
+            //only advance from armies for territories with more than 1 army
+            if(armies>1){
+                Order* advanceOrder = new Advance(strongestTerritory, player->getTerritories(), armies-1, player->getTerritories()->at(i));
+                player->getOrderList()->addOrder(advanceOrder);
+            }
+        }
+    }
+
+
 
 }
 
 vector<Territory*>* AggressivePlayerStrategy::toAttack()
 {
+    //get strongest territory
+    int maxAmountOfArmies = 0;
+    Territory* strongestTerritory;
+    for(int i=0; player->getTerritories()->size(); i++){
+        if(player->getTerritories()->at(i)->getAmountOfArmies() > maxAmountOfArmies){
+            maxAmountOfArmies = player->getTerritories()->at(i)->getAmountOfArmies();
+            strongestTerritory = player->getTerritories()->at(i);
+        }
+    }
+
+    vector<Territory*>* territoriesToAttack = new vector<Territory*>;
+    territoriesToAttack->push_back(strongestTerritory->adjacentTerritories->at(0));
+    return territoriesToAttack;
 
 }
 
 vector<Territory*>* AggressivePlayerStrategy::toDefend()
 {
-
+    return NULL;
 }
 
 BenevolentPlayerStrategy::BenevolentPlayerStrategy(Player* p)
