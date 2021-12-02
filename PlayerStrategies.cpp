@@ -234,10 +234,24 @@ void AggressivePlayerStrategy::issueOrder()
     int maxAmountOfArmies = 0;
     Territory* strongestTerritory;
     for(int i=0; player->getTerritories()->size(); i++){
-        if(player->getTerritories()->at(i)->getAmountOfArmies() > maxAmountOfArmies ){
+
+        string territoryName = player->getTerritories()->at(i)->getName();
+        bool hasAnAdjacentNonOwned = false;
+        //checks if the territory has a not owned adjacent territory
+        for(int j =0;j<player->getTerritories()->at(i)->adjacentTerritories->size();j++){
+            if(!player->doesOwn(player->getTerritories()->at(i)->adjacentTerritories->at(j)->getName())){
+                hasAnAdjacentNonOwned = true;
+            }
+        }
+
+        if(player->getTerritories()->at(i)->getAmountOfArmies() > maxAmountOfArmies && hasAnAdjacentNonOwned){
             maxAmountOfArmies = player->getTerritories()->at(i)->getAmountOfArmies();
             strongestTerritory = player->getTerritories()->at(i);
         }
+    }
+    //safeguard for null pointer
+    if(strongestTerritory==NULL){
+        strongestTerritory = player->getTerritories()->at(0);
     }
 
     //reinforce with all the pool there
