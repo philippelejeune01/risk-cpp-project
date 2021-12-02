@@ -45,7 +45,7 @@ Player::Player(string newName,string strat)
     if (strategy=="Aggressive") ps = new AggressivePlayerStrategy(this);
     if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy(this);
     if (strategy=="Neutral")    ps = new NeutralPlayerStrategy(this);
-    if (strategy=="Cheater")    ps=  new CheaterPlayerStrategy(this);
+    if (strategy=="Cheater")    ps = new CheaterPlayerStrategy(this);
 }
 //2 arg Constructors
 string Player::getStrategy() const
@@ -305,7 +305,6 @@ bool Player::removeFromPool(int numberOfArmies)
 void Player::createDeployOrders(vector <Territory*>* territoriesToDefend)
 {
     Order* ord;
-
     int numberTerritoriesOwned = territoriesToDefend->size();
     //Number of armies to deploy for each territory
     int numberArmiesToDeploy = getPool() / numberTerritoriesOwned;
@@ -321,20 +320,28 @@ void Player::createDeployOrders(vector <Territory*>* territoriesToDefend)
         {
             if(getPool() == nArmiesToDeployLastTerritory)
             {
-                ord = new Deploy(territoriesToDefend->at(i), getPointerToTerritories(), nArmiesToDeployLastTerritory);
-                ordersList->addOrder(ord);
                 removeFromPool(nArmiesToDeployLastTerritory);
-            }
-            else
-            {
-                ord = new Deploy(territoriesToDefend->at(i), getPointerToTerritories(), numberArmiesToDeploy);
+                ord = new Deploy(territoriesToDefend->at(i), territories, nArmiesToDeployLastTerritory);
                 ordersList->addOrder(ord);
+            }else
+            {
                 removeFromPool(numberArmiesToDeploy);
+                ord = new Deploy(territoriesToDefend->at(i), territories, numberArmiesToDeploy);
+                ordersList->addOrder(ord);
             }
         }
     }
 }
-
+//This method changes the strategy type from a Neutral Player to an Aggressive player.
+void Player::NeutralChangeStrategy()
+{
+    if (strategy == "Neutral")
+    {
+        cout << name << " has become an aggressive player." << endl;
+        delete ps;
+        ps = new AggressivePlayerStrategy(this);
+    }
+}
 //Determines the number of armies to use in an attack/advance order.
 //The number is a random number generated between 0 and the number of armies in a specific source territory
 int Player::determineNArmiesForAttack(int randIndexSource)
