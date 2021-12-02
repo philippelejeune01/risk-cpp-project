@@ -305,6 +305,7 @@ bool Player::removeFromPool(int numberOfArmies)
 void Player::createDeployOrders(vector <Territory*>* territoriesToDefend)
 {
     Order* ord;
+
     int numberTerritoriesOwned = territoriesToDefend->size();
     //Number of armies to deploy for each territory
     int numberArmiesToDeploy = getPool() / numberTerritoriesOwned;
@@ -320,14 +321,15 @@ void Player::createDeployOrders(vector <Territory*>* territoriesToDefend)
         {
             if(getPool() == nArmiesToDeployLastTerritory)
             {
+                ord = new Deploy(territoriesToDefend->at(i), getPointerToTerritories(), nArmiesToDeployLastTerritory);
+                ordersList->addOrder(ord);
                 removeFromPool(nArmiesToDeployLastTerritory);
-                ord = new Deploy(territoriesToDefend->at(i), territories, nArmiesToDeployLastTerritory);
-                ordersList->addOrder(ord);
-            }else
+            }
+            else
             {
-                removeFromPool(numberArmiesToDeploy);
-                ord = new Deploy(territoriesToDefend->at(i), territories, numberArmiesToDeploy);
+                ord = new Deploy(territoriesToDefend->at(i), getPointerToTerritories(), numberArmiesToDeploy);
                 ordersList->addOrder(ord);
+                removeFromPool(numberArmiesToDeploy);
             }
         }
     }
