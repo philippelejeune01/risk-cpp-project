@@ -415,7 +415,7 @@ bool Deploy::validate()
         return false;
     }
     //Checks if the targetTerritory belongs to the player.
-    if (ownedTerritories->at(0)->getPlayer()->getName() == targetTerritory->getPlayer()->getName())
+    if (ownedTerritories->at(0)->getPlayer() == targetTerritory->getPlayer())
     {
         return true;
     }
@@ -709,7 +709,6 @@ void Advance::execute()
     {
         cout << "This order cannot be executed" << endl;
     }
-    Notify(this);
     Notify(this);
 }
 //Implementation of the subclass Bomb

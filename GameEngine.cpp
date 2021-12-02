@@ -683,8 +683,8 @@ void GameEngine::executeOrderPhase(){
         pOrd=NULL;
     }
     for (int i=0;i<playerSize;i++)
-        if (players->at(i)->getStrategy()=="Cheater")
-            players->at(i)->issueOrder();
+       if (players->at(i)->getStrategy()=="Cheater")
+           players->at(i)->issueOrder();
     bool flag2;
     while (true)
     {
