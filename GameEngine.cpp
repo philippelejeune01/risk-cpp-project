@@ -173,6 +173,7 @@ void tournamentMode()
     int numberOfMaps,numberOfPlayers,numberOfGames,t;
     vector<Map*> maps;
     vector<Player*> players;
+    vector<string> winners;
     cout<<"Enter the number of maps:\n";
     cin>>numberOfMaps;
     for (int i=0;i<numberOfMaps;i++)
@@ -203,15 +204,8 @@ void tournamentMode()
     cin>>numberOfGames;
     cout<<"Enter Number of turns:\n";
     cin>>t;
-
-    cout<<"\n------------Tournament Mode:-----------\n";
-    cout<<"          ";
-    for (int i = 0;i<numberOfGames;i++)
-        cout<<"  Game "<<i+1<< "   ";
-    cout<<endl;
     for (int i = 0 ; i < numberOfMaps; i++)
     {
-        cout<<"Map "<<i+1<<"     ";
         for (int j = 0 ; j < numberOfGames; j++)
         {
             GameEngine* game = new GameEngine();
@@ -229,11 +223,23 @@ void tournamentMode()
                 game->players->at(l)->getHand()->addCard(game->_deck->draw());
             }
             game->mainGameLoop();
-            cout<<game->strategyname<<"  ";
+            winners.push_back(game->strategyname);
             GameEngine::_map=NULL;
             GameEngine::players->clear();
             GameEngine::players=NULL;
         }
+    }
+    cout<< "\n\n\n-------Tournament Mode:----------\n          ";
+    for (int i = 0; i<numberOfGames ;i++)
+    {
+        cout<<"Game "<<i+1<<"     ";
+    }
+    cout<<endl;
+    for (int i = 0; i<numberOfMaps ;i++)
+    {
+        cout<<"Map "<<i+1<<"     ";
+        for (int j =0;j<numberOfGames;j++)
+            cout<<winners[i*j]<<"      ";
         cout<<endl;
     }
 
@@ -660,7 +666,6 @@ void GameEngine::executeOrderPhase(){
     cout << "Execute Order Phase\n" << endl;
 
     int playerSize = players->size();
-    int pairs=playerSize/2+playerSize%2;
     OrdersList* pOrd;
     int counter=0;
     bool flag[playerSize]={true};
@@ -668,7 +673,7 @@ void GameEngine::executeOrderPhase(){
     {
         if (players->at(i)!=NULL)
         {
-            pOrd = players->at(i)->getOrderList();
+            pOrd = players->at(i)->ordersList;
             if (!pOrd->isEmpty())
             {
                 while (pOrd->getFirstOrderType()=="Deploy")
@@ -680,15 +685,16 @@ void GameEngine::executeOrderPhase(){
             else
                 continue;
         }
-        pOrd=NULL;
     }
     for (int i=0;i<playerSize;i++)
        if (players->at(i)->getStrategy()=="Cheater")
            players->at(i)->issueOrder();
     bool flag2;
+    for (int i=0;i<playerSize;i++)
+        flag[i]=true;
     while (true)
     {
-        pOrd = players->at(counter)->getOrderList();
+        pOrd = players->at(counter)->ordersList;
         if (pOrd->isEmpty()) flag[counter]=false;
         else
             pOrd->executeFirstOrder();
@@ -699,6 +705,7 @@ void GameEngine::executeOrderPhase(){
         if (!flag2)
             break;
         counter=(counter+1)%playerSize;
+        pOrd=NULL;
     }
     for (int i=0;i<playerSize;i++)
         if(players->at(i)->getFlagConqTerr())

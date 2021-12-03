@@ -57,6 +57,7 @@ Player::Player(string newName, OrdersList* ordList)
     territories = new vector<Territory*>();
     name = newName;
     hand = new Hand();
+    ordersList = new OrdersList();
     ordersList = ordList;
     flagConqTerr = new bool(false);
     flagIssueOrder = new bool(true);
@@ -66,6 +67,7 @@ Player::Player(string newName, Hand* aHand)
 
     territories = new vector<Territory*>();
     name = newName;
+    hand = new Hand();
     hand = aHand;
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
@@ -98,7 +100,9 @@ int Player::doesOwn(string name)
 Player::Player(string newName, Hand* aHand, OrdersList* ordList)
 {
     name = newName;
+    hand = new Hand();
     hand = aHand;
+    ordersList = new OrdersList();
     ordersList = ordList;
     territories = new vector<Territory*>();
     flagConqTerr = new bool(false);
@@ -109,6 +113,7 @@ Player::Player(string newName, vector <Territory*>* terr, OrdersList* ordList)
     name = newName;
     territories = terr;
     hand = new Hand();
+    ordersList = new OrdersList();
     ordersList = ordList;
     territories = new vector<Territory*>();
     flagConqTerr = new bool(false);
@@ -119,6 +124,7 @@ Player::Player(string newName, vector <Territory*> * terr, Hand* aHand)
     name = newName;
     territories = new vector<Territory*>();
     territories = terr;
+    hand = new Hand();
     hand = aHand;
     ordersList = new OrdersList();
     flagConqTerr = new bool(false);
@@ -194,7 +200,7 @@ ostream& operator <<(ostream &strm, const Player &aPlayer)
         strm << "\nTerritories: No Territories\n";
     }
 
-    if(!aPlayer.getOrderList()->getOrdList().empty()){
+    if(!aPlayer.getOrderList()->getOrdList()->empty()){
         strm << "\nOrders: " << *aPlayer.getOrderList();
     }else{
         strm << "\nOrders: No Orders\n";
@@ -338,7 +344,7 @@ void Player::NeutralChangeStrategy()
     if (strategy == "Neutral")
     {
         cout << name << " has become an aggressive player." << endl;
-        delete ps;
+        ps = NULL;
         ps = new AggressivePlayerStrategy(this);
     }
 }
@@ -351,9 +357,9 @@ int Player::determineNArmiesForAttack(int randIndexSource)
     //To get the right number of armies we get it from the appropriate Deploy order if there is one.
     if(territories->at(randIndexSource)->getAmountOfArmies() == 0)
     {
-        if(ordersList->getOrdList().size() > randIndexSource)
+        if(ordersList->getOrdList()->size() > randIndexSource)
         {
-            list<Order*>::iterator it = next(ordersList->getOrdList().begin(), randIndexSource);
+            list<Order*>::iterator it = next(ordersList->getOrdList()->begin(), randIndexSource);
             Deploy* deployOrder = dynamic_cast<Deploy*>((*it));
             if(deployOrder != NULL)
             {
@@ -368,7 +374,7 @@ int Player::determineNArmiesForAttack(int randIndexSource)
         }
         else
         {
-            list<Order*>::iterator it = ordersList->getOrdList().begin();
+            list<Order*>::iterator it = ordersList->getOrdList()->begin();
             Deploy* deployOrder = dynamic_cast<Deploy*>((*it));
             if(deployOrder != NULL)
             {

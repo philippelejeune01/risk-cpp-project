@@ -76,7 +76,7 @@ public:
     ~OrdersList();
     friend ostream& operator <<(ostream &strm, const OrdersList &ordLs);
     bool isEmpty();
-    list<Order*> getOrdList() const;
+    list<Order*>* getOrdList() const;
     string getFirstOrderType();
     //2 required methods
     void move(Order* order, int index);
@@ -86,7 +86,7 @@ public:
     string stringToLog();
 private:
     //List of orders
-    list<Order*> ordList;
+    list<Order*>* ordList;
     bool lastAddedWasDeployed;
     LogObserver* logO;
 };

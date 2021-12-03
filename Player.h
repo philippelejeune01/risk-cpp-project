@@ -65,7 +65,8 @@ class Player
         friend class CheaterPlayerStrategy;
         friend class NeutralPlayerStrategy;
         friend class PlayerStrategy;
-    private:
+        friend class GameEngine;
+    //private:
         PlayerStrategy* ps;
         string name,strategy;
         //Determines if the player has more orders to issue
