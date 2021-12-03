@@ -898,7 +898,7 @@ bool Blockade:: validate()
 {
     //Checks if the pointers point to an existing object
     cout<<"In Blockade:\n";
-    if (targetTerritory == NULL || ownedTerritories == NULL)
+    if (targetTerritory == NULL || ownedTerritories->size()==0)
     {
         cout<<"Null values \n";
         return false;
@@ -932,13 +932,14 @@ void Blockade::execute()
         cout << "Blockade the targetted territory " << *(targetTerritory) << ". It has now 3 times the amount of armies and is neutral" << endl;
         //Executes the order
         targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()*3);
-        neutral->getPointerToTerritories()->push_back(targetTerritory);
+        //neutral->getPointerToTerritories()->push_back(targetTerritory);
         targetTerritory->setPlayer(neutral);
-        for (vector<Territory*>::const_iterator it = ownedTerritories->begin(); it != ownedTerritories->end(); ++it)
+        cout<<ownedTerritories->size()<<endl;
+        for (int i = 0; i<ownedTerritories->size(); i++)
         {
-            if (targetTerritory == *it)
+            if (ownedTerritories->at(i) == targetTerritory)
             {
-                ownedTerritories->erase(it);
+                ownedTerritories->erase(ownedTerritories->begin()+i);
             }
         }
     }

@@ -1,6 +1,16 @@
-loadmap <europe.map>
-validatemap
-sdgdgsdgdsg
-addplayer <a1>
-addplayer <a2>
-gamestart
+tournament
+7
+europe.map
+europe.map
+solar.map
+europe.map
+solar.map
+solar.map
+europe.map
+4
+Aggressive
+Cheater
+Benevolent
+Neutral
+5
+50

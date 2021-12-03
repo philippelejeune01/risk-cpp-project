@@ -57,6 +57,7 @@ class Player
         int getPool() const;
         void setPool(int numberOfArmies);
         void addToPool(int numberOfArmies);
+        void changeStrategy(string strat);
         bool removeFromPool(int numberOfArmies);
         void NeutralChangeStrategy();
         friend class HumanPlayerStrategy;
@@ -66,11 +67,11 @@ class Player
         friend class NeutralPlayerStrategy;
         friend class PlayerStrategy;
         friend class GameEngine;
-    //private:
+    private:
         PlayerStrategy* ps;
         string name,strategy;
         //Determines if the player has more orders to issue
-        bool* flagIssueOrder;
+        bool flagIssueOrder;
         //The player's reinforcement pool
         int rPool = 0;
         //The player's territories
@@ -78,7 +79,7 @@ class Player
         Hand* hand;
         OrdersList* ordersList;
         //bool pointer that determines if the player instance has conquered at least one territory
-        bool* flagConqTerr;
+        bool flagConqTerr=false;
         //Creates Deploy orders as long as the reinforcement pool is not empty
         void createDeployOrders(vector <Territory*>* territoriesToDefend);
         //Determines the number of armies to use in an attack order.

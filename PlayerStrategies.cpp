@@ -7,7 +7,7 @@
 #include <vector>
 PlayerStrategy::~PlayerStrategy()
 {
-    player = NULL;
+    //player = NULL;
 }
 HumanPlayerStrategy::HumanPlayerStrategy(Player* p)
 {
@@ -263,7 +263,7 @@ void AggressivePlayerStrategy::issueOrder()
                 strongestTerritory = player->getPointerToTerritories()->at(i);
             }
         }
-        if(player->getPointerToTerritories()->at(i)->getAmountOfArmies() > maxAmountOfArmies && hasAnAdjacentNonOwned!=0)
+        else if(player->getPointerToTerritories()->at(i)->getAmountOfArmies() > maxAmountOfArmies && hasAnAdjacentNonOwned!=0)
         {
             maxAmountOfArmies = player->getPointerToTerritories()->at(i)->getAmountOfArmies();
             strongestTerritory = player->getPointerToTerritories()->at(i);
@@ -275,6 +275,52 @@ void AggressivePlayerStrategy::issueOrder()
     int armies = strongestTerritory->getAmountOfArmies()+player->getPool();
     player->setPool(0);
     player->ordersList->addOrder(deployOrder);
+
+    //Card play
+    bool isHandEmpty = player->getHand()->getCards()->empty();
+
+    if (!isHandEmpty)
+    {
+        if (player->getHand()->getCards()->front()->getType().compare("reinforcement") == 0)
+        {
+            int n = 5;
+            Order* ord = new Deploy(strongestTerritory, player->getPointerToTerritories(), n);
+            armies += 5;
+            player->ordersList->addOrder(ord);
+            player->getHand()->removeCard(0);
+        }
+
+        else if (player->getHand()->getCards()->front()->getType().compare("bomb") == 0)
+        {
+            for (int i=0; i<strongestTerritory->adjacentTerritories->size(); i++)
+                if (strongestTerritory->adjacentTerritories->at(i)->getPlayer()!=player)
+                {
+                    Order* bomb = new Bomb(strongestTerritory->adjacentTerritories->at(i),player->getPointerToTerritories());
+                    player->ordersList->addOrder(bomb);
+                    player->getHand()->removeCard(0);
+                    break;
+                }
+        }
+        else if (player->getHand()->getCards()->front()->getType().compare("airlift") == 0)
+        {
+            int index = 0, maxdefense = 0;
+            for (int i = 0; i<player->getPointerToTerritories()->size(); i++)
+                if (player->getPointerToTerritories()->at(i) != strongestTerritory && player->getPointerToTerritories()->at(i)->getAmountOfArmies()>maxdefense)
+                {
+                    maxdefense = player->getPointerToTerritories()->at(i)->getAmountOfArmies();
+                    index = i;
+                }
+            armies+=maxdefense-1;
+            Order* ord = new Airlift(strongestTerritory,player->getPointerToTerritories(),maxdefense-1,player->getPointerToTerritories()->at(index));
+            player->ordersList->addOrder(ord);
+            player->getHand()->removeCard(0);
+        }
+        else
+        {
+            cout << "Card type: \""<<player->getHand()->getCards()->front()->getType()<<"\" is not suitable for Aggressive player, removed from hand."<<endl;
+            player->getHand()->removeCard(0);
+        }
+    }
 
     //advance all territory to strongest
     for(int i=0; i< player->getPointerToTerritories()->size(); i++){
@@ -288,16 +334,15 @@ void AggressivePlayerStrategy::issueOrder()
             }
         }
     }
+
+    //Attacking Enemy Territory
     for (int i=0; i<strongestTerritory->adjacentTerritories->size(); i++)
         if (strongestTerritory->adjacentTerritories->at(i)->getPlayer()!=player)
         {
-            cout<<*strongestTerritory<<" \n Attacking: \n"<<*strongestTerritory->adjacentTerritories->at(i)<<endl;
             Order* attack = new Advance(strongestTerritory->adjacentTerritories->at(i),player->getPointerToTerritories(),armies,strongestTerritory);
-            cout<<*attack;
             player->ordersList->addOrder(attack);
             break;
         }
-
 
 }
 
@@ -341,7 +386,10 @@ void BenevolentPlayerStrategy::issueOrder()
     //Refers to the player having cards in their hand
     bool isHandEmpty = player->getHand()->getCards()->empty();
     vector <Territory*>* territoriesToDefend = toDefend();
+    cout<<territoriesToDefend->size()<<endl;
     //Generate random number indicating the random index to choose in the list of territories to defend
+    if (territoriesToDefend->size() == 0)
+        return;
     int randIndexDefend = rand() % territoriesToDefend->size();
     //Generate random number indicating the random index to choose in the player's territories
     int randIndexSource = rand() % player->getPointerToTerritories()->size();
@@ -403,7 +451,6 @@ void BenevolentPlayerStrategy::issueOrder()
         //Remove first card in Hand
         player->getHand()->removeCard(0);
 
-
         /*====Creating Advance orders====*/
 
         //Find the index of one of the territories returned by toDefend() in the player's territories vector
@@ -416,20 +463,19 @@ void BenevolentPlayerStrategy::issueOrder()
                 randIndexSource = index;
             }
         }
-
         //Re-determine the number of armies to use in an advance order
         randNOfArmies = player->determineNArmiesForAttack(randIndexSource);
 
-        if(randNOfArmies != 0)
+        if(randNOfArmies != 0 && player->getPointerToTerritories()->size() > 1)
         {
             /*Create advance order to defend*/
             //If the territory to defend and the source territory are the same, then generate another random index which is not the same as randIndexDefend
-            if(territoriesToDefend->at(randIndexDefend)->getName() == player->getPointerToTerritories()->at(randIndexSource)->getName())
+            if(territoriesToDefend->at(randIndexDefend) == player->getPointerToTerritories()->at(randIndexSource))
             {
-                 int newRandIndex;
-
+                int newRandIndex;
                 do
                 {
+                    cout<<territoriesToDefend->size()<<endl;
                     newRandIndex = rand() % territoriesToDefend->size();
                 }
                 while(randIndexDefend == newRandIndex);
@@ -570,8 +616,6 @@ void CheaterPlayerStrategy::issueOrder()
         player->getPointerToTerritories()->push_back(terrToConquer);
     }
     cout<<"Issued Orders"<<endl;
-    //Deallocates the memory taken by the vector
-    territoriesToAssimilate->clear();
 }
 
 //To attack will get all the adjacent enemy territories

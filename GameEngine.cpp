@@ -6,6 +6,7 @@ It contains all the function definitions for the function declarations in the Ga
 #include <iostream>
 #include <list>
 #include <fstream>
+#include <limits>
 #include <algorithm>
 #include <random>
 using namespace std;
@@ -130,11 +131,11 @@ void GameEngine::transition(string newState)
 void GameEngine::initializeDeck()
 {
     srand((unsigned) time(0));
-    vector<Card*> v;
+    vector<Card*>* v = new vector<Card*>();
     //creating Cards to put in deck
     for(int i = 0; i < GameEngine::DECK_SIZE; i++){
         Card *c = new Card();
-        v.push_back(c);
+        v->push_back(c);
     }
 
     _deck = new Deck(v);
@@ -168,19 +169,21 @@ string GameEngine::stringToLog()
 */
 Map* GameEngine::_map=NULL;
 vector<Player*>* GameEngine::players=NULL;
-void tournamentMode()
+
+void tournamentMode(CommandProcessor * fcpa)
 {
     int numberOfMaps,numberOfPlayers,numberOfGames,t;
     vector<Map*> maps;
     vector<Player*> players;
     vector<string> winners;
     cout<<"Enter the number of maps:\n";
-    cin>>numberOfMaps;
+    numberOfMaps =stoi(fcpa->getCommand());
+
     for (int i=0;i<numberOfMaps;i++)
     {
         string fileName="";
         cout<<"Enter Map "<<i+1<<"'s filename:\n";
-        cin>>fileName;
+        fileName=fcpa->getCommand();;
         MapLoader* maploader = new MapLoader(fileName);
         Map* maptemp = new Map(*maploader->Load());
         cout<<*maptemp<<endl;
@@ -190,20 +193,20 @@ void tournamentMode()
         delete maploader;
     }
     cout<<"Enter Number of players:\n";
-    cin>>numberOfPlayers;
+    numberOfPlayers =stoi(fcpa->getCommand());
     GameEngine::players = new vector<Player*>();
     for (int i=0;i<numberOfPlayers;i++)
     {
         string strategy;
         cout<<"Enter Player"<<i+1<<"s strategy:\n";
-        cin>>strategy;
+        strategy=fcpa->getCommand();
         Player* temp = new Player("p"+to_string(i+1),strategy);
         players.push_back(new Player(*temp));
     }
     cout<<"Enter Number of games:\n";
-    cin>>numberOfGames;
+    numberOfGames = stoi(fcpa->getCommand());
     cout<<"Enter Number of turns:\n";
-    cin>>t;
+    t = stoi(fcpa->getCommand());
     for (int i = 0 ; i < numberOfMaps; i++)
     {
         for (int j = 0 ; j < numberOfGames; j++)
@@ -232,14 +235,158 @@ void tournamentMode()
     cout<< "\n\n\n-------Tournament Mode:----------\n          ";
     for (int i = 0; i<numberOfGames ;i++)
     {
-        cout<<"Game "<<i+1<<"     ";
+        cout<<"Game"<<i+1<<"         ";
     }
     cout<<endl;
     for (int i = 0; i<numberOfMaps ;i++)
     {
         cout<<"Map "<<i+1<<"     ";
         for (int j =0;j<numberOfGames;j++)
-            cout<<winners[i*j]<<"      ";
+        {
+            cout<<winners[i*j];
+            int blank = 14 - winners[i*j].length();
+            if (j!= numberOfGames-1)
+                for (int k = 0; k<blank; k++)
+                    cout<<' ';
+        }
+        cout<<endl;
+    }
+
+}
+
+void tournamentMode()
+{
+    int numberOfMaps,numberOfPlayers,numberOfGames,t;
+    vector<Map*> maps;
+    vector<Player*> players;
+    vector<string> winners;
+    cout<<"Enter the number of maps:\n";
+    //cin>>numberOfMaps;
+    while (!(cin>>numberOfMaps))
+    {
+        cout<<"Wrong value, try again!\n";
+        cin.clear();
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    for (int i=0;i<numberOfMaps;i++)
+    {
+        string fileName="";
+        cout<<"Enter Map "<<i+1<<"'s filename:\n";
+        cin>>fileName;
+        ifstream file;
+        file.open(fileName);
+
+        while (!file)
+        {
+            cout<<"Map doesn't exist, enter a valid map\n";
+            cin>>fileName;
+            file.open(fileName);
+        }
+        file.close();
+
+        MapLoader* maploader = new MapLoader(fileName);
+        Map* maptemp = new Map(*maploader->Load());
+        cout<<*maptemp<<endl;
+        maptemp->validate();
+        maps.push_back(maptemp);
+
+        delete maploader;
+    }
+    cout<<"Enter Number of players:\n";
+
+    while (!(cin>>numberOfPlayers))
+    {
+        cout<<"Wrong value, try again!\n";
+        cin.clear();
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    GameEngine::players = new vector<Player*>();
+
+    for (int i=0;i<numberOfPlayers;i++)
+    {
+        string strategy;
+        cout<<"Enter Player"<<i+1<<"s strategy:\n";
+        cin>>strategy;
+        bool flag = false;
+        string types[] = {"Aggressive", "Neutral", "Benevolent", "Cheater", "Human"};
+        while (true)
+        {
+            for (int x = 0; x < 5; x++)
+                if (strategy == types[x])
+                {
+                    flag=true;
+                    break;
+                }
+            if (flag) break;
+            cout<<"Wrong strategy";
+            cin>>strategy;
+        }
+
+        Player* temp = new Player("p"+to_string(i+1),strategy);
+        players.push_back(new Player(*temp));
+    }
+    cout<<"Enter Number of games:\n";
+
+    while (!(cin>>numberOfGames))
+    {
+        cout<<"Wrong value, try again!\n";
+        cin.clear();
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    cout<<"Enter Number of turns:\n";
+
+    while (!(cin>>t))
+    {
+        cout<<"Wrong value, try again!\n";
+        cin.clear();
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    for (int i = 0 ; i < numberOfMaps; i++)
+    {
+        for (int j = 0 ; j < numberOfGames; j++)
+        {
+            GameEngine* game = new GameEngine();
+            game->turnsPerGame=t;
+            GameEngine::_map = new Map(*maps[i]);
+            for (int k=0;k<players.size();k++)
+                game->players->push_back(new Player(*players[k]));
+            game->setPlayersTerritories();
+            game->randomizePlayOrder();
+            game->initializeDeck(); //Creating the Deck
+            for(int l = 0; l < players.size(); l++)
+            {
+                game->players->at(l)->setPool(50);
+                game->players->at(l)->getHand()->addCard(game->_deck->draw());
+                game->players->at(l)->getHand()->addCard(game->_deck->draw());
+            }
+            game->mainGameLoop();
+            winners.push_back(game->strategyname);
+            GameEngine::_map=NULL;
+            GameEngine::players->clear();
+            GameEngine::players=NULL;
+        }
+    }
+    cout<< "\n\n\n-------Tournament Mode:----------\n          ";
+    for (int i = 0; i<numberOfGames ;i++)
+    {
+        cout<<"Game"<<i+1<<"         ";
+    }
+    cout<<endl;
+    for (int i = 0; i<numberOfMaps ;i++)
+    {
+        cout<<"Map "<<i+1<<"     ";
+        for (int j =0;j<numberOfGames;j++)
+        {
+            cout<<winners[i*j];
+            int blank = 14 - winners[i*j].length();
+            if (j!= numberOfGames-1)
+                for (int k = 0; k<blank; k++)
+                    cout<<' ';
+        }
         cout<<endl;
     }
 
@@ -478,6 +625,7 @@ void GameEngine::mainGameLoop()
     }
     while (!(getState() == "win") && !gameOver());
 }
+
 void GameEngine::startupPhase()
 {
     Player* tempPlayer; // Temporary player pointer
@@ -487,6 +635,12 @@ void GameEngine::startupPhase()
         command = getCommandProcessor()->getCommand();
         if (validate(command))
         {
+            if (command=="tournament")
+            {
+                tournament = true;
+                tournamentMode(getCommandProcessor());
+                return;
+            }
             if((getState() == "start"||getState()=="maploaded") && (command.find("loadmap") !=string::npos))
             {
                 string filename=command.substr(command.find("loadmap")+9);
@@ -661,14 +815,16 @@ void GameEngine::issueOrdersPhase()
 
 }
 
-void GameEngine::executeOrderPhase(){
-    cout << "--------------------------" << endl;
-    cout << "Execute Order Phase\n" << endl;
+void GameEngine::executeOrderPhase()
+{
 
     int playerSize = players->size();
     OrdersList* pOrd;
     int counter=0;
-    bool flag[playerSize]={true};
+    bool flag[6], flag2;
+    cout << "--------------------------" << endl;
+    cout << "Execute Order Phase\n" << endl;
+
     for (int i=0;i<playerSize;i++)
     {
         if (players->at(i)!=NULL)
@@ -689,7 +845,6 @@ void GameEngine::executeOrderPhase(){
     for (int i=0;i<playerSize;i++)
        if (players->at(i)->getStrategy()=="Cheater")
            players->at(i)->issueOrder();
-    bool flag2;
     for (int i=0;i<playerSize;i++)
         flag[i]=true;
     while (true)

@@ -109,40 +109,41 @@ istream & operator >> (istream &in, Card &c){
 //Deck functions
 //creates empty card vector
 Deck::Deck(){
-    vector<Card*> v;
-    this->cards = v;
+    cards = new vector<Card*>();
 }
 //created deck from existing vector
-Deck::Deck(vector<Card*> &c){
+Deck::Deck(vector<Card*>* &c){
     int i;
-    for(i=0;i<c.size();i++){
-        cards.push_back(c.at(i));
+    cards = new vector<Card*>();
+    for(i=0;i<c->size();i++){
+        cards->push_back(c->at(i));
     }
 }
 //copy constructor
 Deck::Deck(Deck &d){
     int i;
-    for(i=0;i<d.cards.size();i++){
-        cards.push_back(d.cards.at(i));
+    cards = new vector<Card*>();
+    for(i=0;i<d.cards->size();i++){
+        cards->push_back(d.cards->at(i));
     }
 }
 //destructor
 Deck::~Deck(){
     //This deletes all the Card objects stored in the vector
-    for(vector<Card*>::iterator it = cards.begin(); it != cards.end(); ++it)
+    for(vector<Card*>::iterator it = cards->begin(); it != cards->end(); ++it)
     {
         delete *it;
     }
     //This erases all the pointers stored in the vector
-    cards.clear();
+    cards->clear();
 }
 //Assignment operator overload
 Deck& Deck::operator = (const Deck &d)
 {
     int i;
-    for (i=0;i<d.cards.size();i++)
+    for (i=0;i<d.cards->size();i++)
     {
-        this->cards.push_back(d.cards.at(i));
+        this->cards->push_back(d.cards->at(i));
     }
     return *this;
 }
@@ -153,84 +154,95 @@ Deck& Deck::operator = (const Deck &d)
 Card* Deck::draw(){
     srand (time(NULL));
     int i = rand() % getCards()->size();
-    Card *drawn = cards.at(i);
-    cards.erase(cards.begin()+i);
+    Card *drawn = cards->at(i);
+    cards->erase(cards->begin()+i);
     return drawn;
 }
 //getters and setters
-vector<Card*>* Deck::getCards(){
-    return &cards;
+vector<Card*>* Deck::getCards()
+{
+    return cards;
 }
-void Deck::setCards(vector<Card*> &c){
+void Deck::setCards(vector<Card*>* &c)
+{
     cards = c;
 }
 //stream operators
-ostream & operator << (ostream &out, const Deck &d){
-    vector<Card*> v = d.cards;
+ostream & operator << (ostream &out, const Deck &d)
+{
+    vector<Card*>* v = d.cards;
     out << "This is a deck with cards: " << endl;
-    for(int i=0; i < v.size(); i++){
-        out << *v.at(i) << endl;;
+    for(int i=0; i < v->size(); i++){
+        out << *v->at(i) << endl;;
     }
     return out;
 }
 //Hand functions
 //create hand with empty card vector
-Hand::Hand(){
-    vector<Card*> v;
-    cards = v;
+Hand::Hand()
+{
+    cards= new vector<Card*>();
 }
 //create hand with existing vector
-Hand::Hand(vector<Card*> &h){
+Hand::Hand(vector<Card*>* &h)
+{
     int i;
-    for(i=0;i<h.size();i++){
-        cards.push_back(h.at(i));
+    cards= new vector<Card*>();
+    for(i=0;i<h->size();i++)
+    {
+        cards->push_back(h->at(i));
     }
 }
 //copy constructor
-Hand::Hand(Hand &h){
+Hand::Hand(Hand &h)
+{
+    cards= new vector<Card*>();
     int i;
-    for(i=0;i<h.cards.size();i++){
-        cards.push_back(h.cards.at(i));
+    for(i=0;i<h.cards->size();i++)
+    {
+        cards->push_back(h.cards->at(i));
     }
 }
 //destructor
 Hand::~Hand(){
     //This deletes all the Card objects stored in the vector
-    for(vector<Card*>::iterator it = cards.begin(); it != cards.end(); ++it)
+    for(vector<Card*>::iterator it = cards->begin(); it != cards->end(); ++it)
     {
         delete *it;
     }
     //This erases all the pointers stored in the vector
-    cards.clear();
+    cards->clear();
 }
 //Assignment operator overload
 Hand& Hand::operator = (const Hand& h)
 {
     int i;
-    for(i=0;i<h.cards.size();i++)
+    for(i=0;i<h.cards->size();i++)
     {
-        this->cards.push_back(h.cards.at(i));
+        this->cards->push_back(h.cards->at(i));
     }
     return *this;
 }
 //getters and setters
-vector<Card*>* Hand::getCards(){
-    return &cards;
+vector<Card*>* Hand::getCards()
+{
+    return cards;
 }
-void Hand::setCards(vector<Card*> &c){
+void Hand::setCards(vector<Card*>* &c)
+{
     cards = c;
 }
 void Hand::removeCard(int index)
 {
-    cards.erase(cards.begin()+index);
+    cards->erase(cards->begin()+index);
 }
 void Hand::addCard(Card* card)
 {
-    cards.push_back(card);
+    cards->push_back(card);
 }
 ostream & operator << (ostream &out, const Hand &h){
     out << "Hand: \n";
-    for(vector<Card*>::const_iterator it = h.cards.begin(); it != h.cards.end();++it){
+    for(vector<Card*>::const_iterator it = h.cards->begin(); it != h.cards->end();++it){
         out << *(*it);
     }
     return out;
