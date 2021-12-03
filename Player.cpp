@@ -159,10 +159,6 @@ Player::~Player()
     hand = NULL;
     delete ordersList;
     ordersList = NULL;
-    delete flagConqTerr;
-    flagConqTerr = NULL;
-    delete flagIssueOrder;
-    flagIssueOrder = NULL;
 }
 
 //Assignment operator overload
@@ -243,11 +239,11 @@ int Player::getPool() const
 
 bool Player::getFlagConqTerr() const
 {
-    return *flagConqTerr;
+    return flagConqTerr;
 }
 bool Player::getFlagIssueOrder() const
 {
-    return *flagIssueOrder;
+    return flagIssueOrder;
 }
 //This is a method for testing purposes.
 vector<Territory*>* Player::getPointerToTerritories()
@@ -281,12 +277,12 @@ void Player::setHand(Hand* h)
 
 void Player::setFlagConqTerr(bool flag)
 {
-    *flagConqTerr = flag;
+    flagConqTerr = flag;
 }
 
 void Player::setFlagIssueOrder(bool flag)
 {
-    *flagIssueOrder = flag;
+    flagIssueOrder = flag;
 }
 
 void Player::addToPool(int numberOfArmies)
@@ -338,13 +334,26 @@ void Player::createDeployOrders(vector <Territory*>* territoriesToDefend)
         }
     }
 }
+
+void Player::changeStrategy(string strat)
+{
+    ps = NULL;
+    strategy = strat;
+    if (strategy=="Human")      ps = new HumanPlayerStrategy(this);
+    if (strategy=="Aggressive") ps = new AggressivePlayerStrategy(this);
+    if (strategy=="Benevolent") ps = new BenevolentPlayerStrategy(this);
+    if (strategy=="Neutral")    ps = new NeutralPlayerStrategy(this);
+    if (strategy=="Cheater")    ps=  new CheaterPlayerStrategy(this);
+}
+
 //This method changes the strategy type from a Neutral Player to an Aggressive player.
 void Player::NeutralChangeStrategy()
 {
     if (strategy == "Neutral")
     {
         cout << name << " has become an aggressive player." << endl;
-        ps = NULL;
+        ps=NULL;
+        strategy="neutral";
         ps = new AggressivePlayerStrategy(this);
     }
 }

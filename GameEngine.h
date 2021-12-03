@@ -62,8 +62,9 @@ public:
     friend std::ostream & operator << (std::ostream &out, const GameEngine &ge);
     friend std::istream & operator >> (std::istream &in,  GameEngine &ge);
     friend class PlayerStrategy;
-    const int DECK_SIZE = 20;
+    const int DECK_SIZE = 10000;
     Deck* _deck;
+    bool tournament = false;
     string winnername,strategyname;
     static vector<Player*>* players;
     MapLoader* maploader;
@@ -74,5 +75,7 @@ public:
     Player *playerPairs[3][2];
     int turnsPerGame;
 };
+void tournamentMode(FileCommandProcessorAdapter* fcpa);
 void tournamentMode();
 #endif // GAMEENGINE_H
+

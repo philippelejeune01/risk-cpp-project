@@ -35,15 +35,15 @@ class Card
 class Hand
 {
     private:
-        vector<Card*> cards;
+        vector<Card*>* cards;
     public:
         Hand();
-        Hand(vector<Card*> &cards);
+        Hand(vector<Card*>* &cards);
         Hand(Hand &h);
         ~Hand();
         Hand& operator = (const Hand& h);
         vector<Card*>* getCards();
-        void setCards(vector<Card*> &cards);
+        void setCards(vector<Card*>* &cards);
         void removeCard(int index);
         void addCard(Card* card);
         friend ostream & operator << (ostream &out, const Hand &h);
@@ -52,16 +52,16 @@ class Hand
 class Deck
 {
     private:
-        vector<Card*> cards;
+        vector<Card*>* cards;
     public:
         Deck();
-        Deck(vector<Card*> &cards);
+        Deck(vector<Card*>* &cards);
         Deck(Deck &d);
         ~Deck();
         Deck& operator = (const Deck &d);
         Card* draw();
         vector<Card*>* getCards();
-        void setCards(vector<Card*> &cards);
+        void setCards(vector<Card*>* &cards);
 
         friend ostream & operator << (ostream &out, const Deck &d);
 
