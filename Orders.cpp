@@ -633,7 +633,7 @@ void Advance::execute()
             //Fields for the amount of attacking armies and of defending armies
 
             //Signals to the player owning the targetTerritory that it is being attacked
-            //targetTerritory->getPlayer()->NeutralChangeStrategy();
+            targetTerritory->getPlayer()->NeutralChangeStrategy();
 
             int nDefArmies = targetTerritory->getAmountOfArmies();
             int nAttArmies = nMovedArmies;
