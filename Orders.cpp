@@ -19,6 +19,7 @@ using std::endl;
 //Default Constructor
 OrdersList::OrdersList()
 {
+    ordList = new list<Order*>();
     logO = new LogObserver();
     this->Attach(logO);
 }
@@ -26,11 +27,12 @@ OrdersList::OrdersList()
 OrdersList::OrdersList(list<Order*>* ls)
 {
     //This copies all the pointers to Order stored in the passed list
+    ordList = new list<Order*>();
     for (list<Order*>::iterator it = ls->begin(); it != ls->end(); ++it)
     {
         //Creates a new Order object from the object of the passed list
         //Maintains the passed list order
-        ordList.push_back((*it)->duplicate());
+        ordList->push_back((*it)->duplicate());
     }
     logO = new LogObserver();
     this->Attach(logO);
@@ -39,11 +41,12 @@ OrdersList::OrdersList(list<Order*>* ls)
 OrdersList::OrdersList(const OrdersList& ordsL)
 {
     //This copies all the pointers stored in the list
-    for (list<Order*>::const_iterator it = ordsL.ordList.begin(); it != ordsL.ordList.end(); ++it)
+    ordList = new list<Order*>();
+    for (list<Order*>::const_iterator it = ordsL.ordList->begin(); it != ordsL.ordList->end(); ++it)
     {
         //Creates a new Order object from the object of the passed list
         //Maintains the passed OrdersList
-        ordList.push_back((*it)->duplicate());
+        ordList->push_back((*it)->duplicate());
     }
     logO = new LogObserver();
     this->Attach(logO);
@@ -54,12 +57,12 @@ OrdersList::~OrdersList()
     //ordList.clear();
 
     //This deletes all the Order objects stored in the list
-    for(list<Order*>::iterator it = ordList.begin(); it != ordList.end(); ++it)
+    for(list<Order*>::iterator it = ordList->begin(); it != ordList->end(); ++it)
     {
         delete *it;
     }
     //This erases all the pointers stored in the list
-    ordList.clear();
+    ordList->clear();
 
 }
 //Assignment operator overload
@@ -67,11 +70,11 @@ OrdersList& OrdersList :: operator = (const OrdersList& ls)
 {
     //This copy all the pointers stored in the list
     this->ordList = ls.ordList;
-    for (list<Order*>::const_iterator it = ls.ordList.begin(); it != ls.ordList.end(); ++it)
+    for (list<Order*>::const_iterator it = ls.ordList->begin(); it != ls.ordList->end(); ++it)
     {
         //Creates a new Order object based on the passed pointer
         //Maintains the order of the passed OrdersList
-        this->ordList.push_back((*it)->duplicate());
+        this->ordList->push_back((*it)->duplicate());
     }
     return *this;
 }
@@ -81,7 +84,7 @@ ostream& operator <<(ostream &strm, const OrdersList &ordLs)
 
     strm << "OrdersList(\n";
     int index = 1;
-    for (list<Order*>::const_iterator it = ordLs.ordList.begin(); it != ordLs.ordList.end();++it)
+    for (list<Order*>::const_iterator it = ordLs.ordList->begin(); it != ordLs.ordList->end();++it)
     {
         strm << index++ << ": " << *(*it) << "\n";
     }
@@ -89,7 +92,7 @@ ostream& operator <<(ostream &strm, const OrdersList &ordLs)
     return strm << ")";
 }
 //Getter
-list<Order*> OrdersList:: getOrdList() const
+list<Order*>* OrdersList:: getOrdList() const
 {
     return ordList;
 }
@@ -98,16 +101,16 @@ list<Order*> OrdersList:: getOrdList() const
 void OrdersList::move(Order* order, int index)
 {
     //Error check
-    if (index < 0 || index > ordList.size())
+    if (index < 0 || index > ordList->size())
     {
         cout << "Error: the index you have given is out of range." << endl;
         return;
     }
-    list<Order*>::iterator oldPos = ordList.begin();
-    list<Order*>::iterator newPos = ordList.begin();
+    list<Order*>::iterator oldPos = ordList->begin();
+    list<Order*>::iterator newPos = ordList->begin();
 
     //Determines the original position of the Order. If the order is not in the list, then the oldPos points to the endpoint.
-    for(;oldPos != ordList.end();++oldPos)
+    for(;oldPos != ordList->end();++oldPos)
     {
         if(*oldPos == order)
         {
@@ -121,32 +124,32 @@ void OrdersList::move(Order* order, int index)
     }
 
     //If the element is not in the list, it inserts it at the given index.
-    if(oldPos == ordList.end())
+    if(oldPos == ordList->end())
     {
-        ordList.insert(newPos,order);
+        ordList->insert(newPos,order);
     }
     //Otherwise, it moves the order from its old position to its new one.
     else
     {
-        ordList.splice(newPos, ordList, oldPos);
+        ordList->splice(newPos, *ordList, oldPos);
     }
 
 }
 bool OrdersList::isEmpty()
 {
-    return ordList.empty();
+    return ordList->size()==0;
 }
 //This removes an order at a particular index
 void OrdersList::remove(int index)
 {
     //Error check
-    if (index < 0 || index > ordList.size())
+    if (index < 0 || index > ordList->size())
     {
         cout << "Error: the index you have given is out of range." << endl;
         return;
     }
     //Cycles through the list to find the position
-    list<Order*>::iterator removeAt = ordList.begin();
+    list<Order*>::iterator removeAt = ordList->begin();
     for (int i = 0; i < index; i++)
     {
         ++removeAt;
@@ -154,21 +157,21 @@ void OrdersList::remove(int index)
     //Deletes the order object pointed by the pointer
     delete *removeAt;
     //Removes the pointer from the list
-    ordList.erase(removeAt);
+    ordList->erase(removeAt);
 }
-//addOrder method for adding an order in the OrdersList
+//addOrderaddOrder method for adding an order in the OrdersList
 void OrdersList:: addOrder(Order* order)
 {
     //If the order is a Deploy object, then it is pushed at the front of the list
     if (order->getOrderType() == "Deploy")
     {
-        ordList.push_front(order);
+        ordList->push_front(order);
         lastAddedWasDeployed = true;
     }
     //Otherwise, it is added at the back
     else
     {
-        ordList.push_back(order);
+        ordList->push_back(order);
         lastAddedWasDeployed = false;
     }
     Notify(this);
@@ -176,14 +179,14 @@ void OrdersList:: addOrder(Order* order)
 //This method executes the order at the front of OrdersList and pops it
 void OrdersList:: executeFirstOrder()
 {
-    Order* firstOrder = *ordList.begin();
+    Order* firstOrder = *ordList->begin();
     firstOrder->execute();
     delete firstOrder;
-    ordList.pop_front();
+    ordList->pop_front();
 }
 string OrdersList::stringToLog()
 {
-    Order* ord = (lastAddedWasDeployed) ? ordList.front(): ordList.back();
+    Order* ord = (lastAddedWasDeployed) ? ordList->front(): ordList->back();
     return "Order Issued : " + ord->doPrint();
 }
 //Order Implementation
@@ -238,7 +241,7 @@ Order::Order(Territory* targetTerr, vector<Territory*>* ownedTerr, string oType)
 //doPrint method for the stream insertion operator of Order
 string OrdersList::getFirstOrderType()
 {
-    return ordList.front()->getOrderType();
+    return ordList->front()->getOrderType();
 }
 string Order::doPrint() const
 {
@@ -630,7 +633,7 @@ void Advance::execute()
             //Fields for the amount of attacking armies and of defending armies
 
             //Signals to the player owning the targetTerritory that it is being attacked
-            targetTerritory->getPlayer()->NeutralChangeStrategy();
+            //targetTerritory->getPlayer()->NeutralChangeStrategy();
 
             int nDefArmies = targetTerritory->getAmountOfArmies();
             int nAttArmies = nMovedArmies;
@@ -925,10 +928,12 @@ void Blockade::execute()
     //Checks if the order is valid
     if (validate())
     {
+        Player* neutral= new Player("NEUTRAL TERRITORY");
         cout << "Blockade the targetted territory " << *(targetTerritory) << ". It has now 3 times the amount of armies and is neutral" << endl;
         //Executes the order
         targetTerritory->setAmountOfArmies(targetTerritory->getAmountOfArmies()*3);
-        targetTerritory->setPlayer(new Player("NEUTRAL TERRITORY"));
+        neutral->getPointerToTerritories()->push_back(targetTerritory);
+        targetTerritory->setPlayer(neutral);
         for (vector<Territory*>::const_iterator it = ownedTerritories->begin(); it != ownedTerritories->end(); ++it)
         {
             if (targetTerritory == *it)

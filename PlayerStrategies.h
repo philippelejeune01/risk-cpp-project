@@ -29,6 +29,7 @@ class HumanPlayerStrategy: public PlayerStrategy
 class AggressivePlayerStrategy:public PlayerStrategy
 {
     public:
+        Territory* strongestTerritory;
         void issueOrder();
         AggressivePlayerStrategy(Player* p);
         vector<Territory*>* toAttack();

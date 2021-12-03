@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Player.h"
 #include<iostream>
 using namespace std;
 
@@ -303,7 +304,7 @@ bool Territory::isAdjacentTo(Territory* t2)
 }
 ostream& operator <<(ostream &strm, const Territory &terr)
 {
-    return strm << terr.name << ": Continent: " << terr.continentNumber << ": nOfArmies: " << terr.amountOfArmies;
+    return strm << terr.name << ": Continent: " << terr.continentNumber << ": nOfArmies: " << terr.amountOfArmies<<" owned by: "<<terr.ownedplayer->getName();
 }
 MapLoader::MapLoader(string fpath)
 {
