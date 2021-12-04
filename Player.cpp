@@ -337,6 +337,7 @@ void Player::createDeployOrders(vector <Territory*>* territoriesToDefend)
 
 void Player::changeStrategy(string strat)
 {
+    delete ps;
     ps = NULL;
     strategy = strat;
     if (strategy=="Human")      ps = new HumanPlayerStrategy(this);
@@ -352,6 +353,7 @@ void Player::NeutralChangeStrategy()
     if (strategy == "Neutral")
     {
         cout << name << " has become an aggressive player." << endl;
+        delete ps;
         ps=NULL;
         strategy="neutral";
         ps = new AggressivePlayerStrategy(this);
